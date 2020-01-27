@@ -20,12 +20,12 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1200,
-        720,
-        1200,
-        720,
+        1920,
+        1080,
+        1920,
+        1080,
         vector4d(0,0,0,255),
-        0);
+        1);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
     SDL_ShowCursor(SDL_DISABLE);
