@@ -20,10 +20,10 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1920,
-        1080,
-        1920,
-        1080,
+        640,
+        295,
+        640,
+        295,
         vector4d(0,0,0,255),
         1);
     gf2d_graphics_set_frame_delay(16);
@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png");
+    sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     /*main game loop*/
     while(!done)
