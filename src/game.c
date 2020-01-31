@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
         640,
         295,
         vector4d(0,0,0,255),
-        1);
+        0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
     SDL_ShowCursor(SDL_DISABLE);
@@ -38,6 +38,11 @@ int main(int argc, char * argv[])
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+        if(keys[SDL_SCANCODE_SPACE]==1){
+            slog("space");
+        }else if(keys[SDL_SCANCODE_SPACE]==0){
+            slog("not space");
+        }
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
         mf+=0.1;
@@ -62,7 +67,7 @@ int main(int argc, char * argv[])
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
-        slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
+        //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     slog("---==== END ====---");
     return 0;
