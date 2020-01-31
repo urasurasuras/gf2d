@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
+#include "gf2d_draw.h"
 #include "simple_logger.h"
 
 int main(int argc, char * argv[])
@@ -9,7 +10,9 @@ int main(int argc, char * argv[])
     int done = 0;
     const Uint8 * keys;
     Sprite *sprite;
-    
+    Vector2D point1;
+    Vector2D point2;
+    Vector4D colorL;
     int mx,my;
     float mf = 0;
     Sprite *mouse;
@@ -33,27 +36,32 @@ int main(int argc, char * argv[])
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+    point1 = vector2d(0,0);
+    point2 = vector2d(100,100);
+    colorL = vector4d(255,255,255,255);
     /*main game loop*/
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+        //
         if(keys[SDL_SCANCODE_SPACE]==1){
             slog("space");
         }else if(keys[SDL_SCANCODE_SPACE]==0){
             slog("not space");
         }
+        //
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
-        
-        
+        point2.x = mx;
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
-            gf2d_sprite_draw_image(sprite,vector2d(0,0));
-            
+            gf2d_sprite_draw_image(sprite,vector2d(0,0));                
+            //if(point1.x != NULL){
+            gf2d_draw_line(point1,point2,colorL);//}
             //UI elements last
             gf2d_sprite_draw(
                 mouse,
