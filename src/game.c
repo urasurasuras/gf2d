@@ -2,6 +2,20 @@
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
+#include "entity.h"
+
+Entity *newTestEnt(){
+    Entity *self;
+    self = entity_new();
+    if (!self)return NULL;
+    self->sprite = gf2d_sprite_load_all(
+        "images/space_bug.png",
+        128,
+        128,
+        16
+    );
+    return self;
+}
 
 int main(int argc, char * argv[])
 {
@@ -15,6 +29,7 @@ int main(int argc, char * argv[])
     Sprite *mouse;
     Vector4D mouseColor = {255,100,255,200};
     
+    Entity *bug;
     /*program initializtion*/
     init_logger("gf2d.log");
     slog("---==== BEGIN ====---");
@@ -28,11 +43,13 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
+    entity_manager_init(32);
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+    bug = newTestEnt();
     /*main game loop*/
     while(!done)
     {
@@ -47,13 +64,15 @@ int main(int argc, char * argv[])
         SDL_GetMouseState(&mx,&my);
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
-        
+        entity_update_all();
         
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
             gf2d_sprite_draw_image(sprite,vector2d(0,0));
             
+            //Draw entities
+            entity_draw_all();
             //UI elements last
             gf2d_sprite_draw(
                 mouse,
