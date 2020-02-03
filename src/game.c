@@ -24,9 +24,6 @@ int main(int argc, char * argv[])
     int done = 0;
     const Uint8 * keys;
     Sprite *sprite;
-    Vector2D point1;
-    Vector2D point2;
-    Vector4D colorL;
     int mx,my;
     float mf = 0;
     Sprite *mouse;
