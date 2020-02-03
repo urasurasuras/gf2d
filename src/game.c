@@ -57,13 +57,6 @@ int main(int argc, char * argv[])
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-<<<<<<< HEAD
-        //
-        if(keys[SDL_SCANCODE_SPACE]==1){
-            slog("space");
-        }else if(keys[SDL_SCANCODE_SPACE]==0){
-            slog("not space");
-=======
         if(keys[SDL_SCANCODE_W]){
             move_up(bug, 1);
         }
@@ -78,7 +71,6 @@ int main(int argc, char * argv[])
         }
         else if(keys[SDL_SCANCODE_R]){
             respawn(bug);
->>>>>>> playercontrol
         }
         //
         /*update things here*/
