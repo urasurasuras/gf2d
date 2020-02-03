@@ -5,13 +5,14 @@
 
 typedef struct Entity_S
 {
-    Uint8       _inuse;             /**<check if entity in memory is active or not*/
-    Sprite      *sprite;            /**<a pointer to the sprite*/
-    float       frame;
-    Vector2D    position;
+    Uint8       _inuse;             /**<Check if entity in memory is active or not*/
+    Sprite      *sprite;            /**<A pointer to the sprite*/
+    float       frame;              /**<Current frame of sripte*/
+    Vector2D    position;           /**<2D position of entity*/
 
     void (*think)(struct Entity_S *self);/**<called when entity is drawn*/
 }Entity;
+
 /**
  * @brief get a pointer to a new entity
  * @return NULL on out of memory or error, a pointer to a blank entity otherwise
@@ -25,10 +26,21 @@ Entity *entity_new();
 void entity_manager_init(Uint32 maxEnts);
 
 /**
+ * @brief Close entity system
+ */
+void entity_manager_close();
+
+/**
  * @brief free previously allocated entity
  * @param self a pointer to the entity to free
  */
 void entity_free(Entity *self);
+
+/**
+ * @brief Update frame info of entity
+ * @param self a pointer to the entity to update
+ */
+void entity_update(Entity *self);
 
 /**
  * @brief update every active entity
