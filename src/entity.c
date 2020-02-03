@@ -16,7 +16,7 @@ Entity *entity_new(){
     for (i=0; i < entity_manager.maxEnts; i++){
         if(entity_manager.entityList[i]._inuse)continue;
         entity_manager.entityList[i]._inuse = 1;
-        slog("Items in ent list %d", i);
+        //slog("Items in ent list %d", i);
         return &entity_manager.entityList[i];
     }
     slog("out of open entity slots in memory");

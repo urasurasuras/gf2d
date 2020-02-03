@@ -3,6 +3,7 @@
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
 #include "entity.h"
+#include "entity_actions.h"
 
 Entity *newTestEnt(){
     Entity *self;
@@ -56,12 +57,20 @@ int main(int argc, char * argv[])
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-        if(keys[SDL_SCANCODE_SPACE]){
-            bug->position.x += 0.1;
-        }else if(keys[SDL_SCANCODE_R]){
-            entity_free(bug);
-            bug = newTestEnt();
-            slog("Spawned new bug");
+        if(keys[SDL_SCANCODE_W]){
+            move_up(bug, 1);
+        }
+        if(keys[SDL_SCANCODE_S]){
+            move_down(bug, 1);
+        }
+        if(keys[SDL_SCANCODE_A]){
+            move_left(bug, 1);
+        }
+        if(keys[SDL_SCANCODE_D]){
+            move_right(bug, 1);
+        }
+        else if(keys[SDL_SCANCODE_R]){
+            respawn(bug);
         }
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
