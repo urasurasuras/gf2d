@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
+#include "gf2d_draw.h"
 #include "simple_logger.h"
 #include "entity.h"
 #include "entity_actions.h"
@@ -24,7 +25,6 @@ int main(int argc, char * argv[])
     int done = 0;
     const Uint8 * keys;
     Sprite *sprite;
-    
     int mx,my;
     float mf = 0;
     Sprite *mouse;
@@ -72,6 +72,7 @@ int main(int argc, char * argv[])
         else if(keys[SDL_SCANCODE_R]){
             respawn(bug);
         }
+        //
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
         mf+=0.1;
