@@ -28,8 +28,8 @@ int main(int argc, char * argv[])
     float mf = 0;
     Sprite *mouse;
     Vector4D mouseColor = {255,100,255,200};
-    
     Entity *bug;
+
     /*program initializtion*/
     init_logger("gf2d.log");
     slog("---==== BEGIN ====---");
@@ -50,15 +50,18 @@ int main(int argc, char * argv[])
     sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     bug = newTestEnt();
+    
     /*main game loop*/
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-        if(keys[SDL_SCANCODE_SPACE]==1){
-            slog("space");
-        }else if(keys[SDL_SCANCODE_SPACE]==0){
-            slog("not space");
+        if(keys[SDL_SCANCODE_SPACE]){
+            bug->position.x += 0.1;
+        }else if(keys[SDL_SCANCODE_R]){
+            entity_free(bug);
+            bug = newTestEnt();
+            slog("Spawned new bug");
         }
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
@@ -73,6 +76,7 @@ int main(int argc, char * argv[])
             
             //Draw entities
             entity_draw_all();
+
             //UI elements last
             gf2d_sprite_draw(
                 mouse,

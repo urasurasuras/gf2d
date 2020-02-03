@@ -16,6 +16,7 @@ Entity *entity_new(){
     for (i=0; i < entity_manager.maxEnts; i++){
         if(entity_manager.entityList[i]._inuse)continue;
         entity_manager.entityList[i]._inuse = 1;
+        slog("Items in ent list %d", i);
         return &entity_manager.entityList[i];
     }
     slog("out of open entity slots in memory");
@@ -62,8 +63,9 @@ void entity_free(Entity *self){
 void entity_update(Entity *self){
     if (!self)return;
     self->frame = self->frame + 0.1;
-    if (self->frame >10)self->frame=0;
+    if (self->frame > 155)self->frame=0;
 }
+
 void entity_update_all(){
     int i;
     for (i = 0;i < entity_manager.maxEnts;i++)
@@ -72,6 +74,7 @@ void entity_update_all(){
         entity_update(&entity_manager.entityList[i]);
     }
 }
+
 void entity_draw(Entity *self){
     if (self == NULL){
         slog("cannot draw, null entity provided");

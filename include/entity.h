@@ -37,6 +37,12 @@ void entity_manager_close();
 void entity_free(Entity *self);
 
 /**
+ * @brief Update frame info of entity
+ * @param self a pointer to the entity to update
+ */
+void entity_update(Entity *self);
+
+/**
  * @brief update every active entity
  */
 void entity_update_all();
