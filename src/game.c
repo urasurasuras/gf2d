@@ -16,6 +16,7 @@ Entity *newTestEnt(){
         128,
         16
     );
+    self->think = PlayerThink;
     return self;
 }
 
@@ -57,21 +58,7 @@ int main(int argc, char * argv[])
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-        if(keys[SDL_SCANCODE_W]){
-            move_up(bug, 1);
-        }
-        if(keys[SDL_SCANCODE_S]){
-            move_down(bug, 1);
-        }
-        if(keys[SDL_SCANCODE_A]){
-            move_left(bug, 1);
-        }
-        if(keys[SDL_SCANCODE_D]){
-            move_right(bug, 1);
-        }
-        else if(keys[SDL_SCANCODE_R]){
-            respawn(bug);
-        }
+        
         //
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
@@ -79,6 +66,7 @@ int main(int argc, char * argv[])
         if (mf >= 16.0)mf = 0;
         entity_update_all();
         
+        //think(bug, keys);
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first

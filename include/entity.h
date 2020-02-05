@@ -13,6 +13,8 @@ typedef struct Entity_S
     void (*think)(struct Entity_S *self);/**<called when entity is drawn*/
 }Entity;
 
+void PlayerThink (struct Entity_S *self);
+
 /**
  * @brief get a pointer to a new entity
  * @return NULL on out of memory or error, a pointer to a blank entity otherwise
