@@ -9,9 +9,16 @@ typedef struct Entity_S
     Sprite      *sprite;            /**<A pointer to the sprite*/
     float       frame;              /**<Current frame of sripte*/
     Vector2D    position;           /**<2D position of entity*/
+    float       speed;              /**<Speed of char*/
 
-    void (*think)(struct Entity_S *self);/**<called when entity is drawn*/
+    void (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
 }Entity;
+
+/**
+ * @brief Player think function
+ * @param self Pointer to entity
+ * */
+void PlayerThink (struct Entity_S *self);
 
 /**
  * @brief get a pointer to a new entity

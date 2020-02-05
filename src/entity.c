@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "simple_logger.h"
 #include "entity.h"
+#include <SDL.h>
+
 
 typedef struct 
 {
@@ -8,6 +10,25 @@ typedef struct
     Entity *entityList;     /**<List of entities*/
 
 }EntityManager;
+
+void PlayerThink (struct Entity_S *self){
+    const Uint8 * keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+    if(keys[SDL_SCANCODE_W]){
+        move_up(self);
+    }
+    if(keys[SDL_SCANCODE_S]){
+        move_down(self);
+    }
+    if(keys[SDL_SCANCODE_A]){
+        move_left(self, 1);
+    }
+    if(keys[SDL_SCANCODE_D]){
+        move_right(self, 1);
+    }
+    else if(keys[SDL_SCANCODE_R]){
+        respawn(self);
+    }
+}
 
 static EntityManager entity_manager = {0};
 
@@ -62,6 +83,8 @@ void entity_free(Entity *self){
 
 void entity_update(Entity *self){
     if (!self)return;
+    if (!self->think)return;
+    self->think(self);
     self->frame = self->frame + 0.1;
     if (self->frame > 155)self->frame=0;
 }
