@@ -13,12 +13,11 @@ typedef struct
 
 void PlayerThink (struct Entity_S *self){
     const Uint8 * keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-
     if(keys[SDL_SCANCODE_W]){
-        move_up(self, 1);
+        move_up(self);
     }
     if(keys[SDL_SCANCODE_S]){
-        move_down(self, 1);
+        move_down(self);
     }
     if(keys[SDL_SCANCODE_A]){
         move_left(self, 1);
@@ -84,6 +83,8 @@ void entity_free(Entity *self){
 
 void entity_update(Entity *self){
     if (!self)return;
+    if (!self->think)return;
+    self->think(self);
     self->frame = self->frame + 0.1;
     if (self->frame > 155)self->frame=0;
 }
@@ -94,9 +95,6 @@ void entity_update_all(){
     {
         if (!entity_manager.entityList[i]._inuse)continue;
         entity_update(&entity_manager.entityList[i]);
-        if (entity_manager.entityList[i].think){
-            entity_manager.entityList[i].think(&entity_manager.entityList[i]);
-        }
     }
 }
 

@@ -2,17 +2,17 @@
 #include "simple_logger.h"
 #include "entity_actions.h"
 
-void move_up(Entity *self, float speed){
-    self->position.y -= speed;
+void move_up(Entity *self){
+    self->position.y -= self->speed;
 }
-void move_down(Entity *self, float speed){
-    self->position.y += speed;
+void move_down(Entity *self){
+    self->position.y += self->speed;
 }
-void move_left(Entity *self, float speed){
-    self->position.x -= speed;
+void move_left(Entity *self){
+    self->position.x -= self->speed;
 }
-void move_right(Entity *self, float speed){
-    self->position.x += speed;
+void move_right(Entity *self){
+    self->position.x += self->speed;
 }
 void respawn(Entity *self){
     entity_free(self);
