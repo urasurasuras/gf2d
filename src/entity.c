@@ -86,7 +86,7 @@ void entity_update(Entity *self){
     if (!self->think)return;
     self->think(self);
     self->frame = self->frame + 0.1;
-    if (self->frame > 155)self->frame=0;
+    if (self->frame > self->maxFrames)self->frame=0;
 }
 
 void entity_update_all(){

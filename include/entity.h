@@ -8,6 +8,7 @@ typedef struct Entity_S
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
     float       frame;              /**<Current frame of sripte*/
+    float       maxFrames;           /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
     float       speed;              /**<Speed of char*/
 

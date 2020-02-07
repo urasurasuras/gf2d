@@ -11,13 +11,14 @@ Entity *newTestEnt(){
     self = entity_new();
     if (!self)return NULL;
     self->sprite = gf2d_sprite_load_all(
-        "images/space_bug.png",
-        128,
-        128,
-        16
+        "images/white-circle.png",
+        100,
+        100,
+        1
     );
     self->speed = 1;
     self->think = PlayerThink;
+    self->maxFrames = 1;
     return self;
 }
 
@@ -38,10 +39,10 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        640,
-        295,
-        640,
-        295,
+        1920,
+        1080,
+        1920,
+        1080,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
