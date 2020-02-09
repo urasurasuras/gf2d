@@ -13,21 +13,34 @@ typedef struct
 
 void PlayerThink (struct Entity_S *self){
     const Uint8 * keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-    if(keys[SDL_SCANCODE_W]){
-        move_up(self);
-    }
-    if(keys[SDL_SCANCODE_S]){
-        move_down(self);
-    }
-    if(keys[SDL_SCANCODE_A]){
-        move_left(self, 1);
-    }
-    if(keys[SDL_SCANCODE_D]){
-        move_right(self, 1);
-    }
-    else if(keys[SDL_SCANCODE_R]){
-        respawn(self);
-    }
+    // SDL_GameController *controller = NULL;
+    //  for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+    //     if (SDL_IsGameController(i)) {
+    //         controller = SDL_GameControllerOpen(i);
+    //         if (controller) {
+    //             //slog("Did the thing");
+    //             break;
+    //         } else {
+    //             fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+    //         }
+    //     }
+    // }  
+
+    // if(keys[SDL_SCANCODE_W] || SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY) < 100){
+    //     move_up(self);
+    // }
+    // if(keys[SDL_SCANCODE_S] || SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY) > 100){
+    //     move_down(self);
+    // }
+    // if(keys[SDL_SCANCODE_A] || SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX) < 100){
+    //     move_left(self);
+    // }
+    // if(keys[SDL_SCANCODE_D] || SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX) > 100){
+    //     move_right(self);
+    // }
+    // else if(keys[SDL_SCANCODE_R]){
+    //     respawn(self);
+    // }
 }
 
 static EntityManager entity_manager = {0};
