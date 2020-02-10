@@ -21,7 +21,7 @@ Entity *newTestEnt(){
     self->speed = 1;
     self->think = PlayerThink;
     self->maxFrames = 1;
-    self->typeOfEnt = (Player * )malloc(sizeof(Player));
+    self->typeOfEnt = player_new(1,0);
     return self;
 }
 
@@ -57,32 +57,6 @@ int main(int argc, char * argv[])
     sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     bug = newTestEnt();
-
-    //Controller setup
-    SDL_GameController *controller = NULL;
-     for (int i = 0; i < SDL_NumJoysticks(); ++i) {
-        if (SDL_IsGameController(i)) {
-            controller = SDL_GameControllerOpen(i);
-            if (controller) {
-                //slog("Did the thing");
-                break;
-            } else {
-                fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
-            }
-        }
-    }  
-
-    if (controller) {
-        printf("Found a valid controller, named: %s\n", SDL_GameControllerName(controller));
-    }   
-    for (int i = 0; i < SDL_NumJoysticks(); ++i) {
-        const char *name = SDL_GameControllerNameForIndex(i);
-        if (name) {
-            printf("Joystick %i has game controller name '%s'\n", i, name);
-        } else {
-            printf("Joystick %i has no game controller name.\n", i);
-        }
-    }
     
     /*main game loop*/
     while(!done)
@@ -97,10 +71,6 @@ int main(int argc, char * argv[])
         if (mf >= 16.0)mf = 0;
         entity_update_all();
            
-        for (int i = 0; i < SDL_NumJoysticks(); ++i) {
-            slog("Left stick of %s: %d,%d", SDL_GameControllerName(controller),SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY));   
-        }
-        //think(bug, keys);
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first

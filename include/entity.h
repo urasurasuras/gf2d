@@ -18,12 +18,6 @@ typedef struct Entity_S
 }Entity;
 
 /**
- * @brief Player think function
- * @param self Pointer to entity
- * */
-void PlayerThink (struct Entity_S *self);
-
-/**
  * @brief get a pointer to a new entity
  * @return NULL on out of memory or error, a pointer to a blank entity otherwise
  */
