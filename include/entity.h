@@ -12,6 +12,8 @@ typedef struct Entity_S
     Vector2D    position;           /**<2D position of entity*/
     float       speed;              /**<Speed of char*/
 
+    void        *typeOfEnt;         /**<Data pointer*/
+
     void (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
 }Entity;
 

@@ -5,6 +5,7 @@
 #include "simple_logger.h"
 #include "entity.h"
 #include "entity_actions.h"
+#include "player.h"
 //#include "SDL_gamecontroller.h"
 
 Entity *newTestEnt(){
@@ -20,6 +21,7 @@ Entity *newTestEnt(){
     self->speed = 1;
     self->think = PlayerThink;
     self->maxFrames = 1;
+    self->typeOfEnt = (Player * )malloc(sizeof(Player));
     return self;
 }
 

@@ -3,7 +3,6 @@
 #include "entity.h"
 #include <SDL.h>
 
-
 typedef struct 
 {
     Uint32 maxEnts;         /**<Maximum number of entities*/
