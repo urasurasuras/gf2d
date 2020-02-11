@@ -16,6 +16,5 @@ void move_right(Entity *self){
 }
 void respawn(Entity *self){
     entity_free(self);
-    self = newTestEnt();
     slog("Respawned ent");
 }

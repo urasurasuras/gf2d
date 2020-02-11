@@ -8,22 +8,7 @@
 #include "player.h"
 //#include "SDL_gamecontroller.h"
 
-Entity *newTestEnt(){
-    Entity *self;
-    self = entity_new();
-    if (!self)return NULL;
-    self->sprite = gf2d_sprite_load_all(
-        "images/white-circle.png",
-        100,
-        100,
-        1
-    );
-    self->speed = 1;
-    self->think = PlayerThink;
-    self->maxFrames = 1;
-    self->typeOfEnt = player_new(1,0);
-    return self;
-}
+
 
 int main(int argc, char * argv[])
 {
@@ -36,6 +21,7 @@ int main(int argc, char * argv[])
     Sprite *mouse;
     Vector4D mouseColor = {255,100,255,200};
     Entity *bug;
+    Entity *bug2;
 
     /*program initializtion*/
     init_logger("gf2d.log");
@@ -56,8 +42,9 @@ int main(int argc, char * argv[])
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    bug = newTestEnt();
-    
+    bug = char_new(0,1, "images/white-circle.png");
+    bug2 = char_new(1,1, "images/white-circle.png");
+
     /*main game loop*/
     while(!done)
     {
