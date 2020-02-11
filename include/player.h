@@ -1,5 +1,6 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
+#define DEADZONE 2000
 
 typedef struct Player_S
 {

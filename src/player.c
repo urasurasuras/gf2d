@@ -17,18 +17,14 @@ void PlayerThink (struct Entity_S *self){
     Player *p = (Player *)self->typeOfEnt;
     SDL_GameController *c = p->controller;
 
-    // if(SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY) < 1000){
-    //     self->position.y -= p->speed;
-    // }
-    // if(SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY) > 1000){
-    //     self->position.y += p->speed;
-    // }
-    // if(SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX) < 1000){
-    //     self->position.x -= p->speed;
-    // }
-    // if(SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX) > 1000){
-    //     self->position.x += p->speed;
-    // }
-    slog("Pos: %f.%f",self->position.x, self->position.y);
-    //slog("Left stick of %s: %d,%d", SDL_GameControllerName(c),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY));  
+    float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX);
+    float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY);
+
+    if (x>DEADZONE || x< (DEADZONE * -1))
+    self->position.x += x/10000*p->speed;
+    if (y>DEADZONE || y< (DEADZONE * -1))
+    self->position.y += y/10000*p->speed;
+
+    // slog("Pos: %f.%f",self->position.x, self->position.y);
+    // slog("Left stick of %s: %d,%d", SDL_GameControllerName(c),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY));  
 }
