@@ -21,9 +21,9 @@ void PlayerThink (struct Entity_S *self){
     float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY);
 
     if (x>DEADZONE || x< (DEADZONE * -1))
-    self->position.x += x/10000*p->speed;
+    self->position.x += x/ANALOG_SCALE*p->speed;
     if (y>DEADZONE || y< (DEADZONE * -1))
-    self->position.y += y/10000*p->speed;
+    self->position.y += y/ANALOG_SCALE*p->speed;
 
     // slog("Pos: %f.%f",self->position.x, self->position.y);
     // slog("Left stick of %s: %d,%d", SDL_GameControllerName(c),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY));  
