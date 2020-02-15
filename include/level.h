@@ -12,7 +12,7 @@ typedef struct
 }Level;
 
 
-Level *level_new();
+Level *level_new(char *backgroundFile, SDL_Rect bounds);
 void level_free(Level *level);
 void level_draw(Level *level);
 Level *level_get_active();

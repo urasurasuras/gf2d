@@ -10,7 +10,7 @@ Level *level_get_active()
     return THE_LEVEL;
 }
 
-Level *level_new(char *backgroundFile,SDL_Rect bounds)
+Level *level_new(char *backgroundFile, SDL_Rect bounds)
 {
     Level *level;
     if (!backgroundFile)
