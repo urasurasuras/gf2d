@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
     level = level_new("images/backgrounds/90b.png",bounds);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     bug = char_new(0,1, "images/white-circle.png");
-    bug2 = char_new(1,1, "images/white-circle.png");
+    //bug2 = char_new(1,1, "images/white-circle.png");
 
     /*main game loop*/
     while(!done)

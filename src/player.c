@@ -21,6 +21,7 @@ Entity *char_new(int char_index, float default_speed, char sprite_path[]){
     vector2d_set(self-> drawOffset,-50,-50);
     //
     self->think = PlayerThink;
+    self->touch = player_touch;
     self->maxFrames = 1;
     self->typeOfEnt = player_new(default_speed,char_index);
     return self;
@@ -49,4 +50,10 @@ void PlayerThink (struct Entity_S *self){
 
     // slog("Pos: %f.%f",self->position.x, self->position.y);
     // slog("Left stick of %s: %d,%d", SDL_GameControllerName(c),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY));  
+}
+
+void player_touch(Entity *self,Entity *other)
+{
+    if ((!self) || (!other))return;
+    slog("Player touched thing");
 }

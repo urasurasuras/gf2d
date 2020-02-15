@@ -34,4 +34,6 @@ Player *player_new(float speed, int contNum);
  * */
 void PlayerThink (struct Entity_S *self);
 
+void player_touch(Entity *self,Entity *other);
+
 #endif

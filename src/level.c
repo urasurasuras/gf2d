@@ -52,7 +52,6 @@ Uint8 level_bounds_test_circle(Level *level, Vector2D center, float radius)
     if (center.x - radius < level->bounds.x)
     {
         hit = 1;
-        slog("hiy");
     }
     if (center.y - radius < level->bounds.y)
     {
