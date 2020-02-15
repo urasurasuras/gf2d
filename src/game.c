@@ -6,22 +6,23 @@
 #include "entity.h"
 #include "entity_actions.h"
 #include "player.h"
-//#include "SDL_gamecontroller.h"
-
-
+#include "level.h"
 
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
-    Sprite *sprite;
     int mx,my;
     float mf = 0;
     Sprite *mouse;
+
     Vector4D mouseColor = {255,100,255,200};
+    SDL_Rect bounds = {0,0,1280,720};
+
     Entity *bug;
     Entity *bug2;
+    Level *level;
 
     /*program initializtion*/
     init_logger("gf2d.log");
@@ -40,7 +41,7 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
+    level = level_new("images/backgrounds/90b.png",bounds);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     bug = char_new(0,1, "images/white-circle.png");
     bug2 = char_new(1,1, "images/white-circle.png");
@@ -61,8 +62,8 @@ int main(int argc, char * argv[])
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
-            gf2d_sprite_draw_image(sprite,vector2d(0,0));
-            
+            // gf2d_sprite_draw_image(sprite,vector2d(0,0));
+            level_draw(level);
             //Draw entities
             entity_draw_all();
 
@@ -81,6 +82,7 @@ int main(int argc, char * argv[])
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
+    level_free(level);
     slog("---==== END ====---");
     return 0;
 }
