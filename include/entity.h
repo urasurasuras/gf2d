@@ -60,4 +60,14 @@ void entity_update_all();
  */
 void entity_draw_all();
 
+/**
+ * @brief For each entity, check all other entities for collision
+ * */
+void entity_collision_check(Entity *entity)
+
+/**
+ * @brief Execute the entity's touch function
+ * */
+void entity_entity_collide(Entity *e1,Entity *e2);
+
 #endif
