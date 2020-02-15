@@ -14,6 +14,12 @@ Entity *char_new(int char_index, float default_speed, char sprite_path[]){
         100,
         1
     );
+    //
+    self->radius = 50;
+    self->size.x = 32;
+    self->size.y = 32;
+    vector2d_set(self-> drawOffset,-50,-50);
+    //
     self->think = PlayerThink;
     self->maxFrames = 1;
     self->typeOfEnt = player_new(default_speed,char_index);

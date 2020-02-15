@@ -2,6 +2,7 @@
 #include "simple_logger.h"
 #include "entity.h"
 #include <SDL.h>
+#include "gf2d_draw.h"
 
 typedef struct 
 {
@@ -63,8 +64,9 @@ void entity_free(Entity *self){
 
 void entity_update(Entity *self){
     if (!self)return;
-    if (!self->think)return;
-    self->think(self);
+    if (self->think){
+        self->think(self);
+    }
     self->frame = self->frame + 0.1;
     if (self->frame > self->maxFrames)self->frame=0;
 }
@@ -85,7 +87,7 @@ void entity_draw(Entity *self){
     }
     gf2d_sprite_draw(
         self->sprite,
-        self->position,
+        vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),
         NULL,
         NULL,
         NULL,
@@ -93,6 +95,9 @@ void entity_draw(Entity *self){
         NULL,
         (Uint32)self->frame
     );
+    //draw circle collider
+    gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
+
 }
 
 void entity_draw_all()

@@ -11,10 +11,13 @@ typedef struct Entity_S
     float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
     float       speed;              /**<Speed of char*/
+    float       radius;             /**<how wide this entity is*/
+    Vector2D    drawOffset;         /**<Offset of collider*/
+    Vector2D    size;               /**<Size vector*/
 
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
 
-    void (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
+    void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
 }Entity;
 
 /**
