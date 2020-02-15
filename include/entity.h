@@ -18,6 +18,7 @@ typedef struct Entity_S
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
 
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
+    void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/
 }Entity;
 
 /**
