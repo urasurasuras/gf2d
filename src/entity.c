@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include "simple_logger.h"
 #include "entity.h"
+#include <SDL.h>
+#include "gf2d_draw.h"
+#include "collision.h"
+#include "level.h"
 
 typedef struct 
 {
@@ -10,6 +14,8 @@ typedef struct
 }EntityManager;
 
 static EntityManager entity_manager = {0};
+
+// void entity_collision_check(Entity *entity);
 
 Entity *entity_new(){
     int i;
@@ -62,8 +68,16 @@ void entity_free(Entity *self){
 
 void entity_update(Entity *self){
     if (!self)return;
+    if (self->think){
+        self->think(self);
+    }
     self->frame = self->frame + 0.1;
-    if (self->frame > 155)self->frame=0;
+    if (self->frame > self->maxFrames)self->frame=0;
+    if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
+    {
+        //TODO: Do something is ent hits bounds
+    }
+    entity_collision_check(self);
 }
 
 void entity_update_all(){
@@ -82,7 +96,7 @@ void entity_draw(Entity *self){
     }
     gf2d_sprite_draw(
         self->sprite,
-        self->position,
+        vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),
         NULL,
         NULL,
         NULL,
@@ -90,6 +104,9 @@ void entity_draw(Entity *self){
         NULL,
         (Uint32)self->frame
     );
+    //draw circle collider
+    gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
+
 }
 
 void entity_draw_all()
@@ -99,5 +116,30 @@ void entity_draw_all()
     {
         if (!entity_manager.entityList[i]._inuse)continue;
         entity_draw(&entity_manager.entityList[i]);
+    }
+}
+
+void entity_entity_collide(Entity *e1,Entity *e2)
+{
+    if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
+    {
+        if (e1->touch)
+        {
+            e1->touch(e1,e2);
+        }
+    }
+    //TODO: Add check for rect collision
+}
+void entity_collision_check(Entity *entity)
+{
+    int i;
+    if (!entity)return;
+    for (i = 0;i < entity_manager.maxEnts;i++)
+    {    
+
+        if (!entity_manager.entityList[i]._inuse)continue;
+        if (&entity_manager.entityList[i] == entity)continue;
+        
+        entity_entity_collide(entity,&entity_manager.entityList[i]);
     }
 }

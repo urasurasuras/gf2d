@@ -8,9 +8,16 @@ typedef struct Entity_S
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
     float       frame;              /**<Current frame of sripte*/
+    float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
+    float       radius;             /**<how wide this entity is*/
+    Vector2D    drawOffset;         /**<Offset of collider*/
+    Vector2D    size;               /**<Size vector*/
 
-    void (*think)(struct Entity_S *self);/**<called when entity is drawn*/
+    void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
+
+    void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
+    void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/
 }Entity;
 
 /**
@@ -51,5 +58,15 @@ void entity_update_all();
  * @brief draw every active entity
  */
 void entity_draw_all();
+
+/**
+ * @brief For each entity, check all other entities for collision
+ * */
+void entity_collision_check(Entity *entity);
+
+/**
+ * @brief Execute the entity's touch function
+ * */
+void entity_entity_collide(Entity *e1,Entity *e2);
 
 #endif
