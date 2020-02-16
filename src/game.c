@@ -4,42 +4,34 @@
 #include "gf2d_draw.h"
 #include "simple_logger.h"
 #include "entity.h"
-#include "entity_actions.h"
-
-Entity *newTestEnt(){
-    Entity *self;
-    self = entity_new();
-    if (!self)return NULL;
-    self->sprite = gf2d_sprite_load_all(
-        "images/space_bug.png",
-        128,
-        128,
-        16
-    );
-    return self;
-}
+#include "player.h"
+#include "level.h"
 
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
-    Sprite *sprite;
     int mx,my;
     float mf = 0;
     Sprite *mouse;
+
     Vector4D mouseColor = {255,100,255,200};
+    SDL_Rect bounds = {0,0,1280,720};
+
     Entity *bug;
+    Entity *bug2;
+    Level *level;
 
     /*program initializtion*/
     init_logger("gf2d.log");
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        640,
-        295,
-        640,
-        295,
+        1280,
+        720,
+        1280,
+        720,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
@@ -48,42 +40,29 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/90b.png");
+    level = level_new("images/backgrounds/90b.png",bounds);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    bug = newTestEnt();
-    
+    bug = char_new(0,1, "images/white-circle.png");
+    //bug2 = char_new(1,1, "images/white-circle.png");
+
     /*main game loop*/
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-        if(keys[SDL_SCANCODE_W]){
-            move_up(bug, 1);
-        }
-        if(keys[SDL_SCANCODE_S]){
-            move_down(bug, 1);
-        }
-        if(keys[SDL_SCANCODE_A]){
-            move_left(bug, 1);
-        }
-        if(keys[SDL_SCANCODE_D]){
-            move_right(bug, 1);
-        }
-        else if(keys[SDL_SCANCODE_R]){
-            respawn(bug);
-        }
+        
         //
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
         entity_update_all();
-        
+           
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
-            gf2d_sprite_draw_image(sprite,vector2d(0,0));
-            
+            // gf2d_sprite_draw_image(sprite,vector2d(0,0));
+            level_draw(level);
             //Draw entities
             entity_draw_all();
 
@@ -100,9 +79,10 @@ int main(int argc, char * argv[])
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
-        //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
+        slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     slog("---==== END ====---");
+    level_free(level);
     return 0;
 }
 /*eol@eof*/
