@@ -48,22 +48,25 @@ Uint8 level_bounds_test_circle(Level *level, Vector2D center, float radius)
         slog("no level provided for test");
         return 0;
     }
-    //slog("Level sprite %c", level->background);
     if (center.x - radius < level->bounds.x)
     {
-        hit = 1;
+        hit = 1;    
+        slog("Hitting left border");
     }
     if (center.y - radius < level->bounds.y)
     {
         hit = 1;
+        slog("Hitting top border");
     }
     if (center.x + radius > level->bounds.x + level->bounds.w)
     {
         hit = 1;
+        slog("Hitting right border");
     }
     if (center.y - radius > level->bounds.y + level->bounds.h)
     {
         hit = 1;
+        slog("Hitting bottom border");
     }
     
     return hit;
