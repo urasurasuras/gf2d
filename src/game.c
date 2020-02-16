@@ -4,7 +4,6 @@
 #include "gf2d_draw.h"
 #include "simple_logger.h"
 #include "entity.h"
-#include "entity_actions.h"
 #include "player.h"
 #include "level.h"
 

@@ -10,7 +10,6 @@ typedef struct Entity_S
     float       frame;              /**<Current frame of sripte*/
     float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
-    float       speed;              /**<Speed of char*/
     float       radius;             /**<how wide this entity is*/
     Vector2D    drawOffset;         /**<Offset of collider*/
     Vector2D    size;               /**<Size vector*/
