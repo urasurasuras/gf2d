@@ -63,7 +63,7 @@ Uint8 level_bounds_test_circle(Level *level, Vector2D center, float radius)
         hit = 1;
         slog("Hitting right border");
     }
-    if (center.y - radius > level->bounds.y + level->bounds.h)
+    if (center.y + radius > level->bounds.y + level->bounds.h)
     {
         hit = 1;
         slog("Hitting bottom border");
