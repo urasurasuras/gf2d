@@ -19,8 +19,6 @@ int main(int argc, char * argv[])
     Vector4D mouseColor = {255,100,255,200};
     SDL_Rect bounds = {0,0,1280,720};
 
-    Entity *bug;
-    Entity *bug2;
     Level *level;
 
     /*program initializtion*/
@@ -42,8 +40,8 @@ int main(int argc, char * argv[])
     /*demo setup*/
     level = level_new("images/backgrounds/90b.png",bounds);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    bug = char_new(0,1, "images/white-circle.png");
-    //bug2 = char_new(1,1, "images/white-circle.png");
+    char_new(0,1, "images/white-circle.png", spawn_top_left);
+    char_new(1,1, "images/white-circle.png", spawn_top_right);
 
     /*main game loop*/
     while(!done)

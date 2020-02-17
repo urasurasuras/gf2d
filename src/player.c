@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include "player.h"
 
-Entity *char_new(int char_index, float default_speed, char sprite_path[]){
+Entity *char_new(int char_index, float default_speed, char sprite_path[], Vector2D init_pos){
     Entity *self;
     self = entity_new();
     if (!self)return NULL;
@@ -19,6 +19,7 @@ Entity *char_new(int char_index, float default_speed, char sprite_path[]){
     self->size.x = 32;
     self->size.y = 32;
     vector2d_set(self-> drawOffset,-50,-50);
+    vector2d_copy(self->position, init_pos);   
     //
     self->think = PlayerThink;
     self->touch = player_touch;

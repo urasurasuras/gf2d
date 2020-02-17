@@ -3,6 +3,14 @@
 #define DEADZONE 2000
 #define ANALOG_SCALE 10000
 
+#include "gfc_vector.h"
+
+
+Vector2D spawn_top_left     = {100, 100};
+Vector2D spawn_top_right    = {1000,100};
+Vector2D spawn_bottom_left  = {100, 650};
+Vector2D spawn_bottom_right = {650, 1000};
+
 typedef struct Player_S
 {
     float               speed;              /**<Speed of char*/
@@ -15,9 +23,10 @@ typedef struct Player_S
  * @param char_index Conventional index used for controller index
  * @param default_speed Initial speed multiplier for entity (passed into player params)
  * @param sprite_path File path which leads to spritesheet 
+ * @param init_pos Initial position for char to spawn at
  * @return Entity that contains player object
  * */
-Entity *char_new(int char_index, float default_speed, char sprite_path[]);
+Entity *char_new(int char_index, float default_speed, char sprite_path[], Vector2D init_pos);
 
 /**
  * @brief Create object type "Player" which contains controller pointer etc.
