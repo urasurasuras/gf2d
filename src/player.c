@@ -3,6 +3,20 @@
 #include "entity.h"
 #include <SDL.h>
 #include "player.h"
+#include "level.h"
+
+Vector2D spawn_top_left     = {100, 100};
+Vector2D spawn_top_right    = {LEVEL_WIDTH - 100, 100};
+Vector2D spawn_bottom_left  = {100, LEVEL_HEIGHT - 100};
+Vector2D spawn_bottom_right = {LEVEL_WIDTH - 100, LEVEL_HEIGHT - 100};
+
+void players_spawn(){
+
+    char_new(0,1, "images/white-circle.png", spawn_top_left);
+    char_new(1,1, "images/white-circle.png", spawn_top_right);
+    char_new(2,1, "images/white-circle.png", spawn_bottom_left);
+    char_new(3,1, "images/white-circle.png", spawn_bottom_right);
+}
 
 Entity *char_new(int char_index, float default_speed, char sprite_path[], Vector2D init_pos){
     Entity *self;

@@ -5,11 +5,10 @@
 
 #include "gfc_vector.h"
 
-
-Vector2D spawn_top_left     = {100, 100};
-Vector2D spawn_top_right    = {1000,100};
-Vector2D spawn_bottom_left  = {100, 650};
-Vector2D spawn_bottom_right = {650, 1000};
+// Vector2D spawn_top_left;
+// Vector2D spawn_top_right;
+// Vector2D spawn_bottom_left;
+// Vector2D spawn_bottom_right;
 
 typedef struct Player_S
 {
@@ -17,6 +16,11 @@ typedef struct Player_S
     int                 contNum;            /**<Index of controller*/
     SDL_GameController *controller;         /**<Pointer to controller*/
 }Player;
+
+/**
+ * @brief Spawn 4 players based on spawn locations
+ * */
+void players_spawn();
 
 /**
  * @brief Create player-controlled entity

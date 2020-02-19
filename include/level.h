@@ -4,6 +4,8 @@
 #include "gfc_types.h"
 #include "gf2d_sprite.h"
 
+#define LEVEL_WIDTH 1280
+#define LEVEL_HEIGHT 720
 
 typedef struct
 {
