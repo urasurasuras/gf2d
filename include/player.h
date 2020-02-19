@@ -15,6 +15,7 @@ typedef struct Player_S
     float               speed;              /**<Speed of char*/
     int                 contNum;            /**<Index of controller*/
     SDL_GameController *controller;         /**<Pointer to controller*/
+    Vector2D            direction;          /**<Direction based on controller axis input*/
 }Player;
 
 /**

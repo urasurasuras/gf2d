@@ -58,10 +58,14 @@ void PlayerThink (struct Entity_S *self){
     float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX);
     float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY);
 
+    vector2d_set(p->direction, x, y);
+
     if (x>DEADZONE || x< (DEADZONE * -1))
     self->position.x += x/ANALOG_SCALE*p->speed;
     if (y>DEADZONE || y< (DEADZONE * -1))
     self->position.y += y/ANALOG_SCALE*p->speed;
+
+    slog("Player %d, Movement vector: %f.%f, direction: %f",p->contNum, p->direction.x, p->direction.y, vector2d_angle(p->direction));
 
     // slog("Pos: %f.%f",self->position.x, self->position.y);
     // slog("Left stick of %s: %d,%d", SDL_GameControllerName(c),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY));  
