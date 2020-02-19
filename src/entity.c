@@ -73,11 +73,11 @@ void entity_update(Entity *self){
     }
     self->frame = self->frame + 0.1;
     if (self->frame > self->maxFrames)self->frame=0;
-    if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
-    {
-        //TODO: Do something is ent hits bounds
-    }
-    entity_collision_check(self);
+    // if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
+    // {
+    //     //TODO: Do something is ent hits bounds
+    // }
+    // entity_collision_check(self);
 }
 
 void entity_update_all(){

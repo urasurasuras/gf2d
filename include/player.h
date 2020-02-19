@@ -16,22 +16,14 @@ typedef struct Player_S
     int                 contNum;            /**<Index of controller*/
     SDL_GameController *controller;         /**<Pointer to controller*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
+
+    int                 canFire;
 }Player;
 
 /**
  * @brief Spawn 4 players based on spawn locations
  * */
 void players_spawn();
-
-/**
- * @brief Create player-controlled entity
- * @param char_index Conventional index used for controller index
- * @param default_speed Initial speed multiplier for entity (passed into player params)
- * @param sprite_path File path which leads to spritesheet 
- * @param init_pos Initial position for char to spawn at
- * @return Entity that contains player object
- * */
-Entity *char_new(int char_index, float default_speed, char sprite_path[], Vector2D init_pos);
 
 /**
  * @brief Create object type "Player" which contains controller pointer etc.
@@ -42,11 +34,21 @@ Entity *char_new(int char_index, float default_speed, char sprite_path[], Vector
 Player *player_new(float speed, int contNum);
 
 /**
+ * @brief Create player-controlled entity
+ * @param char_index Conventional index used for controller index
+ * @param default_speed Initial speed multiplier for entity (passed into player params)
+ * @param sprite_path File path which leads to spritesheet 
+ * @param init_pos Initial position for char to spawn at
+ * @return Entity that has pointer to player object
+ * */
+Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], Vector2D init_pos);
+
+/**
  * @brief Called every draw update by ent
  * Handles movement from controller input
  * @param self Pointer to entity
  * */
-void PlayerThink (struct Entity_S *self);
+void player_think (Entity *self);
 
 void player_touch(Entity *self,Entity *other);
 
