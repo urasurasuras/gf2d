@@ -5,6 +5,8 @@
 
 typedef struct Entity_S
 {
+    char        name[20];              /**<Name of this entity (for debugging)*/
+
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
     float       frame;              /**<Current frame of sripte*/
@@ -18,6 +20,7 @@ typedef struct Entity_S
 
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/
+
 }Entity;
 
 /**

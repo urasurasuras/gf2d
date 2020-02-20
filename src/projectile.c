@@ -13,6 +13,7 @@ Projectile *projectile_new(Entity *owner_entity){
     
     projectile->owner_entity = owner_entity;
     projectile->direction = owner_player->direction;
+    projectile->time_to_live = 120;
 
     return projectile;
 }
@@ -21,6 +22,7 @@ Entity *projectile_new_ent(Entity *owner_entity, float default_speed, char sprit
     Entity *self;
     self = entity_new();
     if (!self)return NULL;
+    strcpy(self->name, "Projectile");
     self->sprite = gf2d_sprite_load_all(
         sprite_path,
         100,
@@ -37,6 +39,13 @@ Entity *projectile_new_ent(Entity *owner_entity, float default_speed, char sprit
 
 void projectile_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
+    p->time_alive += 1;
+    if (p->time_alive > p->time_to_live){
+        if (self->name)
+            slog("Freed: %s", self->name);
+        entity_free(self);
+        return;
+    }
     self->position.x += p->direction.x/ANALOG_SCALE;
     self->position.y += p->direction.y/ANALOG_SCALE;
     slog("Pos: %f.%f", self->position.x, self->position.y);
