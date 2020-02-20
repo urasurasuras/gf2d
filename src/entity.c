@@ -119,7 +119,7 @@ void entity_draw_all()
 
 void entity_entity_collide(Entity *e1, Entity *e2)
 {
-    if (e1->collider_shape == SHAPE_CIRCLE){
+    if (e1->collider_shape == SHAPE_RECT){
         if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
         {
             if (e1->touch)
