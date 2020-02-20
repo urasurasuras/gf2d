@@ -119,17 +119,18 @@ void entity_draw_all()
 
 void entity_entity_collide(Entity *e1, Entity *e2)
 {
-    if (e1->collider_shape == SHAPE_RECT){
+    if (e1->collider_shape == SHAPE_CIRCLE){
         if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
-        {
+        {//Circle-to-circle
             if (e1->touch)
             {
                 e1->touch(e1,e2);
             }
         }
     }
-    
-    //TODO: Add check for rect collision
+    if (e1->collider_shape == SHAPE_RECT){
+        //TODO: Add check for rect collision
+    }
 }
 void entity_collision_check(Entity *entity)
 {

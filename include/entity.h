@@ -8,7 +8,7 @@
 
 typedef struct Entity_S
 {
-    char        name[20];              /**<Name of this entity (for debugging)*/
+    char        name[10];           /**<Name of this entity (for debugging)*/
 
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
