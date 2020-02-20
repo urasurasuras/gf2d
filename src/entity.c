@@ -15,8 +15,6 @@ typedef struct
 
 static EntityManager entity_manager = {0};
 
-// void entity_collision_check(Entity *entity);
-
 Entity *entity_new(){
     int i;
     for (i=0; i < entity_manager.maxEnts; i++){
@@ -73,11 +71,11 @@ void entity_update(Entity *self){
     }
     self->frame = self->frame + 0.1;
     if (self->frame > self->maxFrames)self->frame=0;
-    // if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
-    // {
-    //     //TODO: Do something is ent hits bounds
-    // }
-    // entity_collision_check(self);
+    if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
+    {
+        //TODO: Do something is ent hits bounds
+    }
+    entity_collision_check(self);
 }
 
 void entity_update_all(){
@@ -119,15 +117,18 @@ void entity_draw_all()
     }
 }
 
-void entity_entity_collide(Entity *e1,Entity *e2)
+void entity_entity_collide(Entity *e1, Entity *e2)
 {
-    if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
-    {
-        if (e1->touch)
+    if (e1->collider_shape == SHAPE_CIRCLE){
+        if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
         {
-            e1->touch(e1,e2);
+            if (e1->touch)
+            {
+                e1->touch(e1,e2);
+            }
         }
     }
+    
     //TODO: Add check for rect collision
 }
 void entity_collision_check(Entity *entity)

@@ -40,6 +40,7 @@ Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], 
         1
     );
     //
+    self->collider_shape = SHAPE_CIRCLE;
     self->radius = 50;
     self->size.x = 32;
     self->size.y = 32;
