@@ -71,7 +71,7 @@ void player_think (Entity *self){
     // slog("Player %d, Movement vector: %f.%f, direction: %f",p->contNum, p->direction.x, p->direction.y, vector2d_angle(p->direction));
 
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && p->canFire){
-        projectile_new_ent(p, p->speed, "images/white-circle.png", self->position);
+        projectile_new_ent(self, p->speed, "images/white-circle.png", self->position);
         p->canFire = NULL;
         slog("got a");
     }
