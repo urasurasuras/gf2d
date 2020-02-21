@@ -6,10 +6,10 @@
 #include "level.h"
 #include "projectile.h"
 
-Vector2D spawn_top_left     = {100, 100};
-Vector2D spawn_top_right    = {LEVEL_WIDTH - 100, 100};
-Vector2D spawn_bottom_left  = {100, LEVEL_HEIGHT - 100};
-Vector2D spawn_bottom_right = {LEVEL_WIDTH - 100, LEVEL_HEIGHT - 100};
+Vector2D spawn_top_left     = {LEVEL_OFFSET, LEVEL_OFFSET};
+Vector2D spawn_top_right    = {LEVEL_WIDTH - LEVEL_OFFSET, LEVEL_OFFSET};
+Vector2D spawn_bottom_left  = {LEVEL_OFFSET, LEVEL_HEIGHT - LEVEL_OFFSET};
+Vector2D spawn_bottom_right = {LEVEL_WIDTH - LEVEL_OFFSET, LEVEL_HEIGHT - LEVEL_OFFSET};
 
 void players_spawn(){
 

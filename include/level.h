@@ -6,6 +6,7 @@
 
 #define LEVEL_WIDTH 1280
 #define LEVEL_HEIGHT 720
+#define LEVEL_OFFSET 100
 
 typedef struct
 {
