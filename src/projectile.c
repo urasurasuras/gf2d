@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include "projectile.h"
 #include "player.h"
+#include "gfc_vector.h"
+#include <math.h>
 
 Projectile *projectile_new(Entity *owner_entity){
     //Initializations of owner player
@@ -14,7 +16,12 @@ Projectile *projectile_new(Entity *owner_entity){
     projectile = (Projectile * )malloc(sizeof(Projectile));
     //Initialization of projectile
     projectile->owner_entity = owner_entity;
-    projectile->direction = owner_player->direction;
+    slog("Direction: %f.%f",owner_player->direction.x, owner_player->direction.y);
+    projectile->angle = vector2d_angle(owner_player->direction);
+    slog("Angle %f", projectile->angle);
+    projectile->direction.x = owner_player->direction.x;
+    projectile->direction.y = owner_player->direction.y;
+    // vector2d_set_angle_by_radians(&projectile->direction, projectile->angle);
     projectile->time_to_live = 120;//TODO: pass from function
     projectile->time_alive = 0;
 
@@ -51,7 +58,8 @@ void projectile_think(Entity *self){
         entity_free(self);
         return;
     }
-    self->position.x += p->direction.x/ANALOG_SCALE;
-    self->position.y += p->direction.y/ANALOG_SCALE;
-    slog("Pos: %f.%f", self->position.x, self->position.y);
+    // slog("Direction %f,%f", p->direction.x, p->direction.y);
+    self->position.x += p->direction.x * 10;
+    self->position.y += p->direction.y * 10;
+    // slog("Pos: %f.%f", self->position.x, self->position.y);
 }

@@ -25,7 +25,7 @@ Player *player_new(float speed, int contNum){
     p->speed = speed;
     p->contNum = contNum;
     p->controller = SDL_GameControllerOpen(contNum);//Returns a gamecontroller identifier 
-    p->canFire = 1;
+    // p->canFire = 1;
     return p;
 }
 
@@ -62,16 +62,28 @@ void player_think (Entity *self){
     float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY);
 
     // if ( (x>(DEADZONE*2) || x< (DEADZONE * -2)) && (y>(DEADZONE*2) || y< (DEADZONE * -2)))
-    vector2d_set(p->direction, x, y);
+    vector2d_set(p->direction, 0, 0);
 
-    if (x>DEADZONE || x< (DEADZONE * -1))
-    self->position.x += x/ANALOG_SCALE*p->speed;
-    if (y>DEADZONE || y< (DEADZONE * -1))
-    self->position.y += y/ANALOG_SCALE*p->speed;
+    if (x>DEADZONE){
+        self->position.x += p->speed;
+        p->direction.x = 1;
+    } 
+    if (x< (DEADZONE * -1)){
+        self->position.x -= p->speed;
+        p->direction.x = -1;
+    }
+    if (y>DEADZONE){
+        self->position.y += p->speed;
+        p->direction.y = 1;
+    } 
+    if (y< (DEADZONE * -1)){
+        self->position.y -= p->speed;
+        p->direction.y = -1;
+    }
 
     // slog("Player %d, Movement vector: %f.%f, direction: %f",p->contNum, p->direction.x, p->direction.y, vector2d_angle(p->direction));
 
-    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && p->canFire){
+    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) ){
         projectile_new_ent(self, p->speed, "images/white-circle.png", self->position);
         p->canFire = NULL;
         slog("got a");
@@ -83,5 +95,5 @@ void player_think (Entity *self){
 void player_touch(Entity *self,Entity *other)
 {
     if ((!self) || (!other))return;
-    slog("Player touched thing");
+    // slog("Player touched thing");
 }
