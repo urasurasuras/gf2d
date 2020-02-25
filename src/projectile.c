@@ -16,12 +16,10 @@ Projectile *projectile_new(Entity *owner_entity){
     projectile = (Projectile * )malloc(sizeof(Projectile));
     //Initialization of projectile
     projectile->owner_entity = owner_entity;
-    slog("Direction: %f.%f",owner_player->direction.x, owner_player->direction.y);
-    projectile->angle = vector2d_angle(owner_player->direction);
-    slog("Angle %f", projectile->angle);
+    // slog("Direction: %f.%f",owner_player->direction.x, owner_player->direction.y);
+    // slog("Angle %f", projectile->angle);
     //TODO: move projectile if player has no direction
-    projectile->direction.x = owner_player->direction.x;
-    projectile->direction.y = owner_player->direction.y;
+    vector2d_copy(projectile->direction, owner_player->direction);
     projectile->speed = 10;
     projectile->time_to_live = 120;//TODO: pass from function
     projectile->time_alive = 0;
@@ -55,11 +53,14 @@ void projectile_think(Entity *self){
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
         if (self->name)
-            slog("Freed: %s", self->name);
+            // slog("Freed: %s", self->name);
         entity_free(self);
         return;
-    }
+    }//veector2d( cos(angle), sin(angle) )
+
     // slog("Direction %f,%f", p->direction.x, p->direction.y);
+    // self->position.x += cos(p->angle) * p->speed;
+    // self->position.y += sin(p->angle) * p->speed;
     self->position.x += p->direction.x * p->speed;
     self->position.y += p->direction.y * p->speed;
     // slog("Pos: %f.%f", self->position.x, self->position.y);

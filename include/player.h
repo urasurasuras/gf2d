@@ -1,6 +1,6 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
-#define DEADZONE 2000
+#define DEADZONE 2
 #define ANALOG_SCALE 10000
 
 #include "gfc_vector.h"
@@ -16,6 +16,7 @@ typedef struct Player_S
     int                 contNum;            /**<Index of controller*/
     SDL_GameController *controller;         /**<Pointer to controller*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
+    // float               angle;              /**<angle of Direction based on controller axis input*/  
 
     int                 canFire;
 }Player;

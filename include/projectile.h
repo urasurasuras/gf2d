@@ -8,9 +8,9 @@
 typedef struct Projectile_S
 {
     Entity      *owner_entity;  /**<Pointer to owner (type Player) of this projectile*/
-    float       angle;      /**<Direction based on controller axis input*/
+    float       angle;          /**<Direction based on controller axis input*/
     float       speed;          /**<Default speed of projectile*/
-    Vector2D    direction;
+    Vector2D    direction;      /**<Direction projectile is facing (set by owner_player)*/
     int         time_alive;     /**<Time this projectile has been alive for*/
     int         time_to_live;   /**<Maximum amount of tine this projectile has to live*/
 
