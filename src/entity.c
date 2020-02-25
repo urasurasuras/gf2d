@@ -6,6 +6,13 @@
 #include "collision.h"
 #include "level.h"
 
+typedef struct 
+{
+    Uint32  maxEnts;         /**<Maximum number of entities*/
+    Entity  *entityList;     /**<List of entities*/
+}EntityManager;
+
+static EntityManager entity_manager = {0};
 
 Entity *entity_new(){
     int i;
@@ -71,8 +78,8 @@ void entity_update(Entity *self){
 }
 
 void entity_update_all(){
-    entity_manager.frame ++;
-    slog("Frame: %d", entity_manager.frame);
+    level_get_active()->frame ++;
+    slog("Frame: %d", level_get_active()->frame);
     int i;
     for (i = 0;i < entity_manager.maxEnts;i++)
     {

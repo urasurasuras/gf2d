@@ -12,6 +12,7 @@ typedef struct
 {
     Sprite *background;     /**<Background sprite*/
     SDL_Rect bounds;        /**<Bounds*/
+    int     frame;          /**<Frame ++ on update*/
 }Level;
 
 /**

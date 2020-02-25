@@ -2,7 +2,7 @@
 #define _ENTITY_H_
 
 #include "gf2d_sprite.h"
-
+#include "level.h"
 #define SHAPE_CIRCLE    1
 #define SHAPE_RECT      2
 
@@ -27,15 +27,6 @@ typedef struct Entity_S
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/
 
 }Entity;
-
-typedef struct 
-{
-    Uint32  maxEnts;         /**<Maximum number of entities*/
-    Entity  *entityList;     /**<List of entities*/
-    int     frame;          /**<Frame count ++ every update*/
-}EntityManager;
-
-static EntityManager entity_manager = {0};
 
 /**
  * @brief get a pointer to a new entity
