@@ -7,7 +7,7 @@
 #include "gfc_vector.h"
 #include <math.h>
 
-Projectile *projectile_new(Entity *owner_entity){
+Projectile *projectile_new(Entity *owner_entity, float speed, float time_to_live){
     //Initializations of owner player
     Player  *owner_player;
     owner_player = owner_entity->typeOfEnt;
@@ -16,18 +16,18 @@ Projectile *projectile_new(Entity *owner_entity){
     projectile = (Projectile * )malloc(sizeof(Projectile));
     //Initialization of projectile
     projectile->owner_entity = owner_entity;
+    vector2d_copy(projectile->direction, owner_player->direction);
+    projectile->speed = speed;
+    projectile->time_to_live = time_to_live;
+    projectile->time_alive = 0;
+
     // slog("Direction: %f.%f",owner_player->direction.x, owner_player->direction.y);
     // slog("Angle %f", projectile->angle);
-    //TODO: move projectile if player has no direction
-    vector2d_copy(projectile->direction, owner_player->direction);
-    projectile->speed = 10;
-    projectile->time_to_live = 120;//TODO: pass from function
-    projectile->time_alive = 0;
 
     return projectile;
 }
 
-Entity *projectile_new_ent(Entity *owner_entity, float default_speed, char sprite_path[], Vector2D init_pos){
+Entity *projectile_new_ent(Entity *owner_entity, float speed, float time_to_live, char sprite_path[], Vector2D init_pos){
     Entity *self;
     self = entity_new();
     if (!self)return NULL;
@@ -43,7 +43,7 @@ Entity *projectile_new_ent(Entity *owner_entity, float default_speed, char sprit
     vector2d_set(self-> drawOffset,-50,-50);
     vector2d_copy(self->position, init_pos);  
 
-    self->typeOfEnt = projectile_new(owner_entity);
+    self->typeOfEnt = projectile_new(owner_entity, speed, time_to_live);
     self->think = projectile_think;
     return self;
 }

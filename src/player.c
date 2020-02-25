@@ -74,7 +74,7 @@ void player_think (Entity *self){
     self->position.y += y*p->speed;
   
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) ){
-        projectile_new_ent(self, p->speed, "images/white-circle.png", self->position);
+        projectile_new_ent(self, p->speed, 120,"images/white-circle.png", self->position);
         p->canFire = NULL;
         // slog("got a");
     }

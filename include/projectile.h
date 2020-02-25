@@ -21,7 +21,7 @@ typedef struct Projectile_S
  * @param owner_entity Pointer to the owner ent of this projectile
  * @return Projectile type later used when creating ent
  * */
-Projectile *projectile_new(Entity *owner_entity);
+Projectile *projectile_new(Entity *owner_entity, float speed, float time_to_live);
 
 /**
  * @brief Create an entity by calling projectile_new
@@ -30,7 +30,7 @@ Projectile *projectile_new(Entity *owner_entity);
  * @param sprite_path File path to sprite
  * @param init_pos Initial position of created entity
  * */
-Entity *projectile_new_ent(Entity *owner_entity, float default_speed, char sprite_path[], Vector2D init_pos);
+Entity *projectile_new_ent(Entity *owner_entity, float speed, float time_to_live, char sprite_path[], Vector2D init_pos);
 
 /**
  * @brief Called every frame
