@@ -25,7 +25,8 @@ Player *player_new(float speed, int contNum){
     p->speed = speed;
     p->contNum = contNum;
     p->controller = SDL_GameControllerOpen(contNum);//Returns a gamecontroller identifier 
-    // p->canFire = 1;
+    p->cldn_skill1 = 100;
+    p->cldn_skill2 = 2000;
     return p;
 }
 
@@ -57,6 +58,8 @@ Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], 
 void player_think (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
     SDL_GameController *c = p->controller;
+    static int last_s1 = 0;
+    static int last_s2;
 
     float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
@@ -73,10 +76,15 @@ void player_think (Entity *self){
     self->position.x += x*p->speed;
     self->position.y += y*p->speed;
   
-    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) ){
-        projectile_new_ent(self, p->speed, 120,"images/white-circle.png", self->position);
-        p->canFire = NULL;
-        // slog("got a");
+
+    
+    // slog("at frame %d", entity_manager.frame);
+    slog("Last used s1 at frame: %d", last_s1);
+    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
+        projectile_new_ent(self, 10, 120,"images/white-circle.png", self->position);
+        last_s1 = level_get_active()->frame;
+        slog("Last used after set: %d", last_s1);      
+        slog("got a");
     }
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);
     // slog("Axis: %f.%f", x, y);

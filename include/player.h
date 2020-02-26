@@ -17,7 +17,8 @@ typedef struct Player_S
     SDL_GameController *controller;         /**<Pointer to controller*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
     // float               angle;              /**<angle of Direction based on controller axis input*/  
-
+    int                 cldn_skill1;
+    int                 cldn_skill2;
     int                 canFire;
 }Player;
 

@@ -57,7 +57,6 @@ void projectile_think(Entity *self){
         entity_free(self);
         return;
     }//veector2d( cos(angle), sin(angle) )
-
     // slog("Direction %f,%f", p->direction.x, p->direction.y);
     // self->position.x += cos(p->angle) * p->speed;
     // self->position.y += sin(p->angle) * p->speed;

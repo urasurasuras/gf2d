@@ -79,7 +79,6 @@ void entity_update(Entity *self){
 
 void entity_update_all(){
     level_get_active()->frame ++;
-    slog("Frame: %d", level_get_active()->frame);
     int i;
     for (i = 0;i < entity_manager.maxEnts;i++)
     {
