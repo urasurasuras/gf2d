@@ -14,9 +14,9 @@ Vector2D spawn_bottom_right = {LEVEL_WIDTH - LEVEL_OFFSET, LEVEL_HEIGHT - LEVEL_
 void players_spawn(){
 
     player_new_ent(0,1, "images/white-circle.png", spawn_top_left);
-    // player_new_ent(1,1, "images/white-circle.png", spawn_top_right);
-    // player_new_ent(2,1, "images/white-circle.png", spawn_bottom_left);
-    // player_new_ent(3,1, "images/white-circle.png", spawn_bottom_right);
+    player_new_ent(1,1, "images/white-circle.png", spawn_top_right);
+    player_new_ent(2,1, "images/white-circle.png", spawn_bottom_left);
+    player_new_ent(3,1, "images/white-circle.png", spawn_bottom_right);
 }
 
 Player *player_new(float speed, int contNum){
@@ -59,7 +59,7 @@ void player_think (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
     SDL_GameController *c = p->controller;
     static int last_s1 = 0;
-    static int last_s2;
+    static int last_s2 = 0;
 
     float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
@@ -81,7 +81,7 @@ void player_think (Entity *self){
     // slog("at frame %d", entity_manager.frame);
     slog("Last used s1 at frame: %d", last_s1);
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
-        projectile_new_ent(self, 10, 120,"images/white-circle.png", self->position);
+        projectile_new_ent(self, 1, 120,"images/fireball.png", self->position);
         last_s1 = level_get_active()->frame;
         slog("Last used after set: %d", last_s1);      
         slog("got a");
