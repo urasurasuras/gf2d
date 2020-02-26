@@ -8,9 +8,8 @@
 
 typedef struct 
 {
-    Uint32 maxEnts;         /**<Maximum number of entities*/
-    Entity *entityList;     /**<List of entities*/
-
+    Uint32  maxEnts;         /**<Maximum number of entities*/
+    Entity  *entityList;     /**<List of entities*/
 }EntityManager;
 
 static EntityManager entity_manager = {0};
@@ -79,6 +78,7 @@ void entity_update(Entity *self){
 }
 
 void entity_update_all(){
+    level_get_active()->frame ++;
     int i;
     for (i = 0;i < entity_manager.maxEnts;i++)
     {

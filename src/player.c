@@ -14,9 +14,9 @@ Vector2D spawn_bottom_right = {LEVEL_WIDTH - LEVEL_OFFSET, LEVEL_HEIGHT - LEVEL_
 void players_spawn(){
 
     player_new_ent(0,1, "images/white-circle.png", spawn_top_left);
-    player_new_ent(1,1, "images/white-circle.png", spawn_top_right);
-    player_new_ent(2,1, "images/white-circle.png", spawn_bottom_left);
-    player_new_ent(3,1, "images/white-circle.png", spawn_bottom_right);
+    // player_new_ent(1,1, "images/white-circle.png", spawn_top_right);
+    // player_new_ent(2,1, "images/white-circle.png", spawn_bottom_left);
+    // player_new_ent(3,1, "images/white-circle.png", spawn_bottom_right);
 }
 
 Player *player_new(float speed, int contNum){
@@ -25,7 +25,8 @@ Player *player_new(float speed, int contNum){
     p->speed = speed;
     p->contNum = contNum;
     p->controller = SDL_GameControllerOpen(contNum);//Returns a gamecontroller identifier 
-    p->canFire = 1;
+    p->cldn_skill1 = 100;
+    p->cldn_skill2 = 2000;
     return p;
 }
 
@@ -57,31 +58,46 @@ Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], 
 void player_think (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
     SDL_GameController *c = p->controller;
+    static int last_s1 = 0;
+    static int last_s2;
 
-    float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX);
-    float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY);
+    float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
+    float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
+    
+    //Direction update
+    if (abs(x) < DEADZONE && abs(y) < DEADZONE){
+        //If stick is at origin
+        //dont update direction
+    }else{
+        p->direction.x = x;
+        p->direction.y = y;
+    }
+    //Movement
+    self->position.x += x*p->speed;
+    self->position.y += y*p->speed;
+  
 
-    // if ( (x>(DEADZONE*2) || x< (DEADZONE * -2)) && (y>(DEADZONE*2) || y< (DEADZONE * -2)))
-    vector2d_set(p->direction, x, y);
-
-    if (x>DEADZONE || x< (DEADZONE * -1))
-    self->position.x += x/ANALOG_SCALE*p->speed;
-    if (y>DEADZONE || y< (DEADZONE * -1))
-    self->position.y += y/ANALOG_SCALE*p->speed;
-
-    // slog("Player %d, Movement vector: %f.%f, direction: %f",p->contNum, p->direction.x, p->direction.y, vector2d_angle(p->direction));
-
-    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && p->canFire){
-        projectile_new_ent(self, p->speed, "images/white-circle.png", self->position);
-        p->canFire = NULL;
+    
+    // slog("at frame %d", entity_manager.frame);
+    slog("Last used s1 at frame: %d", last_s1);
+    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
+        projectile_new_ent(self, 10, 120,"images/white-circle.png", self->position);
+        last_s1 = level_get_active()->frame;
+        slog("Last used after set: %d", last_s1);      
         slog("got a");
     }
+    // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);
+    // slog("Axis: %f.%f", x, y);
+    // slog("Angle of player %f", p->angle);
+    // slog("Latest direction: %f.%f",latestX, latestY);
+    // slog("Player %d, Movement vector: %f.%f, direction: %f",p->contNum, p->direction.x, p->direction.y, vector2d_angle(p->direction));
     // slog("Pos: %f.%f",self->position.x, self->position.y);
     // slog("Left stick of %s: %d,%d", SDL_GameControllerName(c),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX),SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY));  
+    
 }
 
 void player_touch(Entity *self,Entity *other)
 {
     if ((!self) || (!other))return;
-    slog("Player touched thing");
+    // slog("Player touched thing");
 }
