@@ -1,0 +1,71 @@
+#ifndef _MENU_H_
+#define _MENU_H_
+
+#include <stdlib.h>
+#include "gf2d_sprite.h"
+#include "level.h"
+#include "mouse.h"
+
+typedef struct Menu_S
+{
+    char        name[20];           /**<Name of this entity (for debugging)*/
+
+    Uint8       _inuse;             /**<Check if entity in memory is active or not*/
+    Sprite      *sprite;            /**<A pointer to the sprite*/
+    int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
+    float       frame;              /**<Current frame of sripte*/
+    float       maxFrames;          /**<Maximum number of frames in a sprite*/
+    Vector2D    position;           /**<2D position of entity*/
+    Vector2D    drawOffset;         /**<Offset of collider*/
+
+
+    void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
+
+}Menu;
+
+/**
+ * @brief get a pointer to a new entity
+ * @return NULL on out of memory or error, a pointer to a blank entity otherwise
+ */
+Menu *menu_new();
+
+/**
+ * @brief initialize entity resource manager
+ * @param maxEnts maximum entities
+ * */
+void menu_manager_init(Uint32 maxEnts);
+
+/**
+ * @brief Close entity system
+ */
+void menu_manager_close();
+
+/**
+ * @brief free previously allocated entity
+ * @param self a pointer to the entity to free
+ */
+void menu_free(Menu *menu);
+
+/**
+ * @brief Update frame info of entity
+ * @param self a pointer to the entity to update
+ */
+void menu_update(Menu *self);
+
+/**
+ * @brief update every active entity
+ */
+void menu_update_all();
+
+/**
+ * @brief draw every active entity
+ */
+void menu_draw_all();
+
+/**
+ * @brief For each entity, check all other entities for collision
+ * */
+void menu_touch_check(Menu *menu);
+
+
+#endif
