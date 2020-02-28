@@ -41,6 +41,8 @@ int main(int argc, char * argv[])
     menu_manager_init(32);
     mouse = mouse_new();
     SDL_ShowCursor(SDL_DISABLE);
+    //UI cooldowns
+    int last_tab = 0;
     
     /*demo setup*/
     level = level_new("images/backgrounds/90b.png",bounds);
@@ -59,6 +61,7 @@ int main(int argc, char * argv[])
         mouse->position = vector2d(mx,my);
         mouse->frame+=0.1;
         if (mouse->frame >= 16.0)mouse->frame = 0;
+        if (!paused)
         entity_update_all();
            
         gf2d_graphics_clear_screen();// clears drawing buffers
@@ -82,11 +85,13 @@ int main(int argc, char * argv[])
                 (int)mf);}
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         
-        if (keys[SDL_SCANCODE_TAB]){
+        if (keys[SDL_SCANCODE_TAB] && last_tab + 750 < SDL_GetTicks()){
+            last_tab = SDL_GetTicks();
             slog("tab");
             if (paused)paused = 0;
             else if (!paused) paused = 1;
         }
+        slog("Tick: %d", SDL_GetTicks());
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
         // slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
