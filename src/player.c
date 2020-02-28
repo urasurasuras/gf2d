@@ -79,7 +79,7 @@ void player_think (Entity *self){
 
     
     // slog("at frame %d", entity_manager.frame);
-    slog("Last used s1 at frame: %d", last_s1);
+    // slog("Last used s1 at frame: %d", last_s1);
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
         projectile_new_ent(self, 1, 120,"images/fireball.png", self->position);
         last_s1 = level_get_active()->frame;
