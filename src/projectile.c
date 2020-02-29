@@ -20,6 +20,7 @@ Projectile *projectile_new(Entity *owner_entity, float speed, float time_to_live
     projectile->speed = speed;
     projectile->time_to_live = time_to_live;
     projectile->time_alive = 0;
+    projectile->strength = 50;  //TODO: no magic number
 
     // slog("Direction: %f.%f",owner_player->direction.x, owner_player->direction.y);
     // slog("Angle %f", projectile->angle);
@@ -45,6 +46,8 @@ Entity *projectile_new_ent(Entity *owner_entity, float speed, float time_to_live
 
     self->typeOfEnt = projectile_new(owner_entity, speed, time_to_live);
     self->think = projectile_think;
+    self->touch = projectile_touch;
+    self->collider_shape = SHAPE_CIRCLE;
     return self;
 }
 
@@ -63,4 +66,19 @@ void projectile_think(Entity *self){
     self->position.x += p->direction.x * p->speed;
     self->position.y += p->direction.y * p->speed;
     // slog("Pos: %f.%f", self->position.x, self->position.y);
+}
+
+void projectile_touch(Entity *self, Entity *other){
+    slog("touch called");
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+    Player *owner_player = (Entity *)owner_ent->typeOfEnt;
+    Player *other_player = (Player *)other->typeOfEnt;
+    if (other != owner_ent){
+        if (other_player){
+            other_player->health -= p->strength;
+            entity_free(self);
+            slog("Player has %f", other_player->health);
+        }
+    }
 }

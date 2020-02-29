@@ -89,7 +89,7 @@ void player_think_1 (Entity *self){
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
         projectile_new_ent(self, 20, 50,"images/fireball.png", self->position);
         last_s1 = level_get_active()->frame;
-        slog("Dir: %f.%f", p->direction.x, p->direction.y);
+        // slog("Dir: %f.%f", p->direction.x, p->direction.y);
         // slog("Last used after set: %d", last_s1);      
         // slog("got a");
     }
@@ -98,6 +98,10 @@ void player_think_1 (Entity *self){
         last_s2 = level_get_active()->frame;
         slog("Last used after set: %d", last_s2);      
         slog("got b");
+    }
+
+    if (p->health <= 0){
+        entity_free(self);
     }
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);
     // slog("Axis: %f.%f", x, y);

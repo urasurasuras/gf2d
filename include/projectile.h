@@ -13,6 +13,7 @@ typedef struct Projectile_S
     Vector2D    direction;      /**<Direction projectile is facing (set by owner_player)*/
     int         time_alive;     /**<Time this projectile has been alive for*/
     int         time_to_live;   /**<Maximum amount of tine this projectile has to live*/
+    float       strength;        /**<Power level of a projectile*/
 
 }Projectile;
 
@@ -37,5 +38,7 @@ Entity *projectile_new_ent(Entity *owner_entity, float speed, float time_to_live
  * @param self Pointer to self ent
  * */
 void projectile_think(Entity *self);
+
+void projectile_touch(Entity *self, Entity *other);
 
 #endif
