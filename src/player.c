@@ -24,9 +24,10 @@ Player *player_new(float speed, int contNum){
     p = (Player * )malloc(sizeof(Player));
     p->speed = speed;
     p->contNum = contNum;
+    p->health = 100;
     p->controller = SDL_GameControllerOpen(contNum);//Returns a gamecontroller identifier 
-    p->cldn_skill1 = 100;
-    p->cldn_skill2 = 2000;
+    p->cldn_skill1 = 50;
+    p->cldn_skill2 = 100;
     return p;
 }
 
@@ -48,14 +49,14 @@ Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], 
     vector2d_set(self-> drawOffset,-50,-50);
     vector2d_copy(self->position, init_pos);   
     //
-    self->think = player_think;
+    self->think = player_think_1;
     self->touch = player_touch;
     self->maxFrames = 1;
     self->typeOfEnt = player_new(default_speed,char_index);
     return self;
 }
 
-void player_think (Entity *self){
+void player_think_1 (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
     SDL_GameController *c = p->controller;
     static int last_s1 = 0;
@@ -75,16 +76,28 @@ void player_think (Entity *self){
     //Movement
     self->position.x += x*p->speed;
     self->position.y += y*p->speed;
-  
+    if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
+    {
+        //TODO: Do something is ent hits bounds
+        self->position.x -= x*p->speed;
+        self->position.y -= y*p->speed;
+    }
 
     
     // slog("at frame %d", entity_manager.frame);
     // slog("Last used s1 at frame: %d", last_s1);
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
-        projectile_new_ent(self, 1, 120,"images/fireball.png", self->position);
+        projectile_new_ent(self, 20, 50,"images/fireball.png", self->position);
         last_s1 = level_get_active()->frame;
-        slog("Last used after set: %d", last_s1);      
-        slog("got a");
+        slog("Dir: %f.%f", p->direction.x, p->direction.y);
+        // slog("Last used after set: %d", last_s1);      
+        // slog("got a");
+    }
+    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_B) && last_s2 + p->cldn_skill2 < level_get_active()->frame){
+        projectile_new_ent(self, 5, 120,"images/fireball.png", self->position);
+        last_s2 = level_get_active()->frame;
+        slog("Last used after set: %d", last_s2);      
+        slog("got b");
     }
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);
     // slog("Axis: %f.%f", x, y);

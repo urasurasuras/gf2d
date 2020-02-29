@@ -16,10 +16,10 @@ typedef struct Player_S
     int                 contNum;            /**<Index of controller*/
     SDL_GameController *controller;         /**<Pointer to controller*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
-    // float               angle;              /**<angle of Direction based on controller axis input*/  
+    float               angle;              /**<angle of Direction based on controller axis input*/  
     int                 cldn_skill1;
     int                 cldn_skill2;
-    int                 canFire;
+    float               health;
 }Player;
 
 /**
@@ -50,7 +50,7 @@ Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], 
  * Handles movement from controller input
  * @param self Pointer to entity
  * */
-void player_think (Entity *self);
+void player_think_1 (Entity *self);
 
 void player_touch(Entity *self,Entity *other);
 

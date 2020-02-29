@@ -18,7 +18,12 @@ int main(int argc, char * argv[])
     float mf = 0;
     Mouse *mouse;
     Menu *menu_exit;
-    SDL_Rect box = {(LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT, MENU_BUTTON_HALF_WIDTH*2, MENU_BUTTON_HALF_HEIGHT*2};
+    SDL_Rect box = {
+        (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
+        (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT, 
+        MENU_BUTTON_HALF_WIDTH*2, 
+        MENU_BUTTON_HALF_HEIGHT*2
+    };
     
     Vector4D mouseColor = {255,100,255,200};
     SDL_Rect bounds = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
@@ -103,7 +108,6 @@ int main(int argc, char * argv[])
         }
         // slog("Tick: %d", SDL_GetTicks());
         if (keys[SDL_SCANCODE_ESCAPE])level_get_active()->done = 1; // exit condition
-        SDL_Log("done in main = %d", level_get_active()->done);
         // slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     slog("---==== END ====---");
