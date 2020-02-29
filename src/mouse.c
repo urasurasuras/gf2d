@@ -11,7 +11,7 @@ static Mouse *mouse = {0};
 
 Mouse *mouse_new(){
     mouse = (Mouse *)malloc(sizeof(Mouse));
-    memset(mouse,0,sizeof(Mouse));
+    // memset(mouse,0,sizeof(Mouse));
     mouse->position = vector2d(100,100);
     return mouse;
 }

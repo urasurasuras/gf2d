@@ -5,7 +5,10 @@
 #include "gf2d_sprite.h"
 #include "level.h"
 #include "mouse.h"
+#include "collision.h"
 
+#define MENU_BUTTON_HALF_WIDTH 165
+#define MENU_BUTTON_HALF_HEIGHT 100
 typedef struct Menu_S
 {
     char        name[20];           /**<Name of this entity (for debugging)*/
@@ -17,9 +20,9 @@ typedef struct Menu_S
     float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
     Vector2D    drawOffset;         /**<Offset of collider*/
+    SDL_Rect    box;                /**<Bounds of menu*/
 
-
-    void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
+    void        (*think)(struct Menu_S *self);
 
 }Menu;
 
@@ -66,6 +69,8 @@ void menu_draw_all();
  * @brief For each entity, check all other entities for collision
  * */
 void menu_touch_check(Menu *menu);
+
+void button_exit_think (Menu *self);
 
 
 #endif

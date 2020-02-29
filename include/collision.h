@@ -2,6 +2,7 @@
 #define __COLLISIONS_H__
 
 #include "gfc_vector.h"
+#include "mouse.h"
 
 /**
  * @brief Circle-to-circle collision
@@ -20,5 +21,7 @@ int collide_circle(Vector2D p1, float r1, Vector2D p2, float r2);
  * @return 1 if they are colliding
  * */
 int collide_rect(SDL_Rect r1,SDL_Rect r2);
+
+int collide_menu(SDL_Rect r1, Vector2D m);
 
 #endif

@@ -19,7 +19,7 @@ Menu *menu_new(){
     for (i=0; i < menu_manager.maxMenus; i++){
         if(menu_manager.menuList[i]._inuse)continue;
         menu_manager.menuList[i]._inuse = 1;
-        //slog("Items in ent list %d", i);
+        slog("Items in menu list %d", i);
         return &menu_manager.menuList[i];
     }
     slog("out of open menu slots in memory");
@@ -66,9 +66,9 @@ void menu_free(Menu *self){
 
 void menu_update(Menu *self){
     if (!self)return;
-    // if (self->think){
-    //     self->think(self);
-    // }
+    if (self->think){
+        self->think(self);
+    }
     self->frame = self->frame + 0.1;
     if (self->frame > self->maxFrames)self->frame=0;
     // if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
@@ -103,8 +103,9 @@ void menu_draw(Menu *self){
         NULL,
         (Uint32)self->frame
     );
-    //draw circle collider
-    // gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
+    //draw box collider
+    gf2d_draw_rect(self->box, vector4d(255,0,255,255));
+    // slog("Pos %f.%f", self->position.x, self->position.y);
 
 }
 
@@ -114,10 +115,17 @@ void menu_draw_all()
     for (i = 0;i < menu_manager.maxMenus;i++)
     {
         if (!menu_manager.menuList[i]._inuse)continue;
-        menu_draw_all(&menu_manager.menuList[i]);
+        menu_draw(&menu_manager.menuList[i]);
     }
 }
 
-// void menu_touch_check(Menu *menu, Mouse *mouse){
-
-// }
+void button_exit_think (Menu *self){
+    int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self->box, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            level_get_active()->done = 1;
+            // SDL_Log("done = %d", done);
+        }
+    }
+}

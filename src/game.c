@@ -12,12 +12,13 @@
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
-    int done = 0;
-    int paused = 0;
+
     const Uint8 * keys;
     int mx,my;
     float mf = 0;
     Mouse *mouse;
+    Menu *menu_exit;
+    SDL_Rect box = {(LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT, MENU_BUTTON_HALF_WIDTH*2, MENU_BUTTON_HALF_HEIGHT*2};
     
     Vector4D mouseColor = {255,100,255,200};
     SDL_Rect bounds = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
@@ -29,10 +30,10 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1280,
-        720,
-        1280,
-        720,
+        LEVEL_WIDTH,
+        LEVEL_HEIGHT,
+        LEVEL_WIDTH,
+        LEVEL_HEIGHT,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
@@ -40,16 +41,22 @@ int main(int argc, char * argv[])
     entity_manager_init(32);
     menu_manager_init(32);
     mouse = mouse_new();
+    menu_exit = menu_new();
+    menu_exit->box = box;
+    menu_exit->drawOffset = vector2d(-100,-250);
+    menu_exit->position = vector2d(500,500);
+    menu_exit->sprite = gf2d_sprite_load_image("images/button.png");
+    menu_exit->think = button_exit_think;
     SDL_ShowCursor(SDL_DISABLE);
     //UI cooldowns
     int last_tab = 0;
     
     /*demo setup*/
-    level = level_new("images/backgrounds/90b.png",bounds);
+    level = level_new("images/backgrounds/bg_flat.png",bounds);
     mouse->sprite = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     players_spawn();
     /*main game loop*/
-    while(!done)
+    while(!level_get_active()->done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
@@ -61,9 +68,9 @@ int main(int argc, char * argv[])
         mouse->position = vector2d(mx,my);
         mouse->frame+=0.1;
         if (mouse->frame >= 16.0)mouse->frame = 0;
-        if (!paused)
+        if (!level_get_active()->paused)
         entity_update_all();
-           
+    
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
@@ -72,8 +79,11 @@ int main(int argc, char * argv[])
             //Draw entities
             entity_draw_all();
 
-            //UI elements last
-            if (!paused){
+            //UI elements last      
+            if (level_get_active()->paused){
+                menu_update_all();
+                menu_draw_all();
+                // slog("Paused");
             gf2d_sprite_draw(
                 mouse->sprite,
                 vector2d(mx,my),
@@ -88,11 +98,12 @@ int main(int argc, char * argv[])
         if (keys[SDL_SCANCODE_TAB] && last_tab + 750 < SDL_GetTicks()){
             last_tab = SDL_GetTicks();
             slog("tab");
-            if (paused)paused = 0;
-            else if (!paused) paused = 1;
+            if (level_get_active()->paused)level_get_active()->paused = 0;
+            else if (!level_get_active()->paused) level_get_active()->paused = 1;
         }
-        slog("Tick: %d", SDL_GetTicks());
-        if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
+        // slog("Tick: %d", SDL_GetTicks());
+        if (keys[SDL_SCANCODE_ESCAPE])level_get_active()->done = 1; // exit condition
+        SDL_Log("done in main = %d", level_get_active()->done);
         // slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     slog("---==== END ====---");

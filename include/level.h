@@ -4,15 +4,17 @@
 #include "gfc_types.h"
 #include "gf2d_sprite.h"
 
-#define LEVEL_WIDTH 1280
+#define LEVEL_WIDTH 1200
 #define LEVEL_HEIGHT 720
-#define LEVEL_OFFSET 100
+#define LEVEL_SPAWN_OFFSET 100
 
 typedef struct
 {
     Sprite *background;     /**<Background sprite*/
     SDL_Rect bounds;        /**<Bounds*/
     int     frame;          /**<Frame ++ on update*/
+    int     done;           /**<Done condition*/
+    int     paused;
 }Level;
 
 /**
