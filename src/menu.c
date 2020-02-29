@@ -75,7 +75,7 @@ void menu_update(Menu *self){
     // {
     //     //TODO: Do something is ent hits bounds
     // }
-    entity_collision_check(self);
+    // entity_collision_check(self);
 }
 
 void menu_update_all(){

@@ -72,7 +72,7 @@ void projectile_touch(Entity *self, Entity *other){
     slog("touch called");
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
-    Player *owner_player = (Entity *)owner_ent->typeOfEnt;
+    // Player *owner_player = (Player *)owner_ent->typeOfEnt;
     Player *other_player = (Player *)other->typeOfEnt;
     if (other != owner_ent){
         if (other_player){
