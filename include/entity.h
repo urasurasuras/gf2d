@@ -8,17 +8,19 @@
 
 typedef struct Entity_S
 {
-    char        name[20];           /**<Name of this entity (for debugging)*/
-
+    TextWord    name;               /**<Name of this entity (for debugging)*/
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
+
     Sprite      *sprite;            /**<A pointer to the sprite*/
-    int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
     float       frame;              /**<Current frame of sripte*/
     float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
     Vector2D    velocity;           /**<2D velocity of entity*/
-    int         radius;             /**<how wide this entity is*/
     Vector2D    drawOffset;         /**<Offset of collider*/
+
+    //Shape
+    int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
+    int         radius;             /**<how wide this entity is*/
     Vector2D    size;               /**<Size vector*/
 
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/

@@ -13,10 +13,10 @@ Vector2D spawn_bottom_right = {LEVEL_WIDTH - LEVEL_SPAWN_OFFSET, LEVEL_HEIGHT - 
 
 void players_spawn(){
 
-    player_new_ent(0,1, "images/white-circle.png", spawn_top_left);
-    player_new_ent(1,1, "images/white-circle.png", spawn_top_right);
-    player_new_ent(2,1, "images/white-circle.png", spawn_bottom_left);
-    player_new_ent(3,1, "images/white-circle.png", spawn_bottom_right);
+    player_new_ent(0,1, "images/players/white-circle.png", spawn_top_left);
+    player_new_ent(1,1, "images/players/red-circle.png", spawn_top_right);
+    player_new_ent(2,1, "images/players/blue-circle.png", spawn_bottom_left);
+    player_new_ent(3,1, "images/players/green-circle.png", spawn_bottom_right);
 }
 
 Player *player_new(float speed, int contNum){
@@ -87,14 +87,30 @@ void player_think_1 (Entity *self){
     // slog("at frame %d", entity_manager.frame);
     // slog("Last used s1 at frame: %d", last_s1);
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
-        projectile_new_ent(self, 20, 50,"images/fireball.png", self->position);
+        projectile_generic(
+            self,
+            "Fireball",
+            SHAPE_CIRCLE,
+            25,
+            vector2d(-25,-25),
+            10,
+            10
+        );
         last_s1 = level_get_active()->frame;
         // slog("Dir: %f.%f", p->direction.x, p->direction.y);
         // slog("Last used after set: %d", last_s1);      
         // slog("got a");
     }
     if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_B) && last_s2 + p->cldn_skill2 < level_get_active()->frame){
-        projectile_new_ent(self, 5, 120,"images/fireball.png", self->position);
+        projectile_generic(
+            self,
+            "Fireball",
+            SHAPE_CIRCLE,
+            25,
+            vector2d(-25,-25),
+            25,
+            3
+        );
         last_s2 = level_get_active()->frame;
         slog("Last used after set: %d", last_s2);      
         slog("got b");

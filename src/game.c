@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
     menu_exit->box = box;
     menu_exit->drawOffset = vector2d(-100,-250);
     menu_exit->position = vector2d(500,500);
-    menu_exit->sprite = gf2d_sprite_load_image("images/button.png");
+    menu_exit->sprite = gf2d_sprite_load_image("images/ui/button.png");
     menu_exit->think = button_exit_think;
     SDL_ShowCursor(SDL_DISABLE);
     //UI cooldowns
