@@ -89,6 +89,8 @@ void entity_draw(Entity *self){
         slog("cannot draw, null entity provided");
         return;
     }
+    Vector2D scaler = vector2d(0.7,0.5);
+    Vector2D *scalerPtr = &scaler;
     gf2d_sprite_draw(
         self->sprite,
         vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),

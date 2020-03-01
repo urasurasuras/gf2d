@@ -5,6 +5,8 @@
 #include "player.h"
 #include "projectile.h"
 
+Sprite *fireball;
+
 typedef struct Projectile_S
 {
     Entity      *owner_entity;  /**<Pointer to owner (type Player) of this projectile*/
@@ -18,11 +20,41 @@ typedef struct Projectile_S
 }Projectile;
 
 /**
+ * @brief Pre-loads projectile sprites into individual pointers for later use
+ * */
+void projectile_load_sprites();
+
+/**
+ * @brief Returns a generic projectile with all the necessary members initialized
+ * @param owner_entity Entity that this entity is spawned from
+ * @param name Name string (for debugging)
+ * @param sprite Pointer to preloaded sprite
+ * @param collider_shape Cricular or rectangular
+ * @param radius Only used if shape is curcilar
+ * @param draw_offset Sprite draw offset relative to entity position
+ * @param strength Damage/healing power of this projectile that affects other entities
+ * @param speed Speed multiplier of this projectile
+ * @return Entity into entity_manager
+ * */
+Entity *projectile_generic(
+    Entity *owner_entity,
+    TextWord name,
+    Sprite *sprite,
+    int collider_shape,
+    int radius,
+    Vector2D draw_offset,
+    float strength,
+    float speed,
+    void (*think)(struct Entity_S *self),
+    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+);
+
+/**
  * @brief Create a projectile by an entity (not Player)
  * @param owner_entity Pointer to the owner ent of this projectile
  * @return Projectile type later used when creating ent
  * */
-Projectile *projectile_new(Entity *owner_entity, float speed, float time_to_live);
+Projectile *projectile_new(Entity *owner_entity, float speed);
 
 /**
  * @brief Create an entity by calling projectile_new
@@ -31,7 +63,7 @@ Projectile *projectile_new(Entity *owner_entity, float speed, float time_to_live
  * @param sprite_path File path to sprite
  * @param init_pos Initial position of created entity
  * */
-Entity *projectile_new_ent(Entity *owner_entity, float speed, float time_to_live, char sprite_path[], Vector2D init_pos);
+Entity *projectile_new_ent(Entity *owner_entity, float speed, char sprite_path[], Vector2D init_pos);
 
 /**
  * @brief Called every frame

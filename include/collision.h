@@ -2,7 +2,6 @@
 #define __COLLISIONS_H__
 
 #include "gfc_vector.h"
-#include "mouse.h"
 
 /**
  * @brief Circle-to-circle collision
