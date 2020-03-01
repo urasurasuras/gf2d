@@ -92,6 +92,7 @@ Entity *projectile_generic(
         projectile->time_alive = 0;
         projectile->strength = strength;
         self->typeOfEnt = (Projectile *)projectile;
+        self->type = ENT_PROJECTILE;
         self->think = think;
         self->touch = touch;
         return self;
@@ -102,8 +103,7 @@ void fireball_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
-        if (self->name)
-            // slog("Freed: %s", self->name);
+        // if (self->name)slog("Freed: %s", self->name);
         entity_free(self);
         return;
     }
@@ -115,8 +115,7 @@ void healingAura_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
-        if (self->name)
-            // slog("Freed: %s", self->name);
+        // if (self->name)slog("Freed: %s", self->name);
         entity_free(self);
         return;
     }
@@ -128,23 +127,29 @@ void fireball_touch(Entity *self, Entity *other){
     Entity *owner_ent = (Entity *)p->owner_entity;
     // Player *owner_player = (Player *)owner_ent->typeOfEnt;
     Player *other_player = (Player *)other->typeOfEnt;
+    Projectile *other_projectile = (Projectile *)other->typeOfEnt;
     if (other != owner_ent){
-        if (other_player){
+        if (other->type == ENT_PLAYER){
             other_player->health -= p->strength;
-            entity_free(self);
-            slog("Player has %f", other_player->health);
+            slog("%s has %f", other->name, other_player->health);
+            // entity_free(self);
+            // return;
+        }
+        else if (other->type == ENT_PROJECTILE){
+            slog("hit another projectile");
         }
     }
 }
 
 void healingAura_touch(Entity *self, Entity *other){
+    if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
     Player *owner_player = (Player *)owner_ent->typeOfEnt;
     Player *other_player = (Player *)other->typeOfEnt;
 
     if (other == owner_ent){
-        owner_player->health += 0.5;
+        owner_player->health += 0.1;
         slog("Healed %s %f", other->name, other_player->health);
     }
 }

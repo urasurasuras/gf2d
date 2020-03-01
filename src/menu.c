@@ -69,8 +69,8 @@ void menu_update(Menu *self){
     if (self->think){
         self->think(self);
     }
-    self->frame = self->frame + 0.1;
-    if (self->frame > self->maxFrames)self->frame=0;
+    // self->frame = self->frame + 0.1;
+    // if (self->frame > self->maxFrames)self->frame=0;
     // if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
     // {
     //     //TODO: Do something is ent hits bounds
@@ -101,7 +101,7 @@ void menu_draw(Menu *self){
         NULL,
         NULL,
         NULL,
-        (Uint32)self->frame
+        1
     );
     //draw box collider
     gf2d_draw_rect(self->box, vector4d(255,0,255,255));

@@ -15,8 +15,8 @@ typedef struct Menu_S
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
-    float       frame;              /**<Current frame of sripte*/
-    float       maxFrames;          /**<Maximum number of frames in a sprite*/
+    // float       frame;              /**<Current frame of sripte*/
+    // float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/
     Vector2D    drawOffset;         /**<Offset of collider*/
     SDL_Rect    box;                /**<Bounds of menu*/

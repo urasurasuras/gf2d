@@ -6,6 +6,9 @@
 #define SHAPE_CIRCLE    1
 #define SHAPE_RECT      2
 
+#define ENT_PLAYER      1
+#define ENT_PROJECTILE  2
+
 typedef struct Entity_S
 {
     TextWord    name;               /**<Name of this entity (for debugging)*/
@@ -24,6 +27,7 @@ typedef struct Entity_S
     Vector2D    size;               /**<Size vector*/
 
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
+    int         type;
 
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/

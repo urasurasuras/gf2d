@@ -33,7 +33,7 @@ void players_spawn(){
     c3 = SDL_GameControllerOpen(3);
 
     player_generic("Player1", 1, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p0, spawn_top_left, c0, player_think_1, player_touch, 50, 100);
-    player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, c0, player_think_1, player_touch, 50, 100);
+    player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, c0, player_think_1, player_touch, 600, 100);
     player_generic("Player3", 3, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p2, spawn_bottom_left, c2, player_think_1, player_touch, 50, 100);
     player_generic("Player4", 4, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p3, spawn_bottom_right, c3, player_think_1, player_touch, 50, 100);
 }
@@ -98,6 +98,7 @@ Entity *player_generic(
     slog("Player created with index: %d", player->index);
     player->speed = default_speed;
     self->typeOfEnt = (Player *)player;
+    self->type = ENT_PLAYER;
     return self;
 }
 
@@ -126,29 +127,8 @@ void player_think_1 (Entity *self){
         self->position.y -= y*p->speed;
     }
 
-    
-    // slog("at frame %d", entity_manager.frame);
-    // slog("Last used s1 at frame: %d", last_s1);
-
-    // switch (p->index)
-    // {
-    // case 1:/* constant-expression */
-    //     /* code */
-    //     slog("case");
-    //     break;
-    // case 2:
-    //     slog("case2");
-    //     break;
-    // default:
-    //     break;
-    // }
-
-    // if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A))
-    // {
-    //     slog("Got a for char: %d", p->index);
-    // }
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A) && p->last_skill1 + p->cldn_skill1 < level_get_active()->frame){
-        slog("Char: %d",p->index);
+        // slog("Char: %d",p->index);
         switch (p->index)
         {
             case 1: 
@@ -164,7 +144,7 @@ void player_think_1 (Entity *self){
                 fireball_think,
                 fireball_touch
             );
-            slog("case1");
+            // slog("case1");
                 break;
             case 2: 
                 projectile_generic(
@@ -175,11 +155,11 @@ void player_think_1 (Entity *self){
                 100,
                 vector2d(-100,-100),
                 10,
-                10,
+                5,
                 healingAura_think,
                 healingAura_touch
             );
-            slog("case2");
+            // slog("case2");
                 break;
             default: 
                 slog("no attack");

@@ -59,6 +59,7 @@ void entity_manager_close(){
 
 void entity_free(Entity *self){
     if (!self)return;
+    slog("freed ent: %s", self->name);
     gf2d_sprite_free(self->sprite);
     memset(self,0,sizeof(Entity));
 }
@@ -68,10 +69,13 @@ void entity_update(Entity *self){
     if (self->think){
         self->think(self);
     }
-    self->frame = self->frame + 0.1;
-    if (self->frame > self->maxFrames)self->frame=0;
-    
-    entity_collision_check(self);
+    if (self->touch){
+        entity_collision_check(self);
+    }
+    //TODO: anim
+    // self->frame = self->frame + 0.1;
+    // if (self->frame > self->maxFrames)self->frame=0;
+
 }
 
 void entity_update_all(){
@@ -89,8 +93,8 @@ void entity_draw(Entity *self){
         slog("cannot draw, null entity provided");
         return;
     }
-    Vector2D scaler = vector2d(0.7,0.5);
-    Vector2D *scalerPtr = &scaler;
+    // Vector2D scaler = vector2d(0.7,0.5);
+    // Vector2D *scalerPtr = &scaler;
     gf2d_sprite_draw(
         self->sprite,
         vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),
@@ -102,7 +106,7 @@ void entity_draw(Entity *self){
         (Uint32)self->frame
     );
     //draw circle collider
-    gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
+    // gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
 
 }
 
