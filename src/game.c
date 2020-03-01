@@ -7,7 +7,6 @@
 #include "player.h"
 #include "level.h"
 #include "menu.h"
-#include "mouse.h"
 
 int main(int argc, char * argv[])
 {
@@ -16,7 +15,7 @@ int main(int argc, char * argv[])
     const Uint8 * keys;
     int mx,my;
     float mf = 0;
-    Mouse *mouse;
+    Sprite *mouse;
     Menu *menu_exit;
     SDL_Rect box = {
         (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
@@ -45,7 +44,6 @@ int main(int argc, char * argv[])
     gf2d_sprite_init(1024);
     entity_manager_init(32);
     menu_manager_init(32);
-    mouse = mouse_new();
     menu_exit = menu_new();
     menu_exit->box = box;
     menu_exit->drawOffset = vector2d(-100,-250);
@@ -58,7 +56,7 @@ int main(int argc, char * argv[])
     
     /*demo setup*/
     level = level_new("images/backgrounds/bg_flat.png",bounds);
-    mouse->sprite = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+    mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     players_spawn();
     /*main game loop*/
     while(!level_get_active()->done)
@@ -69,10 +67,9 @@ int main(int argc, char * argv[])
         //
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
+        mf+=0.1;
+        if (mf >= 16.0)mf = 0;
 
-        mouse->position = vector2d(mx,my);
-        mouse->frame+=0.1;
-        if (mouse->frame >= 16.0)mouse->frame = 0;
         if (!level_get_active()->paused)
         entity_update_all();
     
@@ -90,7 +87,7 @@ int main(int argc, char * argv[])
                 menu_draw_all();
                 // slog("Paused");
             gf2d_sprite_draw(
-                mouse->sprite,
+                mouse,
                 vector2d(mx,my),
                 NULL,
                 NULL,
@@ -112,7 +109,6 @@ int main(int argc, char * argv[])
     }
     slog("---==== END ====---");
     level_free(level);
-    mouse_free(mouse);
     return 0;
 }
 /*eol@eof*/

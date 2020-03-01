@@ -1,5 +1,4 @@
 #include "gfc_vector.h"
-#include "mouse.h"
 
 int collide_circle(Vector2D p1, float r1, Vector2D p2, float r2){
     if (vector2d_magnitude_squared(vector2d( p2.x - p1.x , p2.y - p1.y)) < ((r2+r1)*(r2+r1))){

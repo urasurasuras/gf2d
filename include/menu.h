@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "gf2d_sprite.h"
 #include "level.h"
-#include "mouse.h"
 #include "collision.h"
 
 #define MENU_BUTTON_HALF_WIDTH 165
