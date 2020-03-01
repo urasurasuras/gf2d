@@ -5,6 +5,8 @@
 #include "player.h"
 #include "projectile.h"
 
+Sprite *fireball;
+
 typedef struct Projectile_S
 {
     Entity      *owner_entity;  /**<Pointer to owner (type Player) of this projectile*/
@@ -17,16 +19,35 @@ typedef struct Projectile_S
 
 }Projectile;
 
+/**
+ * @brief Pre-loads projectile sprites into individual pointers for later use
+ * */
+void projectile_load_sprites();
+
+/**
+ * @brief Returns a generic projectile with all the necessary members initialized
+ * @param owner_entity Entity that this entity is spawned from
+ * @param name Name string (for debugging)
+ * @param sprite Pointer to preloaded sprite
+ * @param collider_shape Cricular or rectangular
+ * @param radius Only used if shape is curcilar
+ * @param draw_offset Sprite draw offset relative to entity position
+ * @param strength Damage/healing power of this projectile that affects other entities
+ * @param speed Speed multiplier of this projectile
+ * @return Entity into entity_manager
+ * */
 Entity *projectile_generic(
     Entity *owner_entity,
     TextWord name,
-    // Sprite *sprite,
+    Sprite *sprite,
     int collider_shape,
     int radius,
     Vector2D draw_offset,
     float strength,
-    float speed
-    );
+    float speed,
+    void (*think)(struct Entity_S *self),
+    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+);
 
 /**
  * @brief Create a projectile by an entity (not Player)

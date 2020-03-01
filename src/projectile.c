@@ -49,15 +49,21 @@
 //         return self;
 // }
 
+void projectile_load_sprites(){
+    fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");//TODO: preload sprites
+}
+
 Entity *projectile_generic(
     Entity *owner_entity,
     TextWord name,
-    // Sprite *sprite,
+    Sprite *sprite,
     int collider_shape,
     int radius,
     Vector2D draw_offset,
     float strength,
-    float speed
+    float speed,
+    void (*think)(struct Entity_S *self),
+    void (*touch)(struct Entity_S *self, struct Entity_S *other)
     )
     {
         Entity *self;
@@ -66,13 +72,13 @@ Entity *projectile_generic(
         //Init ent
         Player  *owner_player;
         owner_player = owner_entity->typeOfEnt;
-        strcpy(self->name, "Fireball");
-        self->sprite = gf2d_sprite_load_image("images/projectiles/fireball.png");//TODO: preload sprites
+        strcpy(self->name, name);
+        self->sprite = sprite;
         self->collider_shape = collider_shape;
         if (collider_shape == SHAPE_CIRCLE)self->radius = radius;
         self->position = owner_entity->position;
         self->drawOffset = draw_offset;   
-        self->radius;     
+        self->radius = radius;     
 
         //Declaration of projectile
         Projectile *projectile;
@@ -85,8 +91,8 @@ Entity *projectile_generic(
         projectile->time_alive = 0;
         projectile->strength = strength;
         self->typeOfEnt = (Projectile *)projectile;
-        self->think = projectile_think;
-        self->touch = projectile_touch;
+        self->think = think;
+        self->touch = touch;
         return self;
     }
 

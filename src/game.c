@@ -7,6 +7,7 @@
 #include "player.h"
 #include "level.h"
 #include "menu.h"
+#include "projectile.h"
 
 int main(int argc, char * argv[])
 {
@@ -58,6 +59,7 @@ int main(int argc, char * argv[])
     level = level_new("images/backgrounds/bg_flat.png",bounds);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     players_spawn();
+    projectile_load_sprites();
     /*main game loop*/
     while(!level_get_active()->done)
     {

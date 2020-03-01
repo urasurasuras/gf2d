@@ -24,6 +24,7 @@ typedef struct Player_S
 
 /**
  * @brief Spawn 4 players based on spawn locations
+ * and pre-loaded sprites
  * */
 void players_spawn();
 
@@ -43,8 +44,18 @@ Player *player_new(float speed, int contNum);
  * @param init_pos Initial position for char to spawn at
  * @return Entity that has pointer to player object
  * */
-Entity *player_new_ent(int char_index, float default_speed, char sprite_path[], Vector2D init_pos);
-
+Entity *player_generic(
+    TextWord name,
+    int char_index, 
+    int collider_shape,
+    int radius,
+    Vector2D draw_offset,
+    float default_speed, 
+    Sprite *sprite,
+    Vector2D init_pos,
+    void (*think)(struct Entity_S *self),
+    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    );
 /**
  * @brief Called every draw update by ent
  * Handles movement from controller input
