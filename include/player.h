@@ -13,13 +13,15 @@
 typedef struct Player_S
 {
     float               speed;              /**<Speed of char*/
-    int                 contNum;            /**<Index of controller*/
+    int                 index;              /**<Index of character*/
     SDL_GameController *controller;         /**<Pointer to controller*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
     float               angle;              /**<angle of Direction based on controller axis input*/  
     int                 cldn_skill1;
+    int                 last_skill1;
     int                 cldn_skill2;
-    float               health;
+    int                 last_skill2;
+    float               health;    
 }Player;
 
 /**
@@ -53,8 +55,11 @@ Entity *player_generic(
     float default_speed, 
     Sprite *sprite,
     Vector2D init_pos,
+    SDL_GameController *controller,
     void (*think)(struct Entity_S *self),
-    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    void (*touch)(struct Entity_S *self, struct Entity_S *other),
+    int cldn_skill1,
+    int cldn_skill2 
     );
 /**
  * @brief Called every draw update by ent

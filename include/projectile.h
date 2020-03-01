@@ -6,6 +6,7 @@
 #include "projectile.h"
 
 Sprite *fireball;
+Sprite *healing;
 
 typedef struct Projectile_S
 {
@@ -69,8 +70,11 @@ Entity *projectile_new_ent(Entity *owner_entity, float speed, char sprite_path[]
  * @brief Called every frame
  * @param self Pointer to self ent
  * */
-void projectile_think(Entity *self);
+void fireball_think(Entity *self);
 
-void projectile_touch(Entity *self, Entity *other);
+void healingAura_think(Entity *self);
 
+void fireball_touch(Entity *self, Entity *other);
+
+void healingAura_touch(Entity *self, Entity *other);
 #endif

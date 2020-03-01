@@ -122,10 +122,10 @@ void entity_entity_collide(Entity *e1, Entity *e2)
         // slog("Shape cictle");
         if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
         {//Circle-to-circle
-            slog("Collision check true");
+            // slog("Collision check true");
             if (e1->touch)
             {
-                slog("touch function exists");
+                // slog("touch function exists");
                 e1->touch(e1,e2);
             }
         }

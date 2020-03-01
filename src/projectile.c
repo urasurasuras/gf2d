@@ -50,7 +50,8 @@
 // }
 
 void projectile_load_sprites(){
-    fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");//TODO: preload sprites
+    fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
+    healing = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
 }
 
 Entity *projectile_generic(
@@ -97,7 +98,7 @@ Entity *projectile_generic(
     }
 
 
-void projectile_think(Entity *self){
+void fireball_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
@@ -110,8 +111,19 @@ void projectile_think(Entity *self){
     self->position.y += p->direction.y * p->speed;
 }
 
-void projectile_touch(Entity *self, Entity *other){
-    slog("touch called");
+void healingAura_think(Entity *self){
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    p->time_alive += 1;
+    if (p->time_alive > p->time_to_live){
+        if (self->name)
+            // slog("Freed: %s", self->name);
+        entity_free(self);
+        return;
+    }
+}
+
+void fireball_touch(Entity *self, Entity *other){
+    // slog("touch called");
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
     // Player *owner_player = (Player *)owner_ent->typeOfEnt;
@@ -122,5 +134,17 @@ void projectile_touch(Entity *self, Entity *other){
             entity_free(self);
             slog("Player has %f", other_player->health);
         }
+    }
+}
+
+void healingAura_touch(Entity *self, Entity *other){
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+    Player *owner_player = (Player *)owner_ent->typeOfEnt;
+    Player *other_player = (Player *)other->typeOfEnt;
+
+    if (other == owner_ent){
+        owner_player->health += 0.5;
+        slog("Healed %s %f", other->name, other_player->health);
     }
 }

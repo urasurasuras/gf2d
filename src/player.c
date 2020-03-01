@@ -16,29 +16,39 @@ Sprite *p1;
 Sprite *p2;
 Sprite *p3;
 
+SDL_GameController *c0;
+SDL_GameController *c1;
+SDL_GameController *c2;
+SDL_GameController *c3;
+
 void players_spawn(){
     p0 = gf2d_sprite_load_image("images/players/white-circle.png");
     p1 = gf2d_sprite_load_image("images/players/red-circle.png");
     p2 = gf2d_sprite_load_image("images/players/blue-circle.png");
     p3 = gf2d_sprite_load_image("images/players/green-circle.png");
 
-    player_generic("Player0", 0, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p0, spawn_top_left, player_think_1, player_touch);
-    player_generic("Player1", 1, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, player_think_1, player_touch);
-    player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p2, spawn_bottom_left, player_think_1, player_touch);
-    player_generic("Player3", 3, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p3, spawn_bottom_right, player_think_1, player_touch);
+    c0 = SDL_GameControllerOpen(0);
+    c1 = SDL_GameControllerOpen(1);
+    c2 = SDL_GameControllerOpen(2);
+    c3 = SDL_GameControllerOpen(3);
+
+    player_generic("Player1", 1, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p0, spawn_top_left, c0, player_think_1, player_touch, 50, 100);
+    player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, c0, player_think_1, player_touch, 50, 100);
+    player_generic("Player3", 3, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p2, spawn_bottom_left, c2, player_think_1, player_touch, 50, 100);
+    player_generic("Player4", 4, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p3, spawn_bottom_right, c3, player_think_1, player_touch, 50, 100);
 }
 
-Player *player_new(float speed, int contNum){
-    Player *p;
-    p = (Player * )malloc(sizeof(Player));
-    p->speed = speed;
-    p->contNum = contNum;
-    p->health = 100;
-    p->controller = SDL_GameControllerOpen(contNum);//Returns a gamecontroller identifier 
-    p->cldn_skill1 = 50;
-    p->cldn_skill2 = 100;
-    return p;
-}
+// Player *player_new(float speed, int char_index){
+//     Player *p;
+//     p = (Player * )malloc(sizeof(Player));
+//     p->speed = speed;
+//     p->index = char_index;
+//     p->health = 100;
+//     p->controller = SDL_GameControllerOpen(char_index-1);SDL_GameControllerOpen(char_index-1);//Returns a gamecontroller identifier 
+//     p->cldn_skill1 = 50;
+//     p->cldn_skill2 = 100;
+//     return p;
+// }
 
 Entity *player_generic(
     TextWord name,
@@ -49,8 +59,11 @@ Entity *player_generic(
     float default_speed, 
     Sprite *sprite,
     Vector2D init_pos,
+    SDL_GameController *controller,
     void (*think)(struct Entity_S *self),
-    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    void (*touch)(struct Entity_S *self, struct Entity_S *other),
+    int cldn_skill1,
+    int cldn_skill2 
     )
     {
     Entity *self;
@@ -70,18 +83,30 @@ Entity *player_generic(
     self->think = think;
     self->touch = touch;
     self->maxFrames = 1;
-    self->typeOfEnt = player_new(default_speed,char_index);
+
+    //Declaration of player
+    Player *player;
+    player = (Player *)malloc(sizeof(Player));
+    //Init player
+    player->controller = controller;
+    player->cldn_skill1 = cldn_skill1;
+    player->cldn_skill2 = cldn_skill2;
+    player->health = 100;
+    player->index = char_index;
+    player->last_skill1 = 0;
+    player->last_skill2 = 0;
+    slog("Player created with index: %d", player->index);
+    player->speed = default_speed;
+    self->typeOfEnt = (Player *)player;
     return self;
 }
 
 void player_think_1 (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
-    SDL_GameController *c = p->controller;
-    static int last_s1 = 0;
-    static int last_s2 = 0;
+    // SDL_GameController *c = p->controller;
 
-    float x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
-    float y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
+    float x = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
+    float y = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
     
     //Direction update
     if (abs(x) < DEADZONE && abs(y) < DEADZONE){
@@ -104,25 +129,70 @@ void player_think_1 (Entity *self){
     
     // slog("at frame %d", entity_manager.frame);
     // slog("Last used s1 at frame: %d", last_s1);
-    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_A) && last_s1 + p->cldn_skill1 < level_get_active()->frame){
-        projectile_generic(
-            self,
-            "Fireball",
-            fireball,
-            SHAPE_CIRCLE,
-            25,
-            vector2d(-25,-25),
-            10,
-            10,
-            projectile_think,
-            projectile_touch
-        );
-        last_s1 = level_get_active()->frame;
+
+    // switch (p->index)
+    // {
+    // case 1:/* constant-expression */
+    //     /* code */
+    //     slog("case");
+    //     break;
+    // case 2:
+    //     slog("case2");
+    //     break;
+    // default:
+    //     break;
+    // }
+
+    // if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A))
+    // {
+    //     slog("Got a for char: %d", p->index);
+    // }
+    if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A) && p->last_skill1 + p->cldn_skill1 < level_get_active()->frame){
+        slog("Char: %d",p->index);
+        switch (p->index)
+        {
+            case 1: 
+                projectile_generic(
+                self,
+                "Fireball",
+                fireball,
+                SHAPE_CIRCLE,
+                25,
+                vector2d(-25,-25),
+                10,
+                10,
+                fireball_think,
+                fireball_touch
+            );
+            slog("case1");
+                break;
+            case 2: 
+                projectile_generic(
+                self,
+                "Healing",
+                healing,
+                SHAPE_CIRCLE,
+                100,
+                vector2d(-100,-100),
+                10,
+                10,
+                healingAura_think,
+                healingAura_touch
+            );
+            slog("case2");
+                break;
+            default: 
+                slog("no attack");
+// code to be executed if n doesn't match any cases
+        }   
+        
+        
+        p->last_skill1 = level_get_active()->frame;
         // slog("Dir: %f.%f", p->direction.x, p->direction.y);
         // slog("Last used after set: %d", last_s1);      
         // slog("got a");
     }
-    if (SDL_GameControllerGetButton(c,SDL_CONTROLLER_BUTTON_B) && last_s2 + p->cldn_skill2 < level_get_active()->frame){
+    if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_B) && p->last_skill2 + p->cldn_skill2 < level_get_active()->frame){
         projectile_generic(
             self,
             "Fireball",
@@ -132,11 +202,10 @@ void player_think_1 (Entity *self){
             vector2d(-25,-25),
             25,
             3,
-            projectile_think,
-            projectile_touch
+            fireball_think,
+            fireball_touch
         );
-        last_s2 = level_get_active()->frame;
-        slog("Last used after set: %d", last_s2);      
+        p->last_skill2 = level_get_active()->frame;
         slog("got b");
     }
 
