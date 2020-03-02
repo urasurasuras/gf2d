@@ -5,6 +5,10 @@
 #include "gf2d_draw.h"
 #include "collision.h"
 #include "level.h"
+#include "simple_json.h"
+#include "simple_json_value.h"
+#include "entity.h"
+#include "player.h"
 
 typedef struct 
 {
@@ -135,7 +139,60 @@ void button_save_think (Menu *self){
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self->box, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-            slog("saved");
+            
+            SJson *playerData;
+            SJson *player_object;
+            SJson *player_name;
+            SJson *player_pos;
+            SJson *player_health;
+
+            playerData = sj_array_new();
+            int i;
+            for (i = 0;i < entity_manager_get_active().maxEnts;i++)
+            {
+                if (entity_manager_get_active().entityList[i].type == ENT_PLAYER){
+                    
+                    Entity current_ent = entity_manager_get_active().entityList[i];
+                    Player *current_player = (Player *)current_ent.typeOfEnt;
+
+                    player_object = sj_object_new();
+                    player_pos = sj_array_new();
+                    player_health = sj_new_float(current_player->health);
+                    
+                    sj_array_append(player_pos,sj_new_float(current_ent.position.x));
+                    sj_array_append(player_pos,sj_new_float(current_ent.position.y));
+
+                    player_name = sj_new_str(current_ent.name);
+
+                    sj_object_insert(player_object, "Name", player_name);
+                    sj_object_insert(player_object, "Position", player_pos);
+                    sj_object_insert(player_object, "Health", player_health);
+
+                    sj_array_append(playerData, player_object);
+
+                    // slog("Name: %s", entity_manager_get_active().entityList[i].name);
+                }
+                
+            }
+
+            // SJson *test_json;
+            // SJson *test_json_value;
+            // SJString *json_test_string;
+            // SJson *sub;
+            
+          
+            // json_test_string = sj_string_new();
+            // sj_string_append(json_test_string, "test_value");
+
+            // test_json_value = sj_string_to_value(json_test_string);
+            // sj_echo(test_json_value);
+
+            // sj_object_insert(test_json, "test_key", test_json_value);
+
+            // slog("json created:");
+            sj_echo(playerData);
+            sj_save(playerData, "playerData.json");
+            // slog("saved");
         }
     }
 }

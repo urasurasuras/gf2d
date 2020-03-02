@@ -5,14 +5,14 @@
 #include "gf2d_draw.h"
 #include "collision.h"
 #include "level.h"
-
-typedef struct 
-{
-    Uint32  maxEnts;         /**<Maximum number of entities*/
-    Entity  *entityList;     /**<List of entities*/
-}EntityManager;
+#include "entity.h"
 
 static EntityManager entity_manager = {0};
+
+EntityManager entity_manager_get_active()
+{
+    return entity_manager;
+}
 
 Entity *entity_new(){
     int i;

@@ -34,6 +34,17 @@ typedef struct Entity_S
 
 }Entity;
 
+typedef struct 
+{
+    Uint32  maxEnts;         /**<Maximum number of entities*/
+    Entity  *entityList;     /**<List of entities*/
+}EntityManager;
+
+/**
+ * @brief Returns a pointer to the entity_manager
+ * */
+EntityManager entity_manager_get_active();
+
 /**
  * @brief get a pointer to a new entity
  * @return NULL on out of memory or error, a pointer to a blank entity otherwise
