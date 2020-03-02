@@ -132,8 +132,8 @@ void fireball_touch(Entity *self, Entity *other){
         if (other->type == ENT_PLAYER){
             other_player->health -= p->strength;
             slog("%s has %f", other->name, other_player->health);
-            // entity_free(self);
-            // return;
+            entity_free(self);
+            return;
         }
         else if (other->type == ENT_PROJECTILE){
             slog("hit another projectile");
