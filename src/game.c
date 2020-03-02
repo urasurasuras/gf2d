@@ -18,11 +18,19 @@ int main(int argc, char * argv[])
     float mf = 0;
     Sprite *mouse;
     Menu *menu_exit;
-    SDL_Rect box = {
+    Menu *menu_save;
+
+    SDL_Rect box_exit = {
         (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
         (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT, 
         MENU_BUTTON_HALF_WIDTH*2, 
-        MENU_BUTTON_HALF_HEIGHT*2
+        MENU_BUTTON_HALF_HEIGHT
+    };
+    SDL_Rect box_save = {
+        (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
+        (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT*2, 
+        MENU_BUTTON_HALF_WIDTH*2, 
+        MENU_BUTTON_HALF_HEIGHT
     };
     
     Vector4D mouseColor = {255,100,255,200};
@@ -46,11 +54,16 @@ int main(int argc, char * argv[])
     entity_manager_init(32);
     menu_manager_init(32);
     menu_exit = menu_new();
-    menu_exit->box = box;
+    menu_exit->box = box_exit;
     menu_exit->drawOffset = vector2d(-100,-250);
     menu_exit->position = vector2d(500,500);
     menu_exit->sprite = gf2d_sprite_load_image("images/ui/button.png");
     menu_exit->think = button_exit_think;
+
+    menu_save = menu_new();
+    menu_save->box = box_save;
+    menu_save->think = button_save_think;
+
     SDL_ShowCursor(SDL_DISABLE);
     //UI cooldowns
     int last_tab = 0;

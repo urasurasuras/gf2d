@@ -19,8 +19,10 @@ int collide_rect(SDL_Rect r1,SDL_Rect r2){
 }
 
 int collide_menu(SDL_Rect r1, Vector2D m){
-    if (((r1.x + r1.w) <     m.x) ||
-       ((r1.y + r1.h) <     m.y))
+    if (((r1.x + r1.w) <      m.x)  ||
+       ((r1.y + r1.h) <       m.y) ||
+       (r1.x >                m.x)  ||
+       (r1.y >                m.y))
     {
         return 0;
     }

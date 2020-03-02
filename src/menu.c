@@ -129,3 +129,13 @@ void button_exit_think (Menu *self){
         }
     }
 }
+
+void button_save_think (Menu *self){
+    int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self->box, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            slog("saved");
+        }
+    }
+}

@@ -71,5 +71,7 @@ void menu_touch_check(Menu *menu);
 
 void button_exit_think (Menu *self);
 
+void button_save_think (Menu *self);
+
 
 #endif
