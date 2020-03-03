@@ -2,6 +2,8 @@
 #include "gf2d_draw.h"
 #include "level.h"
 
+SDL_Rect bounds_normal  = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
+SDL_Rect bounds_lava    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET*2, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET*2};
 
 static Level *current_level = NULL;
 
@@ -10,7 +12,7 @@ Level *level_get_active()
     return current_level;
 }
 
-Level *level_new(char *backgroundFile, SDL_Rect bounds)
+Level *level_new(char *backgroundFile, SDL_Rect bounds, int type)
 {
     Level *level;
     if (!backgroundFile)
@@ -24,6 +26,7 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds)
     gfc_rect_set(level->bounds, bounds.x, bounds.y, bounds.w, bounds.h);
     current_level = level;
     slog("Level created %d x %d", level->bounds.w, level->bounds.h);
+    level->level_type = type;
     return level;
 }
 

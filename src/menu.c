@@ -200,3 +200,25 @@ void button_save_think (Menu *self){
         }
     }
 }
+
+void button_level_think (Menu *self){
+    int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self->box, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            if (level_get_active()->level_type == LEVEL_T_NORMAL){
+                level_free(level_get_active());
+
+                level_new("images/backgrounds/bg_flat.png",bounds_lava,2);
+                slog("Level type: %d", level_get_active()->level_type);
+            }
+            else if (level_get_active()->level_type == LEVEL_T_LAVA){
+                level_free(level_get_active());
+
+                level_new("images/backgrounds/bg_flat.png",bounds_normal,1);
+                slog("Level type: %d", level_get_active()->level_type);
+            }
+            // SDL_Log("done = %d", done);
+        }
+    }
+}

@@ -25,8 +25,8 @@ SDL_GameController *c3;
 
 SJson *saveFile;
 SJson *cfgFile;
-SJson *arrayOfPlayers;
-SJson *arrayOfConf;
+SJson *pArray_save;
+SJson *pArray_config;
 
 void players_spawn(){
 
@@ -40,11 +40,15 @@ void players_spawn(){
         return;
     }else
     {
-        arrayOfConf = sj_object_get_value(cfgFile, "Players");
+        pArray_config = sj_object_get_value(cfgFile, "Players");
+        if (saveFile){
+            pArray_save = sj_object_get_value(saveFile, "Players");
+            slog("Loading save file...");
+        }
 
         int i;
-        SJson *player_data;//Data holder per player
-        SJson *player_config;//Config holder per player
+        SJson *saved_player_data;//Data holder per player
+        SJson *config_player_data;//Config holder per player
 
         SJson *player_name;
         SJson *player_spritePath;
@@ -57,35 +61,42 @@ void players_spawn(){
         int contIndex;
         Vector2D pos;
         float *hp;
-
-        if (!saveFile){
-            slog("No savefile...");
-        }else
-        {
-            arrayOfPlayers = sj_object_get_value(saveFile, "Players");
-            slog("Loading save file...");
-        }
         
-        for (i = 0;i < sj_array_get_count(arrayOfConf);i++){
+        for (i = 0;i < sj_array_get_count(pArray_config);i++){
             slog("insde");
-            player_config = sj_array_get_nth(arrayOfConf, i);
+            config_player_data = sj_array_get_nth(pArray_config, i);
 
-            player_spritePath = sj_object_get_value(player_config, "Sprite");
-            player_controller = sj_object_get_value(player_config, "ControllerIndex");
+            player_spritePath = sj_object_get_value(config_player_data, "Sprite");
+            player_controller = sj_object_get_value(config_player_data, "ControllerIndex");
 
-            if (!saveFile){
+
+            if (pArray_save){
+                saved_player_data = sj_array_get_nth(pArray_save, i);
+
+                if (saved_player_data){
+                    slog("Existing player");
+                    player_name = sj_object_get_value(saved_player_data, "Name");
+                    player_pos = sj_object_get_value(saved_player_data, "Position");
+                    player_health = sj_object_get_value(saved_player_data, "Health");
+                }
+                else
+                {
+                    slog("New player");
+
+                    player_name = sj_object_get_value(config_player_data, "Name");
+                    player_pos = sj_object_get_value(config_player_data, "Position");
+                    player_health = sj_object_get_value(config_player_data, "Health");
+                }
+                
+         
+            }
+            else
+            {
                 slog("New player");
 
-                player_name = sj_object_get_value(player_config, "Name");
-                player_pos = sj_object_get_value(player_config, "Position");
-                player_health = sj_object_get_value(player_config, "Health");
-            }else
-            {
-                slog("Existing player");
-                player_data = sj_array_get_nth(arrayOfPlayers, i);
-                player_name = sj_object_get_value(player_data, "Name");
-                player_pos = sj_object_get_value(player_data, "Position");
-                player_health = sj_object_get_value(player_data, "Health");
+                player_name = sj_object_get_value(config_player_data, "Name");
+                player_pos = sj_object_get_value(config_player_data, "Position");
+                player_health = sj_object_get_value(config_player_data, "Health");
             }
 
             //Set name
@@ -289,8 +300,15 @@ void player_think_1 (Entity *self){
     if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
     {
         //TODO: Do something is ent hits bounds
-        self->position.x -= x*p->speed;
-        self->position.y -= y*p->speed;
+        if (level_get_active()->level_type == LEVEL_T_NORMAL){
+            self->position.x -= x*p->speed;
+            self->position.y -= y*p->speed;
+        }
+        else if (level_get_active()->level_type == LEVEL_T_LAVA){
+            p->health -= 0.1;
+            slog("%s health: %f", self->name, p->health);
+        }
+        
     }
 
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A) && p->last_skill1 + p->cldn_skill1 < level_get_active()->frame){

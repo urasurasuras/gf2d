@@ -19,8 +19,9 @@ int main(int argc, char * argv[])
     Sprite *mouse;
     Menu *menu_exit;
     Menu *menu_save;
+    Menu *menu_level;
 
-    SDL_Rect box_exit = {
+    SDL_Rect box_lvl_b = {
         (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
         (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT, 
         MENU_BUTTON_HALF_WIDTH*2, 
@@ -32,9 +33,14 @@ int main(int argc, char * argv[])
         MENU_BUTTON_HALF_WIDTH*2, 
         MENU_BUTTON_HALF_HEIGHT
     };
+    SDL_Rect box_exit = {
+        (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
+        (LEVEL_HEIGHT/2) + MENU_BUTTON_HALF_HEIGHT, 
+        MENU_BUTTON_HALF_WIDTH*2, 
+        MENU_BUTTON_HALF_HEIGHT
+    };
     
     Vector4D mouseColor = {255,100,255,200};
-    SDL_Rect bounds = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
 
     Level *level;
 
@@ -53,23 +59,30 @@ int main(int argc, char * argv[])
     gf2d_sprite_init(1024);
     entity_manager_init(32);
     menu_manager_init(32);
+
+    //Exit button
     menu_exit = menu_new();
     menu_exit->box = box_exit;
     menu_exit->drawOffset = vector2d(-100,-250);
     menu_exit->position = vector2d(500,500);
     menu_exit->sprite = gf2d_sprite_load_image("images/ui/button.png");
     menu_exit->think = button_exit_think;
-
+    //save button
     menu_save = menu_new();
     menu_save->box = box_save;
     menu_save->think = button_save_think;
+    //Level button
+    menu_level = menu_new();
+    menu_level->box = box_lvl_b;
+    menu_level->think = button_level_think;
+
 
     SDL_ShowCursor(SDL_DISABLE);
     //UI cooldowns
     int last_tab = 0;
     
     /*demo setup*/
-    level = level_new("images/backgrounds/bg_flat.png",bounds);
+    level = level_new("images/backgrounds/bg_flat.png",bounds_normal,1);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     players_spawn();
     projectile_load_sprites();

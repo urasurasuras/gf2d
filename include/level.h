@@ -8,6 +8,12 @@
 #define LEVEL_HEIGHT 720
 #define LEVEL_SPAWN_OFFSET 100
 
+#define LEVEL_T_NORMAL 1
+#define LEVEL_T_LAVA   2
+
+SDL_Rect bounds_normal;
+SDL_Rect bounds_lava;
+
 typedef struct
 {
     Sprite *background;     /**<Background sprite*/
@@ -15,6 +21,8 @@ typedef struct
     int     frame;          /**<Frame ++ on update*/
     int     done;           /**<Done condition*/
     int     paused;
+
+    int     level_type;
 }Level;
 
 /**
@@ -23,7 +31,7 @@ typedef struct
  * @param bounds Level bounds
  * @return Object type of Level
  * */
-Level *level_new(char *backgroundFile, SDL_Rect bounds);
+Level *level_new(char *backgroundFile, SDL_Rect bounds, int type);
 
 /**
  * @brief Frees level and its sprite
