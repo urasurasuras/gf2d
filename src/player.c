@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include "simple_logger.h"
+#include "simple_json.h"
+#include "simple_json_value.h"
 #include "entity.h"
 #include <SDL.h>
 #include "player.h"
@@ -21,21 +23,185 @@ SDL_GameController *c1;
 SDL_GameController *c2;
 SDL_GameController *c3;
 
+SJson *saveFile;
+SJson *cfgFile;
+SJson *arrayOfPlayers;
+SJson *arrayOfConf;
+
 void players_spawn(){
-    p0 = gf2d_sprite_load_image("images/players/white-circle.png");
-    p1 = gf2d_sprite_load_image("images/players/red-circle.png");
-    p2 = gf2d_sprite_load_image("images/players/blue-circle.png");
-    p3 = gf2d_sprite_load_image("images/players/green-circle.png");
 
-    c0 = SDL_GameControllerOpen(0);
-    c1 = SDL_GameControllerOpen(1);
-    c2 = SDL_GameControllerOpen(2);
-    c3 = SDL_GameControllerOpen(3);
+    Sprite player_sprite_array[4];
 
-    player_generic("Player1", 1, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p0, spawn_top_left, c0, player_think_1, player_touch, 50, 100);
-    player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, c0, player_think_1, player_touch, 600, 100);
-    player_generic("Player3", 3, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p2, spawn_bottom_left, c2, player_think_1, player_touch, 50, 100);
-    player_generic("Player4", 4, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p3, spawn_bottom_right, c3, player_think_1, player_touch, 50, 100);
+    saveFile = sj_load("data/allData.json");
+    cfgFile = sj_load("data/config.json");
+
+    if (!cfgFile){
+        slog("no config file, exiting...");
+        return;
+    }else
+    {
+        arrayOfConf = sj_object_get_value(cfgFile, "Players");
+
+        int i;
+        SJson *player_data;//Data holder per player
+        SJson *player_config;//Config holder per player
+
+        SJson *player_name;
+        SJson *player_spritePath;
+        SJson *player_controller;
+        SJson *player_pos;
+        SJson *player_health;
+
+        TextWord *name;
+        char* spritePath_string;
+        int contIndex;
+        Vector2D pos;
+        float *hp;
+
+        if (!saveFile){
+            slog("No savefile...");
+        }else
+        {
+            arrayOfPlayers = sj_object_get_value(saveFile, "Players");
+            slog("Loading save file...");
+        }
+        
+        for (i = 0;i < sj_array_get_count(arrayOfConf);i++){
+            slog("insde");
+            player_config = sj_array_get_nth(arrayOfConf, i);
+
+            player_spritePath = sj_object_get_value(player_config, "Sprite");
+            player_controller = sj_object_get_value(player_config, "ControllerIndex");
+
+            if (!saveFile){
+                slog("New player");
+
+                player_name = sj_object_get_value(player_config, "Name");
+                player_pos = sj_object_get_value(player_config, "Position");
+                player_health = sj_object_get_value(player_config, "Health");
+            }else
+            {
+                slog("Existing player");
+                player_data = sj_array_get_nth(arrayOfPlayers, i);
+                player_name = sj_object_get_value(player_data, "Name");
+                player_pos = sj_object_get_value(player_data, "Position");
+                player_health = sj_object_get_value(player_data, "Health");
+            }
+
+            //Set name
+            name = (TextWord *)sj_get_string_value(player_name);
+
+            //Set pos
+            SJson *posX;
+            SJson *posY;
+            posX = sj_array_get_nth(player_pos, 0);
+            posY = sj_array_get_nth(player_pos, 1);
+            sj_get_float_value(posX, &pos.x);
+            sj_get_float_value(posY, &pos.y);
+
+            //Set controller index
+            sj_get_integer_value(player_controller, &contIndex);
+            //Set sprite path
+            spritePath_string = (char *)sj_get_string_value(player_spritePath);
+            //Create player
+            player_generic(
+                (char *)name,
+                i+1, 
+                SHAPE_CIRCLE, 
+                50, 
+                vector2d(-50,-50), 
+                1, 
+                gf2d_sprite_load_image(spritePath_string), 
+                pos, 
+                SDL_GameControllerOpen(contIndex), 
+                player_think_1, 
+                player_touch, 
+                50,
+                100
+            );
+
+            slog("%s",name);
+            sj_echo(player_pos);
+            sj_echo(player_health);       
+        }
+        
+            // slog("Found save file ");
+            // arrayOfPlayers = sj_object_get_value(saveFile, "Players");
+            
+            // for (i = 0;i < sj_array_get_count(arrayOfPlayers);i++){
+            //     player_data = sj_array_get_nth(arrayOfPlayers, i);
+            //     player_config = sj_array_get_nth(arrayOfConf, i);
+
+            //     player_name = sj_object_get_value(player_data, "Name");
+            //     player_spritePath = sj_object_get_value(player_config, "Sprite");
+            //     player_controller = sj_object_get_value(player_config, "ControllerIndex");
+            //     player_pos = sj_object_get_value(player_data, "Position");
+            //     player_health = sj_object_get_value(player_data, "Health");
+
+            //     name = (TextWord *)sj_get_string_value(player_name);
+
+            //     SJson *posX;
+            //     SJson *posY;
+
+            //     posX = sj_array_get_nth(player_pos, 0);
+            //     posY = sj_array_get_nth(player_pos, 1);
+            //     sj_get_float_value(posX, &pos.x);
+            //     sj_get_float_value(posY, &pos.y);
+
+            //     sj_get_integer_value(player_controller, &contIndex);
+            //     spritePath_string = (char *)sj_get_string_value(player_spritePath);
+
+            //     slog("%s",name);
+            //     sj_echo(player_pos);
+            //     sj_echo(player_health);
+
+            //     player_generic(
+            //         (char *)name,
+            //         i+1, 
+            //         SHAPE_CIRCLE, 
+            //         50, 
+            //         vector2d(-50,-50), 
+            //         1, 
+            //         gf2d_sprite_load_image(spritePath_string), 
+            //         pos, 
+            //         SDL_GameControllerOpen(contIndex), 
+            //         player_think_1, 
+            //         player_touch, 
+            //         50,
+            //         100
+            //     );
+            
+        // }
+        // else
+        // {
+        //     sj_save(saveFile, "data/out.json");
+
+        //     // sj_echo(arrayOfPlayers);
+
+
+        //     p0 = gf2d_sprite_load_image("images/players/white-circle.png");
+        //     p1 = gf2d_sprite_load_image("images/players/red-circle.png");
+        //     p2 = gf2d_sprite_load_image("images/players/blue-circle.png");
+        //     p3 = gf2d_sprite_load_image("images/players/green-circle.png");
+
+        //     c0 = SDL_GameControllerOpen(0);
+        //     c1 = SDL_GameControllerOpen(1);
+        //     c2 = SDL_GameControllerOpen(2);
+        //     c3 = SDL_GameControllerOpen(3);
+
+
+        //     player_generic("Player1", 1, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p0, spawn_top_left, c0, player_think_1, player_touch, 50, 100);
+        //     player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, c0, player_think_1, player_touch, 600, 100);
+        //     player_generic("Player3", 3, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p2, spawn_bottom_left, c2, player_think_1, player_touch, 50, 100);
+        //     player_generic("Player4", 4, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p3, spawn_bottom_right, c3, player_think_1, player_touch, 50, 100);
+        // }
+
+    }
+    
+
+    
+    
+   
 }
 
 // Player *player_new(float speed, int char_index){
@@ -95,7 +261,7 @@ Entity *player_generic(
     player->index = char_index;
     player->last_skill1 = 0;
     player->last_skill2 = 0;
-    slog("Player created with index: %d", player->index);
+    // slog("Player created with index: %d", player->index);
     player->speed = default_speed;
     self->typeOfEnt = (Player *)player;
     self->type = ENT_PLAYER;

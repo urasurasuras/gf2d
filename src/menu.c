@@ -140,12 +140,14 @@ void button_save_think (Menu *self){
     if (collide_menu(self->box, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
             
+            SJson *allData;
             SJson *playerData;
             SJson *player_object;
             SJson *player_name;
             SJson *player_pos;
             SJson *player_health;
 
+            allData = sj_object_new();
             playerData = sj_array_new();
             int i;
             for (i = 0;i < entity_manager_get_active().maxEnts;i++)
@@ -175,6 +177,7 @@ void button_save_think (Menu *self){
                 
             }
 
+            sj_object_insert(allData, "Players", playerData);
             // SJson *test_json;
             // SJson *test_json_value;
             // SJString *json_test_string;
@@ -190,8 +193,9 @@ void button_save_think (Menu *self){
             // sj_object_insert(test_json, "test_key", test_json_value);
 
             // slog("json created:");
-            sj_echo(playerData);
-            sj_save(playerData, "playerData.json");
+            sj_echo(allData);
+            sj_save(allData, "data/allData.json");
+            sj_free(allData);
             // slog("saved");
         }
     }
