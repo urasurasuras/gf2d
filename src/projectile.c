@@ -98,7 +98,37 @@ Entity *projectile_generic(
         return self;
     }
 
+Entity *hitscan_generic(
+    Entity *owner_entity,
+    TextWord name,
+    int collider_shape,
+    float strength//,
+    // void (*think)(struct Entity_S *self),
+    // void (*touch)(struct Entity_S *self, struct Entity_S *other)
+){
+    Entity *self;
+        self = entity_new();
+        if (!self)return NULL;
+        //Init ent
+        Player  *owner_player;
+        owner_player = owner_entity->typeOfEnt;
+        strcpy(self->name, name);
+        // self->sprite = sprite;
+        self->collider_shape = collider_shape;
+        // if (collider_shape == SHAPE_CIRCLE)self->radius = radius;
+        self->position = owner_entity->position;
 
+        //Declaration of hitscan
+        Hitscan *hitscan;
+        hitscan = (Hitscan * )malloc(sizeof(Hitscan));
+        //Initialization of hitscan
+        hitscan->direction = owner_player->direction;
+        hitscan->p1 = self->position;
+
+        // float lvl_hyp;
+        // lvl_hyp = LEVEL_HEIGHT*LEVEL_HEIGHT
+        // hitscan->p2 = 
+}
 void fireball_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;

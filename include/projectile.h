@@ -20,6 +20,15 @@ typedef struct Projectile_S
 
 }Projectile;
 
+typedef struct Hitscan_S
+{
+    Entity      *owner_entity;
+    Vector2D    p1;
+    Vector2D    p2;
+    Vector2D    direction;
+    float       strenght;
+}Hitscan;
+
 /**
  * @brief Pre-loads projectile sprites into individual pointers for later use
  * */
@@ -50,21 +59,30 @@ Entity *projectile_generic(
     void (*touch)(struct Entity_S *self, struct Entity_S *other)
 );
 
-/**
- * @brief Create a projectile by an entity (not Player)
- * @param owner_entity Pointer to the owner ent of this projectile
- * @return Projectile type later used when creating ent
- * */
-Projectile *projectile_new(Entity *owner_entity, float speed);
+Entity *hitscan_generic(
+    Entity *owner_entity,
+    TextWord name,
+    int collider_shape,
+    float strength//,
+    // void (*think)(struct Entity_S *self),
+    // void (*touch)(struct Entity_S *self, struct Entity_S *other)
+);
 
-/**
- * @brief Create an entity by calling projectile_new
- * @param owner_entity Pointer to owner ent (passed to projectile_new)
- * @param default_speed Speed multiplier of the entity
- * @param sprite_path File path to sprite
- * @param init_pos Initial position of created entity
- * */
-Entity *projectile_new_ent(Entity *owner_entity, float speed, char sprite_path[], Vector2D init_pos);
+// /**
+//  * @brief Create a projectile by an entity (not Player)
+//  * @param owner_entity Pointer to the owner ent of this projectile
+//  * @return Projectile type later used when creating ent
+//  * */
+// Projectile *projectile_new(Entity *owner_entity, float speed);
+
+// /**
+//  * @brief Create an entity by calling projectile_new
+//  * @param owner_entity Pointer to owner ent (passed to projectile_new)
+//  * @param default_speed Speed multiplier of the entity
+//  * @param sprite_path File path to sprite
+//  * @param init_pos Initial position of created entity
+//  * */
+// Entity *projectile_new_ent(Entity *owner_entity, float speed, char sprite_path[], Vector2D init_pos);
 
 /**
  * @brief Called every frame
