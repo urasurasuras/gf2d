@@ -32,7 +32,7 @@ void players_spawn(){
 
     Sprite player_sprite_array[4];
 
-    saveFile = sj_load("data/allData.json");
+    saveFile = sj_load("data/player.save");
     cfgFile = sj_load("data/config.json");
 
     if (!cfgFile){
