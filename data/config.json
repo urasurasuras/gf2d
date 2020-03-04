@@ -5,28 +5,32 @@
 		"Sprite":"images/players/white-circle.png",
 		"ControllerIndex":"0",
 		"Position":["100.000000","100.000000"],
-		"Health":"100.000000"
+		"Health":"100.000000",
+		"Cooldowns":["50","100"]
 		},
 		{
 		"Name":"Player2",
 		"Sprite":"images/players/red-circle.png",
 		"ControllerIndex":"0",
 		"Position":["1100.000000","100.000000"],
-		"Health":"100.000000"
+		"Health":"100.000000",
+		"Cooldowns":["500","100"]
 		},
 		{
 		"Name":"Player3",
 		"Sprite":"images/players/blue-circle.png",
 		"ControllerIndex":"2",
 		"Position":["100.000000","620.000000"],
-		"Health":"100.000000"
+		"Health":"100.000000",
+		"Cooldowns":["50","100"]
 		},
 		{
 		"Name":"Player4",
 		"Sprite":"images/players/green-circle.png",
 		"ControllerIndex":"3",
 		"Position":["1100.000000","620.000000"],
-		"Health":"100.000000"
+		"Health":"100.000000",
+		"Cooldowns":["50","100"]
 		}
 	]
 }

@@ -18,11 +18,6 @@ Sprite *p1;
 Sprite *p2;
 Sprite *p3;
 
-SDL_GameController *c0;
-SDL_GameController *c1;
-SDL_GameController *c2;
-SDL_GameController *c3;
-
 SJson *saveFile;
 SJson *cfgFile;
 SJson *pArray_save;
@@ -55,12 +50,17 @@ void players_spawn(){
         SJson *player_controller;
         SJson *player_pos;
         SJson *player_health;
+        SJson *player_cooldowns;
+        SJson *player_cldn1;
+        SJson *player_cldn2;
 
         TextWord *name;
         char* spritePath_string;
         int contIndex;
         Vector2D pos;
         float *hp;
+        int cldn1;
+        int cldn2;
         
         for (i = 0;i < sj_array_get_count(pArray_config);i++){
             slog("insde");
@@ -68,7 +68,13 @@ void players_spawn(){
 
             player_spritePath = sj_object_get_value(config_player_data, "Sprite");
             player_controller = sj_object_get_value(config_player_data, "ControllerIndex");
+            player_cooldowns  = sj_object_get_value(config_player_data, "Cooldowns");
 
+            //Get cooldowns
+       
+
+            player_cldn1 = sj_array_get_nth(player_cooldowns, 0);
+            player_cldn2 = sj_array_get_nth(player_cooldowns, 1);
 
             if (pArray_save){
                 saved_player_data = sj_array_get_nth(pArray_save, i);
@@ -114,6 +120,11 @@ void players_spawn(){
             sj_get_integer_value(player_controller, &contIndex);
             //Set sprite path
             spritePath_string = (char *)sj_get_string_value(player_spritePath);
+
+            //Set cooldowns
+            sj_get_integer_value(player_cldn1, &cldn1);
+            sj_get_integer_value(player_cldn2, &cldn2);
+
             //Create player
             player_generic(
                 (char *)name,
@@ -127,105 +138,23 @@ void players_spawn(){
                 SDL_GameControllerOpen(contIndex), 
                 player_think_1, 
                 player_touch, 
-                50,
-                100
+                cldn1,
+                cldn2
             );
 
             slog("%s",name);
             sj_echo(player_pos);
             sj_echo(player_health);       
         }
-        
-            // slog("Found save file ");
-            // arrayOfPlayers = sj_object_get_value(saveFile, "Players");
-            
-            // for (i = 0;i < sj_array_get_count(arrayOfPlayers);i++){
-            //     player_data = sj_array_get_nth(arrayOfPlayers, i);
-            //     player_config = sj_array_get_nth(arrayOfConf, i);
 
-            //     player_name = sj_object_get_value(player_data, "Name");
-            //     player_spritePath = sj_object_get_value(player_config, "Sprite");
-            //     player_controller = sj_object_get_value(player_config, "ControllerIndex");
-            //     player_pos = sj_object_get_value(player_data, "Position");
-            //     player_health = sj_object_get_value(player_data, "Health");
-
-            //     name = (TextWord *)sj_get_string_value(player_name);
-
-            //     SJson *posX;
-            //     SJson *posY;
-
-            //     posX = sj_array_get_nth(player_pos, 0);
-            //     posY = sj_array_get_nth(player_pos, 1);
-            //     sj_get_float_value(posX, &pos.x);
-            //     sj_get_float_value(posY, &pos.y);
-
-            //     sj_get_integer_value(player_controller, &contIndex);
-            //     spritePath_string = (char *)sj_get_string_value(player_spritePath);
-
-            //     slog("%s",name);
-            //     sj_echo(player_pos);
-            //     sj_echo(player_health);
-
-            //     player_generic(
-            //         (char *)name,
-            //         i+1, 
-            //         SHAPE_CIRCLE, 
-            //         50, 
-            //         vector2d(-50,-50), 
-            //         1, 
-            //         gf2d_sprite_load_image(spritePath_string), 
-            //         pos, 
-            //         SDL_GameControllerOpen(contIndex), 
-            //         player_think_1, 
-            //         player_touch, 
-            //         50,
-            //         100
-            //     );
-            
-        // }
-        // else
-        // {
-        //     sj_save(saveFile, "data/out.json");
-
-        //     // sj_echo(arrayOfPlayers);
-
-
-        //     p0 = gf2d_sprite_load_image("images/players/white-circle.png");
-        //     p1 = gf2d_sprite_load_image("images/players/red-circle.png");
-        //     p2 = gf2d_sprite_load_image("images/players/blue-circle.png");
-        //     p3 = gf2d_sprite_load_image("images/players/green-circle.png");
-
-        //     c0 = SDL_GameControllerOpen(0);
-        //     c1 = SDL_GameControllerOpen(1);
-        //     c2 = SDL_GameControllerOpen(2);
-        //     c3 = SDL_GameControllerOpen(3);
-
-
-        //     player_generic("Player1", 1, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p0, spawn_top_left, c0, player_think_1, player_touch, 50, 100);
-        //     player_generic("Player2", 2, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p1, spawn_top_right, c0, player_think_1, player_touch, 600, 100);
-        //     player_generic("Player3", 3, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p2, spawn_bottom_left, c2, player_think_1, player_touch, 50, 100);
-        //     player_generic("Player4", 4, SHAPE_CIRCLE, 50, vector2d(-50,-50), 1, p3, spawn_bottom_right, c3, player_think_1, player_touch, 50, 100);
-        // }
-
-    }
-    
-
-    
-    
-   
+        sj_free(saveFile);
+        sj_free(cfgFile);
+        sj_free(pArray_save);
+        sj_free(pArray_config);
+        sj_free(saved_player_data);
+        sj_free(config_player_data);
+    }   
 }
-
-// Player *player_new(float speed, int char_index){
-//     Player *p;
-//     p = (Player * )malloc(sizeof(Player));
-//     p->speed = speed;
-//     p->index = char_index;
-//     p->health = 100;
-//     p->controller = SDL_GameControllerOpen(char_index-1);SDL_GameControllerOpen(char_index-1);//Returns a gamecontroller identifier 
-//     p->cldn_skill1 = 50;
-//     p->cldn_skill2 = 100;
-//     return p;
-// }
 
 Entity *player_generic(
     TextWord name,
@@ -374,7 +303,8 @@ void player_think_1 (Entity *self){
     }
 
     if (p->health <= 0){
-        entity_free(self);
+        self->_inuse = 0;
+        //TODO: not free
     }
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);
     // slog("Axis: %f.%f", x, y);
