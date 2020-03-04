@@ -194,7 +194,7 @@ void button_save_think (Menu *self){
 
             // slog("json created:");
             sj_echo(allData);
-            sj_save(allData, "data/allData.json");
+            sj_save(allData, "data/player.save");
             sj_free(allData);
             // slog("saved");
         }
