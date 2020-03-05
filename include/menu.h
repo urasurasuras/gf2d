@@ -5,6 +5,8 @@
 #include "gf2d_sprite.h"
 #include "level.h"
 #include "collision.h"
+#include "gf2d_graphics.h"
+#include <SDL_ttf.h>
 
 #define MENU_BUTTON_HALF_WIDTH 165
 #define MENU_BUTTON_HALF_HEIGHT 100
@@ -20,6 +22,8 @@ typedef struct Menu_S
     Vector2D    position;           /**<2D position of entity*/
     Vector2D    drawOffset;         /**<Offset of collider*/
     SDL_Rect    box;                /**<Bounds of menu*/
+    SDL_Texture *Message;
+
 
     void        (*think)(struct Menu_S *self);
 
@@ -68,6 +72,15 @@ void menu_draw_all();
  * @brief For each entity, check all other entities for collision
  * */
 void menu_touch_check(Menu *menu);
+
+Menu *menu_generic(
+    SDL_Rect    box,
+    Vector2D    drawOffset,
+    Sprite      *sprite,
+    void        (*think)(struct Menu_S *self),
+    TTF_Font* Sans,
+    TextLine     text
+);
 
 void button_exit_think (Menu *self);
 

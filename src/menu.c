@@ -2,6 +2,7 @@
 #include "simple_logger.h"
 #include "menu.h"
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "gf2d_draw.h"
 #include "collision.h"
 #include "level.h"
@@ -12,8 +13,9 @@
 
 typedef struct 
 {
-    Uint32  maxMenus;         /**<Maximum number of entities*/
-    Menu  *menuList;     /**<List of entities*/
+    Uint32      maxMenus;         /**<Maximum number of entities*/
+    Menu        *menuList;     /**<List of entities*/
+    TTF_Font    *text;           
 }MenuManager;
 
 static MenuManager menu_manager = {0};
@@ -107,6 +109,8 @@ void menu_draw(Menu *self){
         NULL,
         1
     );
+    if(SDL_RenderCopy(gf2d_graphics_get_renderer(), self->Message, NULL, &self->box)){ //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
+    slog("rendering %s", self->Message);}
     //draw box collider
     gf2d_draw_rect(self->box, vector4d(255,0,255,255));
     // slog("Pos %f.%f", self->position.x, self->position.y);
@@ -121,6 +125,31 @@ void menu_draw_all()
         if (!menu_manager.menuList[i]._inuse)continue;
         menu_draw(&menu_manager.menuList[i]);
     }
+}
+
+Menu *menu_generic(
+    SDL_Rect    box,
+    Vector2D    drawOffset,
+    Sprite      *sprite,
+    void        (*think)(struct Menu_S *self),
+    TTF_Font* Sans,
+    TextLine     text
+){
+    Menu *menu;
+    menu = menu_new();
+    menu->box = box;
+    menu->drawOffset = drawOffset;
+    menu->sprite = sprite;
+    menu->think = think;
+
+    SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); //now you can convert it into a texture
+
+    menu->Message = Message;
+    return menu;
 }
 
 void button_exit_think (Menu *self){

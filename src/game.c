@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 #include "gf2d_draw.h"
@@ -60,21 +61,52 @@ int main(int argc, char * argv[])
     entity_manager_init(32);
     menu_manager_init(32);
 
-    //Exit button
-    menu_exit = menu_new();
-    menu_exit->box = box_exit;
-    menu_exit->drawOffset = vector2d(-100,-250);
-    menu_exit->position = vector2d(500,500);
-    menu_exit->sprite = gf2d_sprite_load_image("images/ui/button.png");
-    menu_exit->think = button_exit_think;
-    //save button
-    menu_save = menu_new();
-    menu_save->box = box_save;
-    menu_save->think = button_save_think;
-    //Level button
-    menu_level = menu_new();
-    menu_level->box = box_lvl_b;
-    menu_level->think = button_level_think;
+    	
+    if(TTF_Init()==-1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        exit(2);
+    }
+    TTF_Font* Sans = TTF_OpenFont("fonts/bignoodletoo.ttf", 72); //this opens a font style and sets a size
+    if (!Sans)slog("no font");
+    // //Exit button
+    menu_generic(
+        box_exit,
+        vector2d(-100,-250),
+        gf2d_sprite_load_image("images/ui/button.png"),
+        button_exit_think,
+        Sans,
+        "Exit"
+    );
+    // menu_exit = menu_new();
+    // menu_exit->box = box_exit;
+    // menu_exit->drawOffset = vector2d(-100,-250);
+    // menu_exit->position = vector2d(500,500);
+    // menu_exit->sprite = gf2d_sprite_load_image("images/ui/button.png");
+    // menu_exit->think = button_exit_think;
+    // //save button
+    menu_generic(
+        box_save,
+        vector2d(-100,-250),
+        gf2d_sprite_load_image("images/ui/button.png"),
+        button_save_think,
+        Sans,
+        "Save"
+    );
+    // menu_save = menu_new();
+    // menu_save->box = box_save;
+    // menu_save->think = button_save_think;
+    // //Level button
+    menu_generic(
+        box_lvl_b,
+        vector2d(-100,-250),
+        gf2d_sprite_load_image("images/ui/button.png"),
+        button_level_think,
+        Sans,
+        "Next level"
+    );
+    // menu_level = menu_new();
+    // menu_level->box = box_lvl_b;
+    // menu_level->think = button_level_think;
 
 
     SDL_ShowCursor(SDL_DISABLE);
@@ -86,6 +118,12 @@ int main(int argc, char * argv[])
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     players_spawn();
     projectile_load_sprites();
+    if(TTF_Init()==-1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        exit(2);
+    }
+
+    
     /*main game loop*/
     while(!level_get_active()->done)
     {
@@ -122,7 +160,8 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 &mouseColor,
-                (int)mf);}
+                (int)mf);}      
+
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         
         if (keys[SDL_SCANCODE_TAB] && last_tab + 750 < SDL_GetTicks()){
