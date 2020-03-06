@@ -6,7 +6,8 @@
 #include "projectile.h"
 
 Sprite *fireball;
-Sprite *healing;
+Sprite *healing_aura;
+Sprite *damage_aura;
 
 typedef struct Projectile_S
 {
@@ -55,6 +56,7 @@ Entity *projectile_generic(
     Vector2D draw_offset,
     float strength,
     float speed,
+    Vector2D init_pos,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other)
 );
@@ -92,7 +94,12 @@ void fireball_think(Entity *self);
 
 void healingAura_think(Entity *self);
 
+void damageAura_think(Entity *self);
+
 void fireball_touch(Entity *self, Entity *other);
 
 void healingAura_touch(Entity *self, Entity *other);
+
+void damageAura_touch(Entity *self, Entity *other);
+
 #endif

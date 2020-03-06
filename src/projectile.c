@@ -51,7 +51,8 @@
 
 void projectile_load_sprites(){
     fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
-    healing = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
+    healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
+    damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
 }
 
 Entity *projectile_generic(
@@ -63,6 +64,7 @@ Entity *projectile_generic(
     Vector2D draw_offset,
     float strength,
     float speed,
+    Vector2D init_pos,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other)
     )
@@ -77,7 +79,7 @@ Entity *projectile_generic(
         self->sprite = sprite;
         self->collider_shape = collider_shape;
         if (collider_shape == SHAPE_CIRCLE)self->radius = radius;
-        self->position = owner_entity->position;
+        self->position = init_pos;
         self->drawOffset = draw_offset;   
         self->radius = radius;     
 
@@ -152,6 +154,16 @@ void healingAura_think(Entity *self){
     }
 }
 
+void damageAura_think(Entity *self){
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    p->time_alive += 1;
+    if (p->time_alive > p->time_to_live){
+        // if (self->name)slog("Freed: %s", self->name);
+        self->_inuse = 0;
+        return;
+    }
+}
+
 void fireball_touch(Entity *self, Entity *other){
     // slog("touch called");
     Projectile *p = (Projectile *)self->typeOfEnt;
@@ -182,5 +194,18 @@ void healingAura_touch(Entity *self, Entity *other){
     if (other == owner_ent){
         owner_player->health += 0.1;
         slog("Healed %s %f", other->name, other_player->health);
+    }
+}
+
+void damageAura_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+    Player *owner_player = (Player *)owner_ent->typeOfEnt;
+    Player *other_player = (Player *)other->typeOfEnt;
+
+    if (other != owner_ent && other->type == ENT_PLAYER){
+        other_player->health -= 0.1;
+        slog("Damaged %s %f", other->name, other_player->health);
     }
 }

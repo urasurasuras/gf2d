@@ -215,13 +215,15 @@ Entity *player_generic(
 void player_think_1 (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
     // SDL_GameController *c = p->controller;
+    Vector2D vScale;
+    Vector2D vScaled;    
     self->ui_box.x = (int)self->position.x + self->drawOffset.x/2;
     self->ui_box.y = (int)self->position.y + self->drawOffset.y/2;
     // self->ui_box.x = (int)self->position.x;
     // self->ui_box.y = (int)self->position.y;
-    if (p->health){
+    // if (p->health){
         
-    }
+    // }
 
     float x = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
@@ -265,6 +267,7 @@ void player_think_1 (Entity *self){
                 vector2d(-25,-25),
                 10,
                 10,
+                self->position,
                 fireball_think,
                 fireball_touch
             );
@@ -273,12 +276,13 @@ void player_think_1 (Entity *self){
                 projectile_generic(
                 self,
                 "Healing",
-                healing,
+                healing_aura,
                 SHAPE_CIRCLE,
                 100,
                 vector2d(-100,-100),
                 10,
                 5,
+                self->position,
                 healingAura_think,
                 healingAura_touch
             );
@@ -304,22 +308,32 @@ void player_think_1 (Entity *self){
                 vector2d(-25,-25),
                 25,
                 3,
+                self->position,
                 fireball_think,
                 fireball_touch
             );
                 break;
             case 2: 
+
+                vector2d_scale(vScale, p->direction, 200);
+
+                vector2d_add(vScaled, self->position, vScale);
+
+
+                slog("Player pos: %.2f.%.2f", self->position.x, self->position.y);
+                slog("Proj pos: %.2f.%.2f", vScaled.x, vScaled.y);
                 projectile_generic(
                 self,
-                "Healing",
-                healing,
+                "Damage Aura",
+                damage_aura,
                 SHAPE_CIRCLE,
                 100,
                 vector2d(-100,-100),
                 10,
                 5,
-                healingAura_think,
-                healingAura_touch
+                vScaled,
+                damageAura_think,
+                damageAura_touch
             );
                 break;
             default: 
