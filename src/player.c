@@ -26,7 +26,7 @@ SJson *pArray_config;
 
 void players_spawn(){
 
-    Sprite player_sprite_array[4];
+    // Sprite player_sprite_array[4];
 
     saveFile = sj_load("data/player.save");
     cfgFile = sj_load("data/config.json");
@@ -147,12 +147,12 @@ void players_spawn(){
             // sj_echo(player_health);       
         }
 
-        sj_free(saveFile);
-        sj_free(cfgFile);
-        sj_free(pArray_save);
-        sj_free(pArray_config);
-        sj_free(saved_player_data);
-        sj_free(config_player_data);
+        // sj_free(saveFile);
+        // sj_free(cfgFile);
+        // sj_free(pArray_save);
+        // sj_free(pArray_config);
+        // sj_free(saved_player_data);
+        // sj_free(config_player_data);
     }   
 }
 
@@ -268,7 +268,6 @@ void player_think_1 (Entity *self){
                 fireball_think,
                 fireball_touch
             );
-            // slog("case1");
                 break;
             case 2: 
                 projectile_generic(
@@ -283,34 +282,51 @@ void player_think_1 (Entity *self){
                 healingAura_think,
                 healingAura_touch
             );
-            // slog("case2");
                 break;
             default: 
                 slog("no attack");
-// code to be executed if n doesn't match any cases
-        }   
-        
-        
+        }           
         p->last_skill1 = level_get_active()->frame;
         // slog("Dir: %f.%f", p->direction.x, p->direction.y);
         // slog("Last used after set: %d", last_s1);      
         // slog("got a");
     }
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_B) && p->last_skill2 + p->cldn_skill2 < level_get_active()->frame){
-        projectile_generic(
-            self,
-            "Fireball",
-            fireball,
-            SHAPE_CIRCLE,
-            25,
-            vector2d(-25,-25),
-            25,
-            3,
-            fireball_think,
-            fireball_touch
-        );
+        switch (p->index)
+        {
+            case 1: 
+                projectile_generic(
+                self,
+                "Fireball",
+                fireball,
+                SHAPE_CIRCLE,
+                25,
+                vector2d(-25,-25),
+                25,
+                3,
+                fireball_think,
+                fireball_touch
+            );
+                break;
+            case 2: 
+                projectile_generic(
+                self,
+                "Healing",
+                healing,
+                SHAPE_CIRCLE,
+                100,
+                vector2d(-100,-100),
+                10,
+                5,
+                healingAura_think,
+                healingAura_touch
+            );
+                break;
+            default: 
+                slog("no attack");
+        }   
         p->last_skill2 = level_get_active()->frame;
-        slog("got b");
+        // slog("got b");
     }
 
     if (p->health <= 0){

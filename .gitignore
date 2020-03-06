@@ -59,4 +59,4 @@ gf2d
 
 makefile.dep
 .vscode
-*.save
+data/*.save

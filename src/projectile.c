@@ -128,14 +128,15 @@ Entity *hitscan_generic(
         // float lvl_hyp;
         // lvl_hyp = LEVEL_HEIGHT*LEVEL_HEIGHT
         // hitscan->p2 = 
+        return self;
 }
 void fireball_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
         // if (self->name)slog("Freed: %s", self->name);
-        entity_free(self);
-        return;
+            self->_inuse = 0;  
+            return;
     }
     self->position.x += p->direction.x * p->speed;
     self->position.y += p->direction.y * p->speed;
@@ -146,7 +147,7 @@ void healingAura_think(Entity *self){
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
         // if (self->name)slog("Freed: %s", self->name);
-        entity_free(self);
+        self->_inuse = 0;
         return;
     }
 }
@@ -157,12 +158,12 @@ void fireball_touch(Entity *self, Entity *other){
     Entity *owner_ent = (Entity *)p->owner_entity;
     // Player *owner_player = (Player *)owner_ent->typeOfEnt;
     Player *other_player = (Player *)other->typeOfEnt;
-    Projectile *other_projectile = (Projectile *)other->typeOfEnt;
+    // Projectile *other_projectile = (Projectile *)other->typeOfEnt;
     if (other != owner_ent){
         if (other->type == ENT_PLAYER){
             other_player->health -= p->strength;
             slog("%s has %f", other->name, other_player->health);
-            entity_free(self);
+            self->_inuse = 0;
             return;
         }
         else if (other->type == ENT_PROJECTILE){
