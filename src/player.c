@@ -7,6 +7,7 @@
 #include "player.h"
 #include "level.h"
 #include "projectile.h"
+#include "gf2d_graphics.h"
 
 Vector2D spawn_top_left     = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET};
 Vector2D spawn_top_right    = {LEVEL_WIDTH - LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET};
@@ -63,7 +64,6 @@ void players_spawn(){
         int cldn2;
         
         for (i = 0;i < sj_array_get_count(pArray_config);i++){
-            slog("insde");
             config_player_data = sj_array_get_nth(pArray_config, i);
 
             player_spritePath = sj_object_get_value(config_player_data, "Sprite");
@@ -80,14 +80,14 @@ void players_spawn(){
                 saved_player_data = sj_array_get_nth(pArray_save, i);
 
                 if (saved_player_data){
-                    slog("Existing player");
+                    // slog("Existing player");
                     player_name = sj_object_get_value(saved_player_data, "Name");
                     player_pos = sj_object_get_value(saved_player_data, "Position");
                     player_health = sj_object_get_value(saved_player_data, "Health");
                 }
                 else
                 {
-                    slog("New player");
+                    // slog("New player");
 
                     player_name = sj_object_get_value(config_player_data, "Name");
                     player_pos = sj_object_get_value(config_player_data, "Position");
@@ -142,9 +142,9 @@ void players_spawn(){
                 cldn2
             );
 
-            slog("%s",name);
-            sj_echo(player_pos);
-            sj_echo(player_health);       
+            // slog("%s",name);
+            // sj_echo(player_pos);
+            // sj_echo(player_health);       
         }
 
         sj_free(saveFile);
@@ -183,12 +183,16 @@ Entity *player_generic(
     self->radius = radius;
     self->size.x = 32;
     self->size.y = 32;
-    vector2d_set(self-> drawOffset,-50,-50);
+    vector2d_set(self->drawOffset,-50,-50);
     vector2d_copy(self->position, init_pos);   
     //
     self->think = think;
     self->touch = touch;
     self->maxFrames = 1;
+    self->ui_box.w = 50;
+    self->ui_box.h = 50;
+    self->ui_box.x = (int)self->position.x + draw_offset.x;
+    self->ui_box.y = (int)self->position.y + draw_offset.y;
 
     //Declaration of player
     Player *player;
@@ -211,6 +215,13 @@ Entity *player_generic(
 void player_think_1 (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
     // SDL_GameController *c = p->controller;
+    self->ui_box.x = (int)self->position.x + self->drawOffset.x/2;
+    self->ui_box.y = (int)self->position.y + self->drawOffset.y/2;
+    // self->ui_box.x = (int)self->position.x;
+    // self->ui_box.y = (int)self->position.y;
+    if (p->health){
+        
+    }
 
     float x = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;

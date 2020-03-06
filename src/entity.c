@@ -6,6 +6,8 @@
 #include "collision.h"
 #include "level.h"
 #include "entity.h"
+#include "player.h"
+#include "gf2d_graphics.h"
 
 static EntityManager entity_manager = {0};
 
@@ -40,6 +42,12 @@ void entity_manager_init(Uint32 maxEnts){
     }
     entity_manager.maxEnts = maxEnts;
     memset(entity_manager.entityList,0,sizeof(Entity)*maxEnts);
+    if(TTF_Init()==-1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        exit(2);
+    }
+    entity_manager.font = TTF_OpenFont("fonts/bignoodletoo.ttf", 72); //this opens a font style and sets a size
+    if (!entity_manager.font)slog("no font");
     slog("entity manager initalized");
     atexit(entity_manager_close);
 }
@@ -105,9 +113,20 @@ void entity_draw(Entity *self){
         NULL,
         (Uint32)self->frame
     );
+
+    if (self->type == ENT_PLAYER){
+        Player *p = (Player *)self->typeOfEnt;
+
+        char hp[16];
+        snprintf(hp,16, "%.2f", p->health);
+        SDL_Surface* surfaceMessage = TTF_RenderText_Solid(entity_manager_get_active().font, &hp, entity_manager_get_active().font_color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+        SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); //now you can convert it into a texture
+        SDL_RenderCopy(
+        gf2d_graphics_get_renderer(), 
+        Message, NULL, &self->ui_box); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
+    }
     //draw circle collider
     // gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
-
 }
 
 void entity_draw_all()

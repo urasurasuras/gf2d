@@ -3,6 +3,9 @@
 
 #include "gf2d_sprite.h"
 #include "level.h"
+#include <SDL.h>
+#include <SDL_ttf.h>
+
 #define SHAPE_CIRCLE    1
 #define SHAPE_RECT      2
 
@@ -13,6 +16,8 @@ typedef struct Entity_S
 {
     TextWord    name;               /**<Name of this entity (for debugging)*/
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
+
+    SDL_Rect    ui_box;             /**<Used for text display*/
 
     Sprite      *sprite;            /**<A pointer to the sprite*/
     float       frame;              /**<Current frame of sripte*/
@@ -38,6 +43,8 @@ typedef struct
 {
     Uint32  maxEnts;         /**<Maximum number of entities*/
     Entity  *entityList;     /**<List of entities*/
+    TTF_Font* font;
+    SDL_Color font_color;
 }EntityManager;
 
 /**

@@ -25,7 +25,7 @@ Menu *menu_new(){
     for (i=0; i < menu_manager.maxMenus; i++){
         if(menu_manager.menuList[i]._inuse)continue;
         menu_manager.menuList[i]._inuse = 1;
-        slog("Items in menu list %d", i);
+        // slog("Items in menu list %d", i);
         return &menu_manager.menuList[i];
     }
     slog("out of open menu slots in memory");
