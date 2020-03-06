@@ -257,20 +257,30 @@ void player_think_1 (Entity *self){
         // slog("Char: %d",p->index);
         switch (p->index)
         {
-            case 1: 
-                projectile_generic(
+            case 1:
+            hitscan_generic(
                 self,
-                "Fireball",
-                fireball,
-                SHAPE_CIRCLE,
+                "Hitscan",
+                SHAPE_LINE,
                 25,
-                vector2d(-25,-25),
-                10,
-                10,
-                self->position,
-                fireball_think,
-                fireball_touch
+                50,
+                hitscan_think,
+                hitscan_touch
             );
+
+            //     projectile_generic(
+            //     self,
+            //     "Fireball",
+            //     fireball,
+            //     SHAPE_CIRCLE,
+            //     25,
+            //     vector2d(-25,-25),
+            //     10,
+            //     10,
+            //     self->position,
+            //     fireball_think,
+            //     fireball_touch
+            // );
                 break;
             case 2: 
                 projectile_generic(

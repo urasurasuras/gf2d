@@ -8,9 +8,11 @@
 
 #define SHAPE_CIRCLE    1
 #define SHAPE_RECT      2
+#define SHAPE_LINE      3
 
 #define ENT_PLAYER      1
 #define ENT_PROJECTILE  2
+#define ENT_HITSCAN     3
 
 typedef struct Entity_S
 {

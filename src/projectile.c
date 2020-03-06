@@ -104,9 +104,10 @@ Entity *hitscan_generic(
     Entity *owner_entity,
     TextWord name,
     int collider_shape,
-    float strength//,
-    // void (*think)(struct Entity_S *self),
-    // void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    float strength,
+    int time_to_live,
+    void (*think)(struct Entity_S *self),
+    void (*touch)(struct Entity_S *self, struct Entity_S *other)
 ){
     Entity *self;
         self = entity_new();
@@ -119,17 +120,23 @@ Entity *hitscan_generic(
         self->collider_shape = collider_shape;
         // if (collider_shape == SHAPE_CIRCLE)self->radius = radius;
         self->position = owner_entity->position;
+        Vector2D vScale;
+
+        vector2d_scale(vScale, owner_player->direction, 200);
+
+        vector2d_add(self->size, self->position, vScale);
 
         //Declaration of hitscan
-        Hitscan *hitscan;
-        hitscan = (Hitscan * )malloc(sizeof(Hitscan));
+        Projectile *hitscan;
+        hitscan = (Projectile * )malloc(sizeof(Projectile));
         //Initialization of hitscan
         hitscan->direction = owner_player->direction;
-        hitscan->p1 = self->position;
-
-        // float lvl_hyp;
-        // lvl_hyp = LEVEL_HEIGHT*LEVEL_HEIGHT
-        // hitscan->p2 = 
+        hitscan->time_to_live = time_to_live;
+        hitscan->time_alive = 0;
+        self->typeOfEnt = (Projectile *)hitscan;
+        self->type = ENT_PROJECTILE;
+        self->think = think;
+        self->touch = touch;        
         return self;
 }
 void fireball_think(Entity *self){
@@ -157,6 +164,18 @@ void healingAura_think(Entity *self){
 void damageAura_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
+    if (p->time_alive > p->time_to_live){
+        // if (self->name)slog("Freed: %s", self->name);
+        self->_inuse = 0;
+        return;
+    }
+}
+
+void hitscan_think(Entity *self){
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    p->time_alive += 1;
+    // slog("%s time alive %d", self->name, p->time_alive);
+
     if (p->time_alive > p->time_to_live){
         // if (self->name)slog("Freed: %s", self->name);
         self->_inuse = 0;
@@ -208,4 +227,8 @@ void damageAura_touch(Entity *self, Entity *other){
         other_player->health -= 0.1;
         slog("Damaged %s %f", other->name, other_player->health);
     }
+}
+
+void hitscan_touch(Entity *self, Entity *other){
+    //TODO: circle detecction
 }

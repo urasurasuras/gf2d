@@ -21,14 +21,14 @@ typedef struct Projectile_S
 
 }Projectile;
 
-typedef struct Hitscan_S
-{
-    Entity      *owner_entity;
-    Vector2D    p1;
-    Vector2D    p2;
-    Vector2D    direction;
-    float       strenght;
-}Hitscan;
+// typedef struct Hitscan_S
+// {
+//     Entity      *owner_entity;
+//     // Vector2D    p1;
+//     // Vector2D    p2;
+//     Vector2D    direction;
+//     float       strenght;
+// }Hitscan;
 
 /**
  * @brief Pre-loads projectile sprites into individual pointers for later use
@@ -65,9 +65,10 @@ Entity *hitscan_generic(
     Entity *owner_entity,
     TextWord name,
     int collider_shape,
-    float strength//,
-    // void (*think)(struct Entity_S *self),
-    // void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    float strength,
+    int time_to_live,
+    void (*think)(struct Entity_S *self),
+    void (*touch)(struct Entity_S *self, struct Entity_S *other)
 );
 
 // /**
@@ -96,10 +97,14 @@ void healingAura_think(Entity *self);
 
 void damageAura_think(Entity *self);
 
+void hitscan_think(Entity *self);
+
 void fireball_touch(Entity *self, Entity *other);
 
 void healingAura_touch(Entity *self, Entity *other);
 
 void damageAura_touch(Entity *self, Entity *other);
+
+void hitscan_touch(Entity *self, Entity *other);
 
 #endif

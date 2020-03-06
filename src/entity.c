@@ -125,8 +125,15 @@ void entity_draw(Entity *self){
         gf2d_graphics_get_renderer(), 
         Message, NULL, &self->ui_box); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
     }
+
+    else if (self->collider_shape == SHAPE_LINE){
+        gf2d_draw_line(self->position, self->size, vector4d(255,0,255,255));
+    }
     //draw circle collider
-    // gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));
+    else if (self->collider_shape == SHAPE_CIRCLE){
+        gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));    
+    }
+    
 }
 
 void entity_draw_all()
