@@ -109,7 +109,7 @@ Entity *hitscan_generic(
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other)
 ){
-    Entity *self;
+        Entity *self;
         self = entity_new();
         if (!self)return NULL;
         //Init ent
@@ -130,11 +130,12 @@ Entity *hitscan_generic(
         Projectile *hitscan;
         hitscan = (Projectile * )malloc(sizeof(Projectile));
         //Initialization of hitscan
+        hitscan->owner_entity = owner_entity;
         hitscan->direction = owner_player->direction;
         hitscan->time_to_live = time_to_live;
         hitscan->time_alive = 0;
         self->typeOfEnt = (Projectile *)hitscan;
-        self->type = ENT_PROJECTILE;
+        self->type = ENT_HITSCAN;
         self->think = think;
         self->touch = touch;        
         return self;
@@ -212,7 +213,7 @@ void healingAura_touch(Entity *self, Entity *other){
 
     if (other == owner_ent){
         owner_player->health += 0.1;
-        slog("Healed %s %f", other->name, other_player->health);
+        // slog("Healed %s %f", other->name, other_player->health);
     }
 }
 
@@ -231,4 +232,18 @@ void damageAura_touch(Entity *self, Entity *other){
 
 void hitscan_touch(Entity *self, Entity *other){
     //TODO: circle detecction
+    if (!self)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+    Player *owner_player = (Player *)owner_ent->typeOfEnt;
+    Player *other_player = (Player *)other->typeOfEnt;
+
+    if (owner_ent == other){
+        return;
+    }
+    if (other != owner_ent && other->type == ENT_PLAYER){
+        other_player->health -= 0.1;
+        slog("Damaged %s %f", other->name, other_player->health);
+    }
+    slog("Did touch for %s", self->name);
 }

@@ -79,6 +79,8 @@ void entity_update(Entity *self){
     }
     if (self->touch){
         entity_collision_check(self);
+    }else if (!self->touch && self->name){
+        // slog("No touch func for %s", self->name);
     }
     //TODO: anim
     // self->frame = self->frame + 0.1;
@@ -148,6 +150,8 @@ void entity_draw_all()
 
 void entity_entity_collide(Entity *e1, Entity *e2)
 {
+    // if (e1->name)
+    // slog("Checking collision for %s", e1->name);
     if (e1->collider_shape == SHAPE_CIRCLE){
         // slog("Shape cictle");
         if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
@@ -162,6 +166,19 @@ void entity_entity_collide(Entity *e1, Entity *e2)
     }
     if (e1->collider_shape == SHAPE_RECT){
         //TODO: Add check for rect collision
+    }
+    if (e1->collider_shape == SHAPE_LINE && e1->type == ENT_HITSCAN){
+        // slog("this ent is hitscan");
+        if (e2->collider_shape == SHAPE_CIRCLE && e2->type == ENT_PLAYER){
+            // slog("other ent is player");
+            if (lineCircle(e1->position, e1->size, e2->position, e2->radius)){
+                if (e1->touch)
+                {
+                    e1->touch(e1,e2);
+                }
+            // slog("%s hit %s", e1->name, e2->name);
+            }
+        }
     }
 }
 void entity_collision_check(Entity *entity)

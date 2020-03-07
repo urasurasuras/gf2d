@@ -330,8 +330,8 @@ void player_think_1 (Entity *self){
                 vector2d_add(vScaled, self->position, vScale);
 
 
-                slog("Player pos: %.2f.%.2f", self->position.x, self->position.y);
-                slog("Proj pos: %.2f.%.2f", vScaled.x, vScaled.y);
+                // slog("Player pos: %.2f.%.2f", self->position.x, self->position.y);
+                // slog("Proj pos: %.2f.%.2f", vScaled.x, vScaled.y);
                 projectile_generic(
                 self,
                 "Damage Aura",
