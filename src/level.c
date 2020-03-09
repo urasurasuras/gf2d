@@ -56,10 +56,11 @@ void level_pickups_spawn(){
     static int max_pickups = 5;
     SJson *config = level_get_active()->config;
     pickup_array_config = sj_object_get_value(config, "Pickups");
+    static int random_number = 1;
 
-    srand((unsigned) level_get_active()->frame);
+    srand((unsigned) level_get_active()->frame * time(NULL));
 
-    int random_number = rand() % sj_array_get_count(pickup_array_config);
+    random_number = rand() % sj_array_get_count(pickup_array_config);
     float randomX = rand() % LEVEL_WIDTH;
     float randomY = rand() % LEVEL_HEIGHT;
 
@@ -73,31 +74,33 @@ void level_pickups_spawn(){
         void *touch_func_cache;
 
         if (!strcmp(name_string, "pickup_heal")){
-            sprite_cache = pickup_health;
-            touch_func_cache = pickup_health_touch;
+            level_pickup_new(
+                name_string,
+                pickup_health,
+                vector2d(randomX,randomY),
+                pickup_health_touch
+            );
         }
         else if (!strcmp(name_string, "pickup_boost")){
-            sprite_cache = pickup_boost;
-            touch_func_cache = pickup_boost_touch;
+            level_pickup_new(
+                name_string,
+                pickup_boost,
+                vector2d(randomX,randomY),
+                pickup_boost_touch
+            );
         }
         else if (!strcmp(name_string, "pickup_speed")){
-            touch_func_cache = pickup_speed_touch;
-            sprite_cache = pickup_speed;
+            level_pickup_new(
+                name_string,
+                pickup_speed,
+                vector2d(randomX,randomY),
+                pickup_speed_touch
+            );
         }
         else
         {
             slog("no matching spritepath");// code to be executed if n doesn't match any cases
         }
-
-
-
-        level_pickup_new(
-            name_string,
-            sprite_cache,
-            vector2d(randomX,randomY),
-            touch_func_cache
-        );
-
         level_get_active()->num_pickups ++;
     }
 }

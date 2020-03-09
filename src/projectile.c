@@ -80,7 +80,7 @@ void projectile_load_sprites(){
         SJson *pickup_spritePath = sj_object_get_value(config_pickup_data, "Sprite");
         char *name_string = (char *)sj_get_string_value(pickup_name);
         char *spritePath_string = (char *)sj_get_string_value(pickup_spritePath);
-        slog("%s", name_string);
+        // slog("%s", name_string);
         if (!strcmp(name_string, "pickup_heal")){
             pickup_health = gf2d_sprite_load_image(spritePath_string);
         }
@@ -254,7 +254,7 @@ void healingAura_touch(Entity *self, Entity *other){
     Player *other_player = (Player *)other->typeOfEnt;
 
     if (other == owner_ent){
-        owner_player->health += 0.1;
+        owner_player->health += p->strength;
         // slog("Healed %s %f", other->name, other_player->health);
     }
 }
@@ -267,7 +267,7 @@ void damageAura_touch(Entity *self, Entity *other){
     Player *other_player = (Player *)other->typeOfEnt;
 
     if (other != owner_ent && other->type == ENT_PLAYER){
-        other_player->health -= 0.1;
+        other_player->health -= p->strength;
         slog("Damaged %s %f", other->name, other_player->health);
     }
 }
@@ -304,19 +304,41 @@ Entity *level_pickup_new(
     self->position = position;
     self->touch = touch;
     self->type = ENT_PICKUP;
+    self->collider_shape = SHAPE_CIRCLE;
+    self->radius = 30;
+    self->drawOffset = vector2d(-30,-30);
     return self;
 }
 
 
 void pickup_health_touch(Entity *self, Entity *other){
-    if (other->type == ENT_PLAYER)
-    slog("%s picked up by %s", self->name, other->name);
+    if (!self)return;
+    Player *other_player = (Player *)other->typeOfEnt;
+
+    if (other->type == ENT_PLAYER){
+        other_player->health += 50;
+        self->_inuse = 0;
+    }
+    // // if (other->type == ENT_PLAYER)
+    // // slog("%s picked up by %s", self->name, other->name);
 }
 void pickup_boost_touch(Entity *self, Entity *other){
-    if (other->type == ENT_PLAYER)
-    slog("%s picked up by %s", self->name, other->name);
+    if (!self)return;
+    Player *other_player = (Player *)other->typeOfEnt;
+
+    if (other->type == ENT_PLAYER){
+        other_player->strength += 0.25;
+        self->_inuse = 0;
+    }
 }
 void pickup_speed_touch(Entity *self, Entity *other){
-    if (other->type == ENT_PLAYER)
-    slog("%s picked up by %s", self->name, other->name);
+    if (!self)return;
+    slog("yes");
+    Player *other_player = (Player *)other->typeOfEnt;
+
+    if (other->type == ENT_PLAYER){
+        other_player->speed = 1.25;
+        // slog("sped %s by %f", other->name, other_player->speed);
+        self->_inuse = 0;
+    }
 }

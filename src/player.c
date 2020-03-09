@@ -227,6 +227,7 @@ void player_think_1 (Entity *self){
         p->direction.y = y;
     }
     //Movement
+    // slog("Speed of %s: %f", self->name, p->speed);
     self->position.x += x*p->speed;
     self->position.y += y*p->speed;
     if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
@@ -280,7 +281,7 @@ void player_think_1 (Entity *self){
                 SHAPE_CIRCLE,
                 100,
                 vector2d(-100,-100),
-                10,
+                0.1 * p->strength,
                 5,
                 self->position,
                 healingAura_think,
@@ -306,7 +307,7 @@ void player_think_1 (Entity *self){
                 SHAPE_CIRCLE,
                 25,
                 vector2d(-25,-25),
-                25,
+                25 * p->strength,
                 3,
                 self->position,
                 fireball_think,
@@ -329,7 +330,7 @@ void player_think_1 (Entity *self){
                 SHAPE_CIRCLE,
                 100,
                 vector2d(-100,-100),
-                10,
+                0.1 * p->strength,
                 5,
                 vScaled,
                 damageAura_think,

@@ -44,7 +44,7 @@
 		},
 		{
 		"Name":"projectile_damageAura",
-		"Sprite":"images/pickups/damage_aura.png"
+		"Sprite":"images/projectiles/damage_aura.png"
 		}
 	],
 	"Pickups":[

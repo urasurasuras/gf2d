@@ -26,8 +26,8 @@
 // Vector2D spawn_bottom_right;
 
 typedef struct Player_S
-{
-    float               speed;              /**<Speed of char*/
+{   
+
     int                 index;              /**<Index of character*/
     SDL_GameController *controller;         /**<Pointer to controller*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
@@ -36,7 +36,10 @@ typedef struct Player_S
     int                 last_skill1;
     int                 cldn_skill2;
     int                 last_skill2;
+
     float               health;    
+    float               speed;              /**<Speed multipler*/
+    float               strength;           /**<Strength multiplier*/
 }Player;
 
 /**
