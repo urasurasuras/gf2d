@@ -3,7 +3,22 @@
 #define DEADZONE 2
 #define ANALOG_SCALE 10000
 
+#include <SDL.h>
+// #include <SDL_ttf.h>
+// #include <stdlib.h>
+// #include <math.h>
+// #include "simple_logger.h"
+// #include "simple_json.h"
+// #include "simple_json_value.h"
 #include "gfc_vector.h"
+// #include "gfc_types.h"
+// #include "gf2d_sprite.h"
+// #include "gf2d_graphics.h"
+// #include "gf2d_draw.h"
+#include "level.h"
+// #include "collision.h"
+#include "projectile.h"
+#include "entity.h"
 
 // Vector2D spawn_top_left;
 // Vector2D spawn_top_right;

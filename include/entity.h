@@ -1,10 +1,22 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
-#include "gf2d_sprite.h"
-#include "level.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <stdlib.h>
+#include <math.h>
+#include "simple_logger.h"
+#include "simple_json.h"
+#include "simple_json_value.h"
+#include "gfc_vector.h"
+#include "gfc_types.h"
+#include "gf2d_sprite.h"
+#include "gf2d_graphics.h"
+#include "gf2d_draw.h"
+// #include "level.h"
+// #include "collision.h"
+// #include "player.h"
+// #include "projectile.h"
 
 #define SHAPE_CIRCLE    1
 #define SHAPE_RECT      2
@@ -13,6 +25,7 @@
 #define ENT_PLAYER      1
 #define ENT_PROJECTILE  2
 #define ENT_HITSCAN     3
+#define ENT_PICKUP      4
 
 typedef struct Entity_S
 {

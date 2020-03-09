@@ -1,11 +1,4 @@
-#include <stdlib.h>
-#include "simple_logger.h"
-#include "entity.h"
-#include <SDL.h>
 #include "projectile.h"
-#include "player.h"
-#include "gfc_vector.h"
-#include <math.h>
 
 // Projectile *projectile_new(Entity *owner_entity, float speed){
 //     //Initializations of owner player
@@ -50,9 +43,58 @@
 // }
 
 void projectile_load_sprites(){
-    fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
-    healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
-    damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
+    SJson *config = level_get_active()->config;
+
+    SJson *projectile_array_config = sj_object_get_value(config, "Projectiles");
+    int i;
+    for (i = 0;i < sj_array_get_count(projectile_array_config);i++){
+        SJson *config_proj_data = sj_array_get_nth(projectile_array_config, i);
+
+        SJson *projectile_name = sj_object_get_value(config_proj_data, "Name");
+        SJson *projectile_spritePath = sj_object_get_value(config_proj_data, "Sprite");
+        char *name_string = (char *)sj_get_string_value(projectile_name);
+        char *spritePath_string = (char *)sj_get_string_value(projectile_spritePath);
+        slog("%s", name_string);
+
+        if (!strcmp(name_string, "projectile_fireball")){
+            fireball = gf2d_sprite_load_image(spritePath_string);
+        }
+        else if (!strcmp(name_string, "projectile_healingAura")){
+            healing_aura = gf2d_sprite_load_image(spritePath_string);
+        }
+        else if (!strcmp(name_string, "projectile_damageAura")){
+            damage_aura = gf2d_sprite_load_image(spritePath_string);
+        }
+        else
+        {
+            slog("no matching spritepath");// code to be executed if n doesn't match any cases
+        }
+    }
+
+    SJson *pickup_array_config = sj_object_get_value(config, "Pickups");
+    // int i;
+    for (i = 0;i < sj_array_get_count(pickup_array_config);i++){
+        SJson *config_pickup_data = sj_array_get_nth(pickup_array_config, i);
+
+        SJson *pickup_name = sj_object_get_value(config_pickup_data, "Name");
+        SJson *pickup_spritePath = sj_object_get_value(config_pickup_data, "Sprite");
+        char *name_string = (char *)sj_get_string_value(pickup_name);
+        char *spritePath_string = (char *)sj_get_string_value(pickup_spritePath);
+        slog("%s", name_string);
+        if (!strcmp(name_string, "pickup_heal")){
+            pickup_health = gf2d_sprite_load_image(spritePath_string);
+        }
+        else if (!strcmp(name_string, "pickup_boost")){
+            pickup_boost = gf2d_sprite_load_image(spritePath_string);
+        }
+        else if (!strcmp(name_string, "pickup_speed")){
+            pickup_speed = gf2d_sprite_load_image(spritePath_string);
+        }
+        else
+        {
+            slog("no matching spritepath");// code to be executed if n doesn't match any cases
+        }
+    }
 }
 
 Entity *projectile_generic(
@@ -246,4 +288,35 @@ void hitscan_touch(Entity *self, Entity *other){
         slog("Damaged %s %f", other->name, other_player->health);
     }
     slog("Did touch for %s", self->name);
+}
+
+Entity *level_pickup_new(
+    TextWord    name,
+    Sprite      *sprite,
+    Vector2D    position,
+    void        (*touch)(struct Entity_S *self, struct Entity_S *other)
+){
+    Entity *self;
+    self = entity_new();
+    if (!self)return NULL;
+    strcpy(self->name, name);
+    self->sprite = sprite;
+    self->position = position;
+    self->touch = touch;
+    self->type = ENT_PICKUP;
+    return self;
+}
+
+
+void pickup_health_touch(Entity *self, Entity *other){
+    if (other->type == ENT_PLAYER)
+    slog("%s picked up by %s", self->name, other->name);
+}
+void pickup_boost_touch(Entity *self, Entity *other){
+    if (other->type == ENT_PLAYER)
+    slog("%s picked up by %s", self->name, other->name);
+}
+void pickup_speed_touch(Entity *self, Entity *other){
+    if (other->type == ENT_PLAYER)
+    slog("%s picked up by %s", self->name, other->name);
 }

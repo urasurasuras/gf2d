@@ -165,7 +165,7 @@ void button_exit_think (Menu *self){
 
 void button_save_think (Menu *self){
     static int last_save = 0;
-    slog("%d: Last saved: %d", SDL_GetTicks(), last_save);
+    // slog("%d: Last saved: %d", SDL_GetTicks(), last_save);
     int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self->box, vector2d(mx,my))){

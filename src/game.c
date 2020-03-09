@@ -146,6 +146,7 @@ int main(int argc, char * argv[])
             level_draw(level);
             //Draw entities
             entity_draw_all();
+     level_pickups_spawn();
 
             //UI elements last      
             if (level_get_active()->paused){

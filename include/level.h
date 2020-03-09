@@ -1,8 +1,8 @@
 #ifndef __LEVEL_H__
 #define __LEVEL_H__
 
-#include "gfc_types.h"
-#include "gf2d_sprite.h"
+#include "entity.h"
+#include "projectile.h"
 
 #define LEVEL_WIDTH 1200
 #define LEVEL_HEIGHT 720
@@ -21,8 +21,10 @@ typedef struct
     int     frame;          /**<Frame ++ on update*/
     int     done;           /**<Done condition*/
     int     paused;
-
     int     level_type;
+    SJson   *config;
+    SJson   *save;
+    int     num_pickups;    /**<Number of active pickups in the level*/
 }Level;
 
 /**
@@ -42,6 +44,8 @@ void level_free(Level *level);
  * @brief Draw level bg image and bounds
  * */
 void level_draw(Level *level);
+
+void level_pickups_spawn();
 
 /**
  * @brief Get current level object

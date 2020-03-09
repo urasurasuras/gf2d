@@ -1,13 +1,31 @@
 #ifndef _PROJECTILE_H_
 #define _PROJECTILE_H_
 
-#include "entity.h"
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include <stdlib.h>
+#include <math.h>
+#include "simple_logger.h"
+#include "simple_json.h"
+#include "simple_json_value.h"
+#include "gfc_vector.h"
+#include "gfc_types.h"
+#include "gf2d_sprite.h"
+#include "gf2d_graphics.h"
+#include "gf2d_draw.h"
+#include "level.h"
+#include "collision.h"
 #include "player.h"
-#include "projectile.h"
+#include "entity.h"
 
+//Projectile sprites
 Sprite *fireball;
 Sprite *healing_aura;
 Sprite *damage_aura;
+//Pickup sprites
+Sprite *pickup_health;
+Sprite *pickup_boost;
+Sprite *pickup_speed;
 
 typedef struct Projectile_S
 {
@@ -106,5 +124,16 @@ void healingAura_touch(Entity *self, Entity *other);
 void damageAura_touch(Entity *self, Entity *other);
 
 void hitscan_touch(Entity *self, Entity *other);
+
+Entity *level_pickup_new(
+    TextWord    name,
+    Sprite      *sprite,
+    Vector2D    position,
+    void        (*touch)(struct Entity_S *self, struct Entity_S *other)
+);
+
+void pickup_health_touch(Entity *self, Entity *other);
+void pickup_boost_touch(Entity *self, Entity *other);
+void pickup_speed_touch(Entity *self, Entity *other);
 
 #endif

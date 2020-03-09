@@ -1,13 +1,4 @@
-#include <stdlib.h>
-#include "simple_logger.h"
-#include "simple_json.h"
-#include "simple_json_value.h"
-#include "entity.h"
-#include <SDL.h>
 #include "player.h"
-#include "level.h"
-#include "projectile.h"
-#include "gf2d_graphics.h"
 
 Vector2D spawn_top_left     = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET};
 Vector2D spawn_top_right    = {LEVEL_WIDTH - LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET};
@@ -20,16 +11,15 @@ Sprite *p2;
 Sprite *p3;
 
 SJson *saveFile;
-SJson *cfgFile;
 SJson *pArray_save;
 SJson *pArray_config;
 
 void players_spawn(){
 
     // Sprite player_sprite_array[4];
+    SJson *cfgFile = level_get_active()->config;
 
     saveFile = sj_load("data/player.save");
-    cfgFile = sj_load("data/config.json");
 
     if (!cfgFile){
         slog("no config file, exiting...");

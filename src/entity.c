@@ -1,13 +1,6 @@
-#include <stdlib.h>
-#include "simple_logger.h"
 #include "entity.h"
-#include <SDL.h>
-#include "gf2d_draw.h"
-#include "collision.h"
 #include "level.h"
-#include "entity.h"
 #include "player.h"
-#include "gf2d_graphics.h"
 
 static EntityManager entity_manager = {0};
 
@@ -96,6 +89,10 @@ void entity_update_all(){
         if (!entity_manager.entityList[i]._inuse)continue;
         entity_update(&entity_manager.entityList[i]);
     }
+    //Update map
+    static int num_pickups;
+    
+
 }
 
 void entity_draw(Entity *self){

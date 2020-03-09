@@ -32,5 +32,34 @@
 		"Health":"100.000000",
 		"Cooldowns":["50","100"]
 		}
+	],
+	"Projectiles":[
+		{
+		"Name":"projectile_fireball",
+		"Sprite":"images/projectiles/fireball.png"
+		},
+		{
+		"Name":"projectile_healingAura",
+		"Sprite":"images/projectiles/healing_aura.png"
+		},
+		{
+		"Name":"projectile_damageAura",
+		"Sprite":"images/pickups/damage_aura.png"
+		}
+	],
+	"Pickups":[
+		{
+		"Name":"pickup_heal",
+		"Sprite":"images/pickups/pickup_health.png"
+		},
+		{
+		"Name":"pickup_boost",
+		"Sprite":"images/pickups/pickup_boost.png"
+		},
+		{
+		"Name":"pickup_speed",
+		"Sprite":"images/pickups/pickup_speed.png"
+		}
 	]
+
 }
