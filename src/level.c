@@ -24,9 +24,9 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds, int type)
     if(!level)return NULL;
     level->background = gf2d_sprite_load_image(backgroundFile);
     gfc_rect_set(level->bounds, bounds.x, bounds.y, bounds.w, bounds.h);
-    current_level = level;
     slog("Level created %d x %d", level->bounds.w, level->bounds.h);
     level->level_type = type;
+    current_level = level;
     return level;
 }
 

@@ -248,7 +248,7 @@ void player_think_1 (Entity *self){
         }
         else if (level_get_active()->level_type == LEVEL_T_LAVA){
             p->health -= 0.1;
-            slog("%s health: %f", self->name, p->health);
+            // slog("%s health: %f", self->name, p->health);
         }
         
     }
