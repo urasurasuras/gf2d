@@ -54,7 +54,7 @@ void projectile_load_sprites(){
         SJson *projectile_spritePath = sj_object_get_value(config_proj_data, "Sprite");
         char *name_string = (char *)sj_get_string_value(projectile_name);
         char *spritePath_string = (char *)sj_get_string_value(projectile_spritePath);
-        slog("%s", name_string);
+        slog("Loaded sprite %s", name_string);
 
         if (!strcmp(name_string, "projectile_fireball")){
             fireball = gf2d_sprite_load_image(spritePath_string);
@@ -137,6 +137,7 @@ Entity *projectile_generic(
         projectile->strength = strength;
         self->typeOfEnt = (Projectile *)projectile;
         self->type = ENT_PROJECTILE;
+        self->team = owner_entity->team;
         self->think = think;
         self->touch = touch;
         return self;
@@ -178,6 +179,7 @@ Entity *hitscan_generic(
         hitscan->time_alive = 0;
         self->typeOfEnt = (Projectile *)hitscan;
         self->type = ENT_HITSCAN;
+        self->team = owner_entity->team;
         self->think = think;
         self->touch = touch;        
         return self;
@@ -231,12 +233,20 @@ void fireball_touch(Entity *self, Entity *other){
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
     // Player *owner_player = (Player *)owner_ent->typeOfEnt;
-    Player *other_player = (Player *)other->typeOfEnt;
     // Projectile *other_projectile = (Projectile *)other->typeOfEnt;
     if (other != owner_ent){
-        if (other->type == ENT_PLAYER){
+        if (other->type == ENT_PLAYER ){
+            Player *other_player = (Player *)other->typeOfEnt;
             other_player->health -= p->strength;
             slog("%s has %f", other->name, other_player->health);
+            self->_inuse = 0;
+            return;
+        }
+        else if (other->type == ENT_CORE ){
+            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            slog("strtengh %f", p->strength);
+            other_core->health -= p->strength;
+            slog("%s has %f", other->name, other_core->health);
             self->_inuse = 0;
             return;
         }
@@ -256,6 +266,9 @@ void healingAura_touch(Entity *self, Entity *other){
     if (other == owner_ent){
         owner_player->health += p->strength;
         // slog("Healed %s %f", other->name, other_player->health);
+    }if (other != owner_ent && other->type == ENT_PLAYER && self->team == other->team){
+        other_player->health += p->strength;
+        slog("Damaged %s %f", other->name, other_player->health);
     }
 }
 
@@ -266,7 +279,7 @@ void damageAura_touch(Entity *self, Entity *other){
     Player *owner_player = (Player *)owner_ent->typeOfEnt;
     Player *other_player = (Player *)other->typeOfEnt;
 
-    if (other != owner_ent && other->type == ENT_PLAYER){
+    if (other != owner_ent && other->type == ENT_PLAYER && self->team != other->team){
         other_player->health -= p->strength;
         slog("Damaged %s %f", other->name, other_player->health);
     }
@@ -333,7 +346,7 @@ void pickup_boost_touch(Entity *self, Entity *other){
 }
 void pickup_speed_touch(Entity *self, Entity *other){
     if (!self)return;
-    slog("yes");
+    // slog("yes");
     Player *other_player = (Player *)other->typeOfEnt;
 
     if (other->type == ENT_PLAYER){

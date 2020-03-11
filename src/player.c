@@ -44,6 +44,7 @@ void players_spawn(){
         SJson *player_cooldowns;
         SJson *player_cldn1;
         SJson *player_cldn2;
+        SJson *player_team;
 
         TextWord *name;
         char* spritePath_string;
@@ -52,6 +53,7 @@ void players_spawn(){
         float *hp;
         int cldn1;
         int cldn2;
+        int team;
         
         for (i = 0;i < sj_array_get_count(pArray_config);i++){
             config_player_data = sj_array_get_nth(pArray_config, i);
@@ -59,6 +61,7 @@ void players_spawn(){
             player_spritePath = sj_object_get_value(config_player_data, "Sprite");
             player_controller = sj_object_get_value(config_player_data, "ControllerIndex");
             player_cooldowns  = sj_object_get_value(config_player_data, "Cooldowns");
+            player_team       = sj_object_get_value(config_player_data, "Team");
 
             //Get cooldowns
        
@@ -115,6 +118,9 @@ void players_spawn(){
             sj_get_integer_value(player_cldn1, &cldn1);
             sj_get_integer_value(player_cldn2, &cldn2);
 
+            //Set team
+            sj_get_integer_value(player_team, &team);
+
             //Create player
             player_generic(
                 (char *)name,
@@ -129,7 +135,8 @@ void players_spawn(){
                 player_think_1, 
                 player_touch, 
                 cldn1,
-                cldn2
+                cldn2,
+                team
             );
 
             // slog("%s",name);
@@ -159,7 +166,8 @@ Entity *player_generic(
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int cldn_skill1,
-    int cldn_skill2 
+    int cldn_skill2,
+    int team
     )
     {
     Entity *self;
@@ -197,8 +205,10 @@ Entity *player_generic(
     player->last_skill2 = 0;
     // slog("Player created with index: %d", player->index);
     player->speed = default_speed;
+    player->strength = 1;
     self->typeOfEnt = (Player *)player;
     self->type = ENT_PLAYER;
+    self->team = team;
     return self;
 }
 

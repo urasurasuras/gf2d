@@ -77,7 +77,8 @@ Entity *player_generic(
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int cldn_skill1,
-    int cldn_skill2 
+    int cldn_skill2,
+    int team
     );
 /**
  * @brief Called every draw update by ent

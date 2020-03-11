@@ -26,7 +26,7 @@ typedef struct
     SJson   *config;
     SJson   *save;
     int     num_pickups;    /**<Number of active pickups in the level*/
-    Level_core    *core;    /**<Pointer to the level core*/
+    Entity  *core;    /**<Pointer to the level core*/
 }Level;
 
 /**

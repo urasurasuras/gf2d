@@ -26,6 +26,11 @@
 #define ENT_PROJECTILE  2
 #define ENT_HITSCAN     3
 #define ENT_PICKUP      4
+#define ENT_CORE        5
+
+#define TEAM_0          0
+#define TEAM_A          1
+#define TEAM_B          2
 
 typedef struct Entity_S
 {
@@ -48,6 +53,7 @@ typedef struct Entity_S
 
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
     int         type;
+    int         team;
 
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/

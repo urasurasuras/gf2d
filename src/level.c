@@ -51,7 +51,7 @@ void level_draw(Level *level){
     if (!level)return;
     gf2d_sprite_draw_image(level->background,vector2d(0,0));
     gf2d_draw_rect(level->bounds, vector4d(0,255,0,255));
-    level_core_draw();
+    // level_core_draw();
 }
 
 void level_pickups_spawn(){

@@ -5,11 +5,11 @@
 
 typedef struct Level_core_S
 {
-    Sprite  *sprite;    /**<Pointer to the sprite of the core*/
-    Vector2D    position;
-    Vector2D    drawOffset;
+    // Sprite  *sprite;    /**<Pointer to the sprite of the core*/
+    // Vector2D    position;
+    // Vector2D    drawOffset;
     float   health;     /**<Health of core*/
-    int     radius;     /**<Radius of core*/
+    // int     radius;     /**<Radius of core*/
     /* data */
 }Level_core;
 
@@ -17,11 +17,11 @@ typedef struct Level_core_S
  * @brief Spawn new core in the middle of the map
  * @param sprite pointer to core sprite
  * */
-Level_core *level_core_new(Sprite *sprite);
+Entity *level_core_new(Sprite *sprite);
 
-void level_core_think();
+void level_core_think(Entity *self);
 
-void level_core_touch();
+void level_core_touch(Entity *self, Entity *other);
 
 void level_core_draw();
 
