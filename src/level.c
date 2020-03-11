@@ -1,5 +1,6 @@
-#include "entity.h"
+// #include "entity.h"
 #include "level.h"
+// #include "level_core.h"
 
 SJson *config;
 
@@ -33,6 +34,7 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds, int type)
     slog("Level created %d x %d", level->bounds.w, level->bounds.h);
     level->level_type = type;
     level->config = level_load_config();
+    level->core = level_core_new(gf2d_sprite_load_image("images/cores/core_grass.png"));
 
     current_level = level;
     return level;
@@ -49,6 +51,7 @@ void level_draw(Level *level){
     if (!level)return;
     gf2d_sprite_draw_image(level->background,vector2d(0,0));
     gf2d_draw_rect(level->bounds, vector4d(0,255,0,255));
+    level_core_draw();
 }
 
 void level_pickups_spawn(){

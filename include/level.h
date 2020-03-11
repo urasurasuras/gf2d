@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "projectile.h"
+#include "level_core.h"
 
 #define LEVEL_WIDTH 1200
 #define LEVEL_HEIGHT 720
@@ -25,6 +26,7 @@ typedef struct
     SJson   *config;
     SJson   *save;
     int     num_pickups;    /**<Number of active pickups in the level*/
+    Level_core    *core;    /**<Pointer to the level core*/
 }Level;
 
 /**
