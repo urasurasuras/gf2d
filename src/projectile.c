@@ -274,7 +274,7 @@ void damageAura_touch(Entity *self, Entity *other){
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
 
-    if (self->team == other->team){
+    if (self->team != other->team){
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
             other_player->health -= p->strength;
