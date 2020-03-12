@@ -40,6 +40,7 @@ typedef struct Entity_S
     SDL_Rect    ui_box;             /**<Used for text display*/
 
     Sprite      *sprite;            /**<A pointer to the sprite*/
+    Vector4D    *color;             /**<A pointer to the color to be shaded while drawing the sprite*/
     float       frame;              /**<Current frame of sripte*/
     float       maxFrames;          /**<Maximum number of frames in a sprite*/
     Vector2D    position;           /**<2D position of entity*/

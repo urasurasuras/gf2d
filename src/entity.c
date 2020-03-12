@@ -109,7 +109,7 @@ void entity_draw(Entity *self){
         NULL,
         NULL,
         NULL,
-        NULL,
+        self->color,
         (Uint32)self->frame
     );
 

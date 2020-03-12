@@ -191,6 +191,18 @@ Entity *player_generic(
     self->ui_box.h = 50;
     self->ui_box.x = (int)self->position.x + draw_offset.x;
     self->ui_box.y = (int)self->position.y + draw_offset.y;
+    switch (team)
+    {
+    case 1:
+        self->color = &v4d_blue;
+        break;
+    case 2:
+        self->color = &v4d_red;
+        break;
+    default:
+        slog("No team for %s", self->name);
+        break;
+    }
 
     //Declaration of player
     Player *player;

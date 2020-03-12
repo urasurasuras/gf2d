@@ -15,6 +15,7 @@ Entity *level_core_new(Sprite *sprite){
     // core_ent->drawOffset.x = core_ent->position.x - core_ent->radius;
     // core_ent->drawOffset.y = core_ent->position.y - core_ent->radius;
     slog("%s draw: %f,%f", core_ent->name, core_ent->drawOffset.x, core_ent->drawOffset.y);
+    core_ent->color = &v4d_green;
     core_ent->type = ENT_CORE;
     core_ent->typeOfEnt = (Level_core *)core;
 

@@ -15,6 +15,10 @@
 SDL_Rect bounds_normal;
 SDL_Rect bounds_lava;
 
+Vector4D v4d_red;
+Vector4D v4d_green;
+Vector4D v4d_blue;
+
 typedef struct
 {
     Sprite *background;     /**<Background sprite*/

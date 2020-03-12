@@ -245,7 +245,7 @@ void fireball_touch(Entity *self, Entity *other){
             return;
         }
         else if (other->type == ENT_PROJECTILE){
-            slog("hit another projectile");
+            // slog("hit another projectile");
         }
     }
 }
@@ -275,6 +275,7 @@ void damageAura_touch(Entity *self, Entity *other){
     Entity *owner_ent = (Entity *)p->owner_entity;
 
     if (self->team != other->team){
+        // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
             other_player->health -= p->strength;
