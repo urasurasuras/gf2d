@@ -253,7 +253,7 @@ void fireball_touch(Entity *self, Entity *other){
 void healingAura_touch(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
-    Entity *owner_ent = (Entity *)p->owner_entity;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
 
     if (self->team == other->team){
         if (other->type == ENT_PLAYER){
@@ -272,7 +272,7 @@ void healingAura_touch(Entity *self, Entity *other){
 void damageAura_touch(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
-    Entity *owner_ent = (Entity *)p->owner_entity;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
 
     if (self->team != other->team){
         // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);

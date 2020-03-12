@@ -1,7 +1,7 @@
 #include "level_core.h"
 #include "level.h"
 
-Entity *level_core_new(Sprite *sprite){
+Entity *level_core_new(Sprite *sprite, int team){
     Entity *core_ent = entity_new();
     strcpy(core_ent->name, "Grass Core");
     Level_core *core;
@@ -15,7 +15,21 @@ Entity *level_core_new(Sprite *sprite){
     // core_ent->drawOffset.x = core_ent->position.x - core_ent->radius;
     // core_ent->drawOffset.y = core_ent->position.y - core_ent->radius;
     slog("%s draw: %f,%f", core_ent->name, core_ent->drawOffset.x, core_ent->drawOffset.y);
-    core_ent->color = &v4d_green;
+    core_ent->team = team;
+    switch (team)
+    {
+    case TEAM_A:
+        slog("Created core for team A");
+        core_ent->color = &v4d_blue;
+        core_ent->position.x -= LEVEL_WIDTH/4;
+        break;
+    case TEAM_B:
+        core_ent->color = &v4d_red;
+        core_ent->position.x += LEVEL_WIDTH/4;
+        break;
+    default:
+        break;
+    }
     core_ent->type = ENT_CORE;
     core_ent->typeOfEnt = (Level_core *)core;
 
@@ -49,7 +63,7 @@ void level_core_touch(Entity *self, Entity *other){
     // }
 }
 
-void level_core_draw(){
-    if (!level_get_active()->core)return;
-    gf2d_sprite_draw_image(level_get_active()->core->sprite, level_get_active()->core->drawOffset);
-}
+// void level_core_draw(){
+//     if (!level_get_active()->core)return;
+//     gf2d_sprite_draw_image(level_get_active()->core->sprite, level_get_active()->core->drawOffset);
+// }

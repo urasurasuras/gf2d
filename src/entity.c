@@ -36,7 +36,7 @@ void entity_manager_init(Uint32 maxEnts){
     entity_manager.maxEnts = maxEnts;
     memset(entity_manager.entityList,0,sizeof(Entity)*maxEnts);
     if(TTF_Init()==-1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
+        slog("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
     entity_manager.font = TTF_OpenFont("fonts/bignoodletoo.ttf", 72); //this opens a font style and sets a size

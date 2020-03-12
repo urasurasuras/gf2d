@@ -17,12 +17,12 @@ typedef struct Level_core_S
  * @brief Spawn new core in the middle of the map
  * @param sprite pointer to core sprite
  * */
-Entity *level_core_new(Sprite *sprite);
+Entity *level_core_new(Sprite *sprite, int team);
 
 void level_core_think(Entity *self);
 
 void level_core_touch(Entity *self, Entity *other);
 
-void level_core_draw();
+// void level_core_draw();
 
 #endif

@@ -38,7 +38,8 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds, int type)
     slog("Level created %d x %d", level->bounds.w, level->bounds.h);
     level->level_type = type;
     level->config = level_load_config();
-    level->core = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"));
+    level->core_A = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_A);
+    level->core_B = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_B);
 
     current_level = level;
     return level;
@@ -77,8 +78,6 @@ void level_pickups_spawn(){
     // sj_echo(current_pickup);
     if (level_get_active()->num_pickups <= max_pickups){
         char *name_string = (char *)sj_get_string_value(pickup_name);
-        Sprite *sprite_cache;
-        void *touch_func_cache;
 
         if (!strcmp(name_string, "pickup_heal")){
             level_pickup_new(

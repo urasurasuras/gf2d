@@ -30,7 +30,8 @@ typedef struct
     SJson   *config;
     SJson   *save;
     int     num_pickups;    /**<Number of active pickups in the level*/
-    Entity  *core;    /**<Pointer to the level core*/
+    Entity  *core_A;        /**<Pointer to the level core for team A*/
+    Entity  *core_B;        /**<Pointer to the level core for team B*/
 }Level;
 
 /**

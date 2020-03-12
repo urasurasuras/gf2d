@@ -193,10 +193,10 @@ Entity *player_generic(
     self->ui_box.y = (int)self->position.y + draw_offset.y;
     switch (team)
     {
-    case 1:
+    case TEAM_A:
         self->color = &v4d_blue;
         break;
-    case 2:
+    case TEAM_B:
         self->color = &v4d_red;
         break;
     default:
