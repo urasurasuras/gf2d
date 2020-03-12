@@ -23,15 +23,20 @@ Entity *level_core_new(Sprite *sprite){
 
 void level_core_think(Entity *self){
     if(!self)return;
-    int i;
-    for (i = 0;i < entity_manager_get_active().maxEnts;i++)
-    {
-        if (!entity_manager_get_active().entityList[i]._inuse)continue;
-        if (entity_manager_get_active().entityList[i].type == ENT_PROJECTILE){
-            level_core_touch(self, &entity_manager_get_active().entityList[i]);
-        }
-        entity_update(&entity_manager_get_active().entityList[i]);
+    Level_core *core = (Level_core *)self->typeOfEnt;
+    if (core->health <= 0){
+        self->_inuse = 0;
+        //TODO: win condition
     }
+    // int i;
+    // for (i = 0;i < entity_manager_get_active().maxEnts;i++)
+    // {
+    //     if (!entity_manager_get_active().entityList[i]._inuse)continue;
+    //     if (entity_manager_get_active().entityList[i].type == ENT_PROJECTILE){
+    //         level_core_touch(self, &entity_manager_get_active().entityList[i]);
+    //     }
+    //     entity_update(&entity_manager_get_active().entityList[i]);
+    // }
     
 }
 
