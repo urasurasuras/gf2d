@@ -12,9 +12,9 @@ SJson *level_load_config(){
 SDL_Rect bounds_normal  = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
 SDL_Rect bounds_lava    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET*2, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET*2};
 
-Vector4D v4d_red   = {255, 0, 0, 255};
-Vector4D v4d_green = {0, 255, 0, 255};
-Vector4D v4d_blue  = {0, 0, 255, 255};
+Vector4D v4d_red   = {255, 100, 100, 255};
+Vector4D v4d_green = {100, 255, 100, 255};
+Vector4D v4d_blue  = {100, 100, 255, 255};
 
 static Level *current_level = NULL;
 
