@@ -35,6 +35,7 @@ typedef struct Projectile_S
     Vector2D    direction;      /**<Direction projectile is facing (set by owner_player)*/
     int         time_alive;     /**<Time this projectile has been alive for*/
     int         time_to_live;   /**<Maximum amount of tine this projectile has to live*/
+    int         dealtDamage;    /**<Boolean if this hitscan has already dealt damage this frame*/
     float       strength;        /**<Power level of a projectile*/
 
 }Projectile;

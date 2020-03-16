@@ -215,6 +215,8 @@ Entity *player_generic(
     player->index = char_index;
     player->last_skill1 = 0;
     player->last_skill2 = 0;
+    player->last_skill3 = 0;
+    player->cldn_skill3 = 50;
     // slog("Player created with index: %d", player->index);
     player->speed = default_speed;
     player->strength = 1;
@@ -275,7 +277,7 @@ void player_think_1 (Entity *self){
                 self,
                 "Hitscan",
                 SHAPE_LINE,
-                25,
+                .1,
                 50,
                 hitscan_think,
                 hitscan_touch
@@ -359,12 +361,21 @@ void player_think_1 (Entity *self){
                 damageAura_touch
             );
                 break;
+            case 3:
+                    p->speed = 5;                
+                break;
             default: 
                 slog("no attack");
         }   
         p->last_skill2 = level_get_active()->frame;
         // slog("got b");
     }
+
+    if (p->last_skill3 + p->cldn_skill3 < level_get_active()->frame){
+        p->speed = 1;
+        p->last_skill3 = level_get_active()->frame;
+    }
+    slog("b for 3 %d, %d", p->cldn_skill3, p->last_skill3);
 
     if (p->health <= 0){
         self->_inuse = 0;

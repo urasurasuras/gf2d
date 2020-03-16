@@ -177,6 +177,8 @@ Entity *hitscan_generic(
         hitscan->direction = owner_player->direction;
         hitscan->time_to_live = time_to_live;
         hitscan->time_alive = 0;
+        hitscan->strength = strength;
+        hitscan->dealtDamage = 0;
         self->typeOfEnt = (Projectile *)hitscan;
         self->type = ENT_HITSCAN;
         self->team = owner_entity->team;
@@ -294,8 +296,11 @@ void hitscan_touch(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
-    
-    if (self->team == other->team && other != owner_ent){
+    if (p->dealtDamage)return;
+    // slog("Self team %d other ");
+
+    if (self->team != other->team && other != owner_ent){
+
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
             other_player->health -= p->strength;

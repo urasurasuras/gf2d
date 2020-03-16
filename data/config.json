@@ -21,7 +21,7 @@
 		{
 		"Name":"Player3",
 		"Sprite":"images/players/blue-circle.png",
-		"ControllerIndex":"2",
+		"ControllerIndex":"0",
 		"Position":["100.000000","620.000000"],
 		"Health":"100.000000",
 		"Cooldowns":["50","100"],
