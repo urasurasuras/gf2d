@@ -39,7 +39,7 @@ typedef struct Player_S
     int                 cldn_skill3;
     int                 last_skill3;
 
-    float               health;    
+    // float               health;    
     float               speed;              /**<Speed multipler*/
     float               strength;           /**<Strength multiplier*/
 }Player;

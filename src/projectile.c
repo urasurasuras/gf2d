@@ -234,14 +234,14 @@ void fireball_touch(Entity *self, Entity *other){
     if (other != owner_ent){
         if (other->type == ENT_PLAYER ){
             Player *other_player = (Player *)other->typeOfEnt;
-            other_player->health -= p->strength;
+            other->health -= p->strength;
             // slog("%s has %f", other->name, other_player->health);
             self->_inuse = 0;
             return;
         }
         else if (other->type == ENT_CORE ){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
-            other_core->health -= p->strength;
+            other->health -= p->strength;
             // slog("%s has %f", other->name, other_core->health);
             self->_inuse = 0;
             return;
@@ -260,12 +260,12 @@ void healingAura_touch(Entity *self, Entity *other){
     if (self->team == other->team){
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
-            other_player->health += p->strength;
+            other->health += p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
         else if (other->type == ENT_CORE){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
-            other_core->health += p->strength;
+            other->health += p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
     }
@@ -280,12 +280,12 @@ void damageAura_touch(Entity *self, Entity *other){
         // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
-            other_player->health -= p->strength;
+            other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
         else if (other->type == ENT_CORE){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
-            other_core->health -= p->strength;
+            other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
     }
@@ -303,12 +303,12 @@ void hitscan_touch(Entity *self, Entity *other){
 
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
-            other_player->health -= p->strength;
-            slog("Damaged %s %f", other->name, other_player->health);
+            other->health -= p->strength;
+            slog("Damaged %s %f", other->name, other->health);
         }
         else if (other->type == ENT_CORE){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
-            other_core->health -= p->strength;
+            other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
     }
@@ -340,7 +340,7 @@ void pickup_health_touch(Entity *self, Entity *other){
     Player *other_player = (Player *)other->typeOfEnt;
 
     if (other->type == ENT_PLAYER){
-        other_player->health += 50;
+        other->health += 50;
         self->_inuse = 0;
     }
     // // if (other->type == ENT_PLAYER)

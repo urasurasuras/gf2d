@@ -190,7 +190,7 @@ void button_save_think (Menu *self){
 
                     player_object = sj_object_new();
                     player_pos = sj_array_new();
-                    player_health = sj_new_float(current_player->health);
+                    player_health = sj_new_float(current_ent.health);
                     
                     sj_array_append(player_pos,sj_new_float(current_ent.position.x));
                     sj_array_append(player_pos,sj_new_float(current_ent.position.y));

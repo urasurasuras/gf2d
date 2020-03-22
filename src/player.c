@@ -211,7 +211,7 @@ Entity *player_generic(
     player->controller = controller;
     player->cldn_skill1 = cldn_skill1;
     player->cldn_skill2 = cldn_skill2;
-    player->health = 100;
+    self->health = 100;
     player->index = char_index;
     player->last_skill1 = 0;
     player->last_skill2 = 0;
@@ -262,7 +262,7 @@ void player_think_1 (Entity *self){
             self->position.y -= y*p->speed;
         }
         else if (level_get_active()->level_type == LEVEL_T_LAVA){
-            p->health -= 0.1;
+            self->health -= 0.1;
             // slog("%s health: %f", self->name, p->health);
         }
         
@@ -377,7 +377,7 @@ void player_think_1 (Entity *self){
     }
     slog("b for 3 %d, %d", p->cldn_skill3, p->last_skill3);
 
-    if (p->health <= 0){
+    if (self->health <= 0){
         self->_inuse = 0;
         //TODO: not free
     }

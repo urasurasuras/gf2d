@@ -9,7 +9,7 @@ Entity *level_core_new(Sprite *sprite, int team){
     core_ent->sprite = sprite;
     core_ent->position = vector2d(LEVEL_WIDTH/2, LEVEL_HEIGHT/2);
     slog("%s location: %f,%f", core_ent->name, core_ent->position.x, core_ent->position.y);
-    core->health = 500;
+    core_ent->health = 500;
     core_ent->radius = 75;
     vector2d_set(core_ent->drawOffset,-core_ent->radius,-core_ent->radius);
     // core_ent->drawOffset.x = core_ent->position.x - core_ent->radius;
@@ -39,7 +39,7 @@ Entity *level_core_new(Sprite *sprite, int team){
 void level_core_think(Entity *self){
     if(!self)return;
     Level_core *core = (Level_core *)self->typeOfEnt;
-    if (core->health <= 0){
+    if (self->health <= 0){
         self->_inuse = 0;
         //TODO: win condition
     }

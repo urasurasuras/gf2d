@@ -46,6 +46,7 @@ typedef struct Entity_S
     Vector2D    position;           /**<2D position of entity*/
     Vector2D    velocity;           /**<2D velocity of entity*/
     Vector2D    drawOffset;         /**<Offset of collider*/
+    float       health;             /**<Health*/
 
     //Shape
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
