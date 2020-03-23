@@ -113,7 +113,7 @@ void entity_draw(Entity *self){
         self->color,
         (Uint32)self->frame
     );
-    if (self->health){
+    if (self->health && self->type == ENT_PLAYER){
         Player *p = (Player *)self->typeOfEnt;
 
         char hp[16];
@@ -134,7 +134,7 @@ void entity_draw(Entity *self){
     }
 
     if (self->radius_range){
-        gf2d_draw_circle(self->position, self->radius_range, vector4d(255,0,255,255));    
+        gf2d_draw_circle(self->position, self->radius_range, vector4d(255,255,255,255));    
     }
     
 }
