@@ -73,13 +73,15 @@ Entity *projectile_generic(
     TextWord name,
     Sprite *sprite,
     int collider_shape,
-    int radius,
+    int radius_body,
+    int radius_range,
     Vector2D draw_offset,
     float strength,
     float speed,
     Vector2D init_pos,
     void (*think)(struct Entity_S *self),
-    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    void (*touch)(struct Entity_S *self, struct Entity_S *other),
+    void (*detect)(struct Entity_S *self, struct Entity_S *other)
 );
 
 Entity *hitscan_generic(
@@ -131,6 +133,8 @@ void damageAura_touch(Entity *self, Entity *other);
 void hitscan_touch(Entity *self, Entity *other);
 
 void turret_touch(Entity *self, Entity *other);
+
+void turret_detect(Entity *self, Entity *other);
 
 Entity *level_pickup_new(
     TextWord    name,

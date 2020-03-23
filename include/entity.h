@@ -50,7 +50,8 @@ typedef struct Entity_S
 
     //Shape
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
-    int         radius;             /**<how wide this entity is*/
+    int         radius_body;        /**<Radius of curcular body of entity (used for physical collisions)*/
+    int         radius_range;       /**<Range for special entity behaviors*/
     Vector2D    size;               /**<Size vector*/
 
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
@@ -59,6 +60,7 @@ typedef struct Entity_S
 
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/
+    void        (*detect)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity detects another entity within its range*/
 
 }Entity;
 

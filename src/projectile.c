@@ -105,13 +105,15 @@ Entity *projectile_generic(
     TextWord name,
     Sprite *sprite,
     int collider_shape,
-    int radius,
+    int radius_body,
+    int radius_range,
     Vector2D draw_offset,
     float strength,
     float speed,
     Vector2D init_pos,
     void (*think)(struct Entity_S *self),
-    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    void (*touch)(struct Entity_S *self, struct Entity_S *other),
+    void (*detect)(struct Entity_S *self, struct Entity_S *other)
     )
     {
         Entity *self;
@@ -123,10 +125,11 @@ Entity *projectile_generic(
         strcpy(self->name, name);
         self->sprite = sprite;
         self->collider_shape = collider_shape;
-        if (collider_shape == SHAPE_CIRCLE)self->radius = radius;
+        if (collider_shape == SHAPE_CIRCLE)self->radius_body = radius_body;
         self->position = init_pos;
         self->drawOffset = draw_offset;   
-        self->radius = radius;     
+        self->radius_body = radius_body;  
+        self->radius_range = radius_range;   
 
         //Declaration of projectile
         Projectile *projectile;
@@ -143,6 +146,7 @@ Entity *projectile_generic(
         self->team = owner_entity->team;
         self->think = think;
         self->touch = touch;
+        self->detect = detect;
         // slog("%s: %f.%f %f.%f",self->name, self->position.x, self->position.y,self->size.x, self->size.y);
         // slog("%s team %d", self->name, self->team);
         slog("%s Going to %f.%f",self->name, self->size.x, self->size.y);
@@ -331,6 +335,10 @@ void hitscan_touch(Entity *self, Entity *other){
 }
 
 void turret_touch(Entity *self, Entity *other){
+    
+}
+
+void turret_detect(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
@@ -352,17 +360,18 @@ void turret_touch(Entity *self, Entity *other){
         fireball,
         SHAPE_CIRCLE,
         25,
+        NULL,
         vector2d(-25,-25),
         25 * p->strength,
         3,
         self->position,
         fireball_think,
-        fireball_touch
+        fireball_touch,
+        NULL
         ); 
 
         p->last_cldn_1 = level_get_active()->frame;
     }
-
 }
 
 Entity *level_pickup_new(
@@ -380,7 +389,7 @@ Entity *level_pickup_new(
     self->touch = touch;
     self->type = ENT_PICKUP;
     self->collider_shape = SHAPE_CIRCLE;
-    self->radius = 30;
+    self->radius_body = 30;
     self->drawOffset = vector2d(-30,-30);
     return self;
 }

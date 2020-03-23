@@ -113,8 +113,7 @@ void entity_draw(Entity *self){
         self->color,
         (Uint32)self->frame
     );
-
-    if (self->type == ENT_PLAYER){
+    if (self->health){
         Player *p = (Player *)self->typeOfEnt;
 
         char hp[16];
@@ -131,7 +130,11 @@ void entity_draw(Entity *self){
     }
     //draw circle collider
     else if (self->collider_shape == SHAPE_CIRCLE){
-        gf2d_draw_circle(self->position, self->radius, vector4d(255,0,255,255));    
+        gf2d_draw_circle(self->position, self->radius_body, vector4d(255,0,255,255));    
+    }
+
+    if (self->radius_range){
+        gf2d_draw_circle(self->position, self->radius_range, vector4d(255,0,255,255));    
     }
     
 }
@@ -148,16 +151,17 @@ void entity_draw_all()
 
 void entity_entity_collide(Entity *e1, Entity *e2)
 {
-    // if (e1->name)
-    // slog("Checking collision for %s", e1->name);
+    if (e1->radius_range && e1->detect){
+        if (collide_circle(e1->position, e1->radius_range, e2->position, e2->radius_body))
+        {//Range to circle
+            e1->detect(e1,e2);
+        }
+    }
     if (e1->collider_shape == SHAPE_CIRCLE){
-        // slog("Shape cictle");
-        if (collide_circle(e1->position, e1->radius, e2->position, e2->radius))
+        if (collide_circle(e1->position, e1->radius_body, e2->position, e2->radius_body))
         {//Circle-to-circle
-            // slog("Collision check true");
             if (e1->touch)
             {
-                // slog("touch function exists");
                 e1->touch(e1,e2);
             }
         }
@@ -166,15 +170,13 @@ void entity_entity_collide(Entity *e1, Entity *e2)
         //TODO: Add check for rect collision
     }
     if (e1->collider_shape == SHAPE_LINE && e1->type == ENT_HITSCAN){
-        // slog("this ent is hitscan");
         if (e2->collider_shape == SHAPE_CIRCLE && e2->type == ENT_PLAYER){
-            // slog("other ent is player");
-            if (lineCircle(e1->position, e1->size, e2->position, e2->radius)){
+            if (lineCircle(e1->position, e1->size, e2->position, e2->radius_body))
+            {//Line to circle
                 if (e1->touch)
                 {
                     e1->touch(e1,e2);
                 }
-            // slog("%s hit %s", e1->name, e2->name);
             }
         }
     }

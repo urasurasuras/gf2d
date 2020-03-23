@@ -178,7 +178,7 @@ Entity *player_generic(
     self->sprite = sprite;
     //
     self->collider_shape = collider_shape;
-    self->radius = radius;
+    self->radius_body = radius;
     self->size.x = 32;
     self->size.y = 32;
     vector2d_set(self->drawOffset,-50,-50);
@@ -257,13 +257,13 @@ void player_think_1 (Entity *self){
     // slog("Speed of %s: %f", self->name, p->speed);
     self->position.x += x*p->speed;
     self->position.y += y*p->speed;
-    if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius))
+    if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
     {
         //TODO: Do something is ent hits bounds
         self->position.x -= x*p->speed;
         self->position.y -= y*p->speed;
     }
-    if (level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius)){
+    if (level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius_body)){
         if (level_get_active()->level_type == LEVEL_T_LAVA){
             self->health -= 0.1;
             // slog("%s health: %f", self->name, p->health);
@@ -295,12 +295,14 @@ void player_think_1 (Entity *self){
                 healing_aura,
                 SHAPE_CIRCLE,
                 100,
+                NULL,
                 vector2d(-100,-100),
                 0.1 * p->strength,
                 5,
                 self->position,
                 healingAura_think,
-                healingAura_touch
+                healingAura_touch,
+                NULL
             );
                 break;
             case 3:
@@ -324,12 +326,14 @@ void player_think_1 (Entity *self){
                 fireball,
                 SHAPE_CIRCLE,
                 25,
+                NULL,
                 vector2d(-25,-25),
                 25 * p->strength,
                 3,
                 self->position,
                 fireball_think,
-                fireball_touch
+                fireball_touch,
+                NULL
             );
                 break;
             case 2: 
@@ -347,12 +351,14 @@ void player_think_1 (Entity *self){
                 damage_aura,
                 SHAPE_CIRCLE,
                 100,
+                NULL,
                 vector2d(-100,-100),
                 0.1 * p->strength,
                 5,
                 vScaled,
                 damageAura_think,
-                damageAura_touch
+                damageAura_touch,
+                NULL
             );
                 break;
                 case 3:
@@ -362,13 +368,15 @@ void player_think_1 (Entity *self){
                     "Turret",
                     turret,
                     SHAPE_CIRCLE,
+                    16,
                     200,
                     vector2d(-16,-16),
                     0.1 * p->strength,
                     0.5,
                     self->position,
                     turret_think,
-                    turret_touch
+                    turret_touch,
+                    turret_detect
                 );
                 p->deployables += 1;
             }

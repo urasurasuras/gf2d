@@ -10,8 +10,8 @@ Entity *level_core_new(Sprite *sprite, int team){
     core_ent->position = vector2d(LEVEL_WIDTH/2, LEVEL_HEIGHT/2);
     slog("%s location: %f,%f", core_ent->name, core_ent->position.x, core_ent->position.y);
     core_ent->health = 500;
-    core_ent->radius = 75;
-    vector2d_set(core_ent->drawOffset,-core_ent->radius,-core_ent->radius);
+    core_ent->radius_body = 75;
+    vector2d_set(core_ent->drawOffset,-core_ent->radius_body,-core_ent->radius_body);
     // core_ent->drawOffset.x = core_ent->position.x - core_ent->radius;
     // core_ent->drawOffset.y = core_ent->position.y - core_ent->radius;
     slog("%s draw: %f,%f", core_ent->name, core_ent->drawOffset.x, core_ent->drawOffset.y);
