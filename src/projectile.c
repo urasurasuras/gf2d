@@ -130,7 +130,7 @@ Entity *projectile_generic(
         projectile = (Projectile * )malloc(sizeof(Projectile));
         //Initialization of projectile
         projectile->owner_entity = owner_entity;
-        vector2d_copy(projectile->direction, owner_player->direction);
+        vector2d_copy(self->size, owner_entity->size);
         projectile->speed = speed;
         projectile->time_to_live = LEVEL_WIDTH/speed;
         projectile->time_alive = 0;
@@ -140,6 +140,9 @@ Entity *projectile_generic(
         self->team = owner_entity->team;
         self->think = think;
         self->touch = touch;
+        // slog("%s: %f.%f %f.%f",self->name, self->position.x, self->position.y,self->size.x, self->size.y);
+        // slog("%s team %d", self->name, self->team);
+        slog("%s Going to %f.%f",self->name, self->size.x, self->size.y);
         return self;
     }
 
@@ -151,7 +154,7 @@ Entity *hitscan_generic(
     int time_to_live,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other)
-){
+    ){
         Entity *self;
         self = entity_new();
         if (!self)return NULL;
@@ -165,7 +168,7 @@ Entity *hitscan_generic(
         self->position = owner_entity->position;
         Vector2D vScale;
 
-        vector2d_scale(vScale, owner_player->direction, 200);
+        vector2d_scale(vScale, owner_entity->size, 200);
 
         vector2d_add(self->size, self->position, vScale);
 
@@ -174,7 +177,7 @@ Entity *hitscan_generic(
         hitscan = (Projectile * )malloc(sizeof(Projectile));
         //Initialization of hitscan
         hitscan->owner_entity = owner_entity;
-        hitscan->direction = owner_player->direction;
+        // vector2d_copy(self->size, owner_entity->size);
         hitscan->time_to_live = time_to_live;
         hitscan->time_alive = 0;
         hitscan->strength = strength;
@@ -183,9 +186,9 @@ Entity *hitscan_generic(
         self->type = ENT_HITSCAN;
         self->team = owner_entity->team;
         self->think = think;
-        self->touch = touch;        
+        self->touch = touch;
         return self;
-}
+    }
 void fireball_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
@@ -193,8 +196,8 @@ void fireball_think(Entity *self){
             self->_inuse = 0;  
             return;
     }
-    self->position.x += p->direction.x * p->speed;
-    self->position.y += p->direction.y * p->speed;
+    self->position.x += self->size.x * p->speed;
+    self->position.y += self->size.y * p->speed;
 }
 
 void healingAura_think(Entity *self){
@@ -216,6 +219,16 @@ void damageAura_think(Entity *self){
 }
 
 void hitscan_think(Entity *self){
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    p->time_alive += 1;
+
+    if (p->time_alive > p->time_to_live){
+        self->_inuse = 0;
+        return;
+    }
+}
+
+void turret_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
 
@@ -304,7 +317,7 @@ void hitscan_touch(Entity *self, Entity *other){
         if (other->type == ENT_PLAYER){
             Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
-            slog("Damaged %s %f", other->name, other->health);
+            // slog("Damaged %s %f", other->name, other->health);
         }
         else if (other->type == ENT_CORE){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
@@ -312,6 +325,41 @@ void hitscan_touch(Entity *self, Entity *other){
             // slog("Damaged %s %f", other->name, other_player->health);
         }
     }
+}
+
+void turret_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+
+    if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
+        && other->type == ENT_PLAYER){
+
+        Vector2D v;
+        vector2d_sub(v, other->position, self->position); 
+
+        self->size.x = cos(vector2d_angle(v) * M_PI/180);
+        self->size.y = sin(vector2d_angle(v) * M_PI/180);
+        // vector2d_copy(self->size, other->position);
+        slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
+
+        projectile_generic(
+        self,
+        "Tfire",
+        fireball,
+        SHAPE_CIRCLE,
+        25,
+        vector2d(-25,-25),
+        25 * p->strength,
+        3,
+        self->position,
+        fireball_think,
+        fireball_touch
+        ); 
+
+        p->last_cldn_1 = level_get_active()->frame;
+    }
+
 }
 
 Entity *level_pickup_new(

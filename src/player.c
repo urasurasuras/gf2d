@@ -247,8 +247,11 @@ void player_think_1 (Entity *self){
         //If stick is at origin
         //dont update direction
     }else{
-        p->direction.x = x;
-        p->direction.y = y;
+        // slog("%f",vector2d_angle(vector2d(x,y)));
+        self->size.x = cos(vector2d_angle(vector2d(x,y)) * M_PI/180);
+        self->size.y = sin(vector2d_angle(vector2d(x,y)) * M_PI/180);
+        // self->size.x = x;
+        // self->size.y = y;
     }
     //Movement
     // slog("Speed of %s: %f", self->name, p->speed);
@@ -282,20 +285,6 @@ void player_think_1 (Entity *self){
                 hitscan_think,
                 hitscan_touch
             );
-
-            //     projectile_generic(
-            //     self,
-            //     "Fireball",
-            //     fireball,
-            //     SHAPE_CIRCLE,
-            //     25,
-            //     vector2d(-25,-25),
-            //     10,
-            //     10,
-            //     self->position,
-            //     fireball_think,
-            //     fireball_touch
-            // );
                 break;
             case 2: 
                 projectile_generic(
@@ -310,6 +299,21 @@ void player_think_1 (Entity *self){
                 self->position,
                 healingAura_think,
                 healingAura_touch
+            );
+                break;
+            case 3:
+                projectile_generic(
+                self,
+                "Turret",
+                fireball,
+                SHAPE_CIRCLE,
+                200,
+                vector2d(-100,-100),
+                0.1 * p->strength,
+                0.5,
+                self->position,
+                turret_think,
+                turret_touch
             );
                 break;
             default: 
@@ -340,7 +344,7 @@ void player_think_1 (Entity *self){
                 break;
             case 2: 
 
-                vector2d_scale(vScale, p->direction, 200);
+                vector2d_scale(vScale, self->size, 200);
 
                 vector2d_add(vScaled, self->position, vScale);
 
@@ -375,7 +379,6 @@ void player_think_1 (Entity *self){
         p->speed = 1;
         p->last_skill3 = level_get_active()->frame;
     }
-    slog("b for 3 %d, %d", p->cldn_skill3, p->last_skill3);
 
     if (self->health <= 0){
         self->_inuse = 0;
