@@ -257,18 +257,20 @@ void player_think_1 (Entity *self){
     // slog("Speed of %s: %f", self->name, p->speed);
     self->position.x += x*p->speed;
     self->position.y += y*p->speed;
-    if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
+    if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius))
     {
         //TODO: Do something is ent hits bounds
-        if (level_get_active()->level_type == LEVEL_T_NORMAL){
-            self->position.x -= x*p->speed;
-            self->position.y -= y*p->speed;
-        }
-        else if (level_get_active()->level_type == LEVEL_T_LAVA){
+        self->position.x -= x*p->speed;
+        self->position.y -= y*p->speed;
+    }
+    if (level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius)){
+        if (level_get_active()->level_type == LEVEL_T_LAVA){
             self->health -= 0.1;
             // slog("%s health: %f", self->name, p->health);
         }
-        
+        else if (level_get_active()->level_type == LEVEL_T_NORMAL){
+            p->speed = p->speed / 2;
+        }
     }
 
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A) && p->last_skill1 + p->cldn_skill1 < level_get_active()->frame){
@@ -302,23 +304,7 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 3:
-            if (!p->deployables){
-                projectile_generic(
-                    self,
-                    "Turret",
-                    turret,
-                    SHAPE_CIRCLE,
-                    200,
-                    vector2d(-16,-16),
-                    0.1 * p->strength,
-                    0.5,
-                    self->position,
-                    turret_think,
-                    turret_touch
-                );
-                p->deployables += 1;
-            }
-                
+                    p->speed = 5;                
                 break;
             default: 
                 slog("no attack");
@@ -369,8 +355,23 @@ void player_think_1 (Entity *self){
                 damageAura_touch
             );
                 break;
-            case 3:
-                    p->speed = 5;                
+                case 3:
+            if (!p->deployables){
+                projectile_generic(
+                    self,
+                    "Turret",
+                    turret,
+                    SHAPE_CIRCLE,
+                    200,
+                    vector2d(-16,-16),
+                    0.1 * p->strength,
+                    0.5,
+                    self->position,
+                    turret_think,
+                    turret_touch
+                );
+                p->deployables += 1;
+            }
                 break;
             default: 
                 slog("no attack");

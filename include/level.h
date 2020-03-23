@@ -12,8 +12,8 @@
 #define LEVEL_T_NORMAL 1
 #define LEVEL_T_LAVA   2
 
-SDL_Rect bounds_normal;
-SDL_Rect bounds_lava;
+SDL_Rect bounds_level;
+SDL_Rect bounds_stage;
 
 Vector4D v4d_red;
 Vector4D v4d_green;
@@ -22,7 +22,8 @@ Vector4D v4d_blue;
 typedef struct
 {
     Sprite *background;     /**<Background sprite*/
-    SDL_Rect bounds;        /**<Bounds*/
+    SDL_Rect bounds_level;        /**<Bounds*/
+    SDL_Rect bounds_stage;
     int     frame;          /**<Frame ++ on update*/
     int     done;           /**<Done condition*/
     int     paused;
@@ -40,7 +41,7 @@ typedef struct
  * @param bounds Level bounds
  * @return Object type of Level
  * */
-Level *level_new(char *backgroundFile, SDL_Rect bounds, int type);
+Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage, int type);
 
 /**
  * @brief Frees level and its sprite
@@ -64,6 +65,6 @@ Level *level_get_active();
  * @brief test if a circle is touching or exceeding the level bounds
  * @return 1 if anything exceeds level bounds
  */
-Uint8 level_bounds_test_circle(Level *level, Vector2D center, float radius);
+Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius);
 
 #endif

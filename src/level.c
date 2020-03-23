@@ -9,8 +9,8 @@ SJson *level_load_config(){
     return config;
 }
 
-SDL_Rect bounds_normal  = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
-SDL_Rect bounds_lava    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET*2, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET*2};
+SDL_Rect bounds_level  = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
+SDL_Rect bounds_stage    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET*2, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET*2};
 
 Vector4D v4d_red   = {255, 100, 100, 255};
 Vector4D v4d_green = {100, 255, 100, 255};
@@ -23,7 +23,7 @@ Level *level_get_active()
     return current_level;
 }
 
-Level *level_new(char *backgroundFile, SDL_Rect bounds, int type)
+Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage, int type)
 {
     Level *level;
     if (!backgroundFile)
@@ -34,8 +34,9 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds, int type)
     level = (Level*)gfc_allocate_array(sizeof(Level), 1); //allocate array
     if(!level)return NULL;
     level->background = gf2d_sprite_load_image(backgroundFile);
-    gfc_rect_set(level->bounds, bounds.x, bounds.y, bounds.w, bounds.h);
-    slog("Level created %d x %d", level->bounds.w, level->bounds.h);
+    gfc_rect_set(level->bounds_level, bounds_level.x, bounds_level.y, bounds_level.w, bounds_level.h);
+    gfc_rect_set(level->bounds_stage, bounds_stage.x, bounds_stage.y, bounds_stage.w, bounds_stage.h);
+    slog("Level created %d x %d", level->bounds_level.w, level->bounds_level.h);
     level->level_type = type;
     level->config = level_load_config();
     level->core_A = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_A);
@@ -49,13 +50,14 @@ void level_free(Level *level){
     if (!level)return;
     gf2d_sprite_free(level->background);
     free(level);
-    slog("Level freed %d x %d", level->bounds.w, level->bounds.h);
+    slog("Level freed %d x %d", level->bounds_level.w, level->bounds_level.h);
 }
 
 void level_draw(Level *level){
     if (!level)return;
     gf2d_sprite_draw_image(level->background,vector2d(0,0));
-    gf2d_draw_rect(level->bounds, vector4d(0,255,0,255));
+    gf2d_draw_rect(level->bounds_level, vector4d(0,255,0,255));
+    gf2d_draw_rect(level->bounds_stage, vector4d(0,255,100,255));
     // level_core_draw();
 }
 
@@ -111,34 +113,33 @@ void level_pickups_spawn(){
     }
 }
 
-Uint8 level_bounds_test_circle(Level *level, Vector2D center, float radius)
+Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius)
 {
     Uint8 hit = 0;
-    if (!level)
-    {
-        slog("no level provided for test");
-        return 0;
-    }
-    if (center.x - radius < level->bounds.x)
+    // if (!bounds)
+    // {
+    //     slog("no level provided for test");
+    //     return 0;
+    // }
+    if (center.x - radius < bounds.x)
     {
         hit = 1;    
         // slog("Hitting left border");
     }
-    if (center.y - radius < level->bounds.y)
+    if (center.y - radius < bounds.y)
     {
         hit = 1;
         // slog("Hitting top border");
     }
-    if (center.x + radius > level->bounds.x + level->bounds.w)
+    if (center.x + radius > bounds.x + bounds.w)
     {
         hit = 1;
         // slog("Hitting right border");
     }
-    if (center.y + radius > level->bounds.y + level->bounds.h)
+    if (center.y + radius > bounds.y + bounds.h)
     {
         hit = 1;
         // slog("Hitting bottom border");
     }
-    
     return hit;
 }

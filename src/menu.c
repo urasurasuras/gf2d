@@ -241,22 +241,14 @@ void button_level_think (Menu *self){
             last_level_change = SDL_GetTicks();
             if (level_get_active()->level_type == LEVEL_T_NORMAL){
                 level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_lava.png");
-                level_get_active()->bounds = bounds_lava;
                 level_get_active()->level_type = LEVEL_T_LAVA;
 
-                // level_free(level_get_active());
-
-                // level_new("images/backgrounds/bg_lava.png",bounds_lava,2);
                 slog("Level type: %d", level_get_active()->level_type);
             }
             else if (level_get_active()->level_type == LEVEL_T_LAVA){
                 level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_flat.png");
-                level_get_active()->bounds = bounds_normal;
                 level_get_active()->level_type = LEVEL_T_NORMAL;
 
-                // level_free(level_get_active());
-
-                // level_new("images/backgrounds/bg_flat.png",bounds_normal,1);
                 slog("Level type: %d", level_get_active()->level_type);
             }
             // SDL_Log("done = %d", done);
