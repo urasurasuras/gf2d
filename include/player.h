@@ -39,6 +39,8 @@ typedef struct Player_S
     int                 cldn_skill3;
     int                 last_skill3;
 
+    int                 deployables;        /**<Number of active deployables the players has*/
+
     // float               health;    
     float               speed;              /**<Speed multipler*/
     float               strength;           /**<Strength multiplier*/

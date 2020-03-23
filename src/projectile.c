@@ -236,6 +236,8 @@ void turret_think(Entity *self){
     p->time_alive += 1;
 
     if (p->time_alive > p->time_to_live){
+        Player *owner_player = (Player *)p->owner_entity->typeOfEnt;
+        owner_player->deployables -= 1;
         self->_inuse = 0;
         return;
     }

@@ -302,19 +302,23 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 3:
+            if (!p->deployables){
                 projectile_generic(
-                self,
-                "Turret",
-                turret,
-                SHAPE_CIRCLE,
-                200,
-                vector2d(-16,-16),
-                0.1 * p->strength,
-                0.5,
-                self->position,
-                turret_think,
-                turret_touch
-            );
+                    self,
+                    "Turret",
+                    turret,
+                    SHAPE_CIRCLE,
+                    200,
+                    vector2d(-16,-16),
+                    0.1 * p->strength,
+                    0.5,
+                    self->position,
+                    turret_think,
+                    turret_touch
+                );
+                p->deployables += 1;
+            }
+                
                 break;
             default: 
                 slog("no attack");
