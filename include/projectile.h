@@ -22,6 +22,7 @@
 Sprite *fireball;
 Sprite *healing_aura;
 Sprite *damage_aura;
+Sprite *turret;
 //Pickup sprites
 Sprite *pickup_health;
 Sprite *pickup_boost;

@@ -65,6 +65,9 @@ void projectile_load_sprites(){
         else if (!strcmp(name_string, "projectile_damageAura")){
             damage_aura = gf2d_sprite_load_image(spritePath_string);
         }
+        else if (!strcmp(name_string, "turret.png")){
+            turret = gf2d_sprite_load_image(spritePath_string);
+        }
         else
         {
             slog("no matching spritepath");// code to be executed if n doesn't match any cases

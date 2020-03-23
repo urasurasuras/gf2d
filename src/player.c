@@ -305,10 +305,10 @@ void player_think_1 (Entity *self){
                 projectile_generic(
                 self,
                 "Turret",
-                fireball,
+                turret,
                 SHAPE_CIRCLE,
                 200,
-                vector2d(-100,-100),
+                vector2d(-16,-16),
                 0.1 * p->strength,
                 0.5,
                 self->position,
