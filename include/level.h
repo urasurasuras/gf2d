@@ -13,7 +13,8 @@
 #define LEVEL_T_LAVA   2
 
 SDL_Rect bounds_level;
-SDL_Rect bounds_stage;
+SDL_Rect bounds_stage_wide;
+SDL_Rect bounds_stage_narrow;
 
 Vector4D v4d_red;
 Vector4D v4d_green;

@@ -114,7 +114,7 @@ int main(int argc, char * argv[])
     int last_tab = 0;
     
     /*demo setup*/
-    level = level_new("images/backgrounds/bg_grass.png",bounds_level,bounds_stage,1);
+    level = level_new("images/backgrounds/bg_grass.png",bounds_level,bounds_stage_wide,1);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     players_spawn();
     projectile_load_sprites();

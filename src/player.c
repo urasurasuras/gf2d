@@ -269,7 +269,7 @@ void player_think_1 (Entity *self){
             // slog("%s health: %f", self->name, p->health);
         }
         else if (level_get_active()->level_type == LEVEL_T_NORMAL){
-            p->speed = p->speed / 2;
+            p->speed = 0.5;
         }
     }
 

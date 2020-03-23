@@ -9,8 +9,9 @@ SJson *level_load_config(){
     return config;
 }
 
-SDL_Rect bounds_level  = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
-SDL_Rect bounds_stage    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET*2, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET*2};
+SDL_Rect bounds_level           = {0,0,LEVEL_WIDTH,LEVEL_HEIGHT};
+SDL_Rect bounds_stage_wide      = {LEVEL_SPAWN_OFFSET/2, LEVEL_SPAWN_OFFSET/2, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET};
+SDL_Rect bounds_stage_narrow    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL_WIDTH-LEVEL_SPAWN_OFFSET*2, LEVEL_HEIGHT-LEVEL_SPAWN_OFFSET*2};
 
 Vector4D v4d_red   = {255, 100, 100, 255};
 Vector4D v4d_green = {100, 255, 100, 255};
@@ -23,7 +24,7 @@ Level *level_get_active()
     return current_level;
 }
 
-Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage, int type)
+Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage_wide, int type)
 {
     Level *level;
     if (!backgroundFile)
@@ -35,7 +36,7 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_st
     if(!level)return NULL;
     level->background = gf2d_sprite_load_image(backgroundFile);
     gfc_rect_set(level->bounds_level, bounds_level.x, bounds_level.y, bounds_level.w, bounds_level.h);
-    gfc_rect_set(level->bounds_stage, bounds_stage.x, bounds_stage.y, bounds_stage.w, bounds_stage.h);
+    gfc_rect_set(level->bounds_stage, bounds_stage_wide.x, bounds_stage_wide.y, bounds_stage_wide.w, bounds_stage_wide.h);
     slog("Level created %d x %d", level->bounds_level.w, level->bounds_level.h);
     level->level_type = type;
     level->config = level_load_config();
