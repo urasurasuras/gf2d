@@ -240,6 +240,7 @@ void button_level_think (Menu *self){
         if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && last_level_change + 750 < SDL_GetTicks()) {
             last_level_change = SDL_GetTicks();
             if (level_get_active()->level_type == LEVEL_T_NORMAL){
+                gf2d_sprite_free(level_get_active()->background);
                 level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_lava.png");
                 level_get_active()->bounds_stage = bounds_stage_narrow;
                 level_get_active()->level_type = LEVEL_T_LAVA;
@@ -249,8 +250,9 @@ void button_level_think (Menu *self){
                 slog("Level type: %d", level_get_active()->level_type);
             }
             else if (level_get_active()->level_type == LEVEL_T_LAVA){
+                gf2d_sprite_free(level_get_active()->background);
                 level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_grass.png");
-                level_get_active()->bounds_stage = bounds_stage_narrow;
+                level_get_active()->bounds_stage = bounds_stage_wide;
                 level_get_active()->level_type = LEVEL_T_NORMAL;
                 level_get_active()->neutral_monster->_inuse = 0;
                 level_get_active()->neutral_monster = grassGuy_new();

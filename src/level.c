@@ -24,7 +24,7 @@ Level *level_get_active()
     return current_level;
 }
 
-Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage_wide, int type)
+Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage_wide, int type)
 {
     Level *level;
     if (!backgroundFile)

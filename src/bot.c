@@ -129,15 +129,13 @@ void enemy_detect(Entity *self, Entity *other){
     }
 }
 
-// static int not_enemy_last_moved;
-// static int not_enemy_moved_for;
 void not_enemy_think (Entity *self){
     Bot *b = (Bot *)self->typeOfEnt;
     //move
     // int ne_random_x = 1;
     // int ne_random_y = 1;
     int ne_random_dir;
-    // srand((unsigned) /*level_get_active()->frame * */time(NULL));
+    srand((unsigned) level_get_active()->frame * time(NULL));
     if (b->last_randomized + b->cldn_randomized < level_get_active()->frame ){
         ne_random_dir = rand() %2;
         slog("direction %d", ne_random_dir);
