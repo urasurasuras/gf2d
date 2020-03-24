@@ -42,18 +42,7 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_st
     level->config = level_load_config();
     level->core_A = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_A);
     level->core_B = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_B);
-
-    Entity *enemy = entity_new();
-    strcpy(enemy->name, "Enemy");
-    enemy->sprite = gf2d_sprite_load_image("images/enemies/enemy.png");
-    enemy->position = vector2d(LEVEL_WIDTH/2, LEVEL_HEIGHT/2);
-    enemy->radius_body = 64; //TODO: radius per sprite
-    enemy->radius_range = 256;
-    enemy->collider_shape = SHAPE_CIRCLE;
-    enemy->drawOffset = vector2d(-64,-64);
-    enemy->think = enemy_think;
-    enemy->touch = enemy_touch;
-    enemy->detect = enemy_detect;
+lavaGuy_new();
 
     current_level = level;
     return level;

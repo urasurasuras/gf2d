@@ -4,7 +4,7 @@
 #include "entity.h"
 #include "projectile.h"
 #include "level_core.h"
-#include "enemy.h"
+#include "bot.h"
 
 #define LEVEL_WIDTH 1200
 #define LEVEL_HEIGHT 720
