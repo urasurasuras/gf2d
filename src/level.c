@@ -42,7 +42,7 @@ Level *level_new(char *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_st
     level->config = level_load_config();
     level->core_A = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_A);
     level->core_B = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_B);
-lavaGuy_new();
+    level->neutral_monster = grassGuy_new();
 
     current_level = level;
     return level;

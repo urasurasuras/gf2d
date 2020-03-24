@@ -90,9 +90,6 @@ void entity_update_all(){
         entity_update(&entity_manager.entityList[i]);
     }
     //Update map
-    static int num_pickups;
-    
-
 }
 
 void entity_draw(Entity *self){

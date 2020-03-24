@@ -35,6 +35,7 @@ typedef struct
     int     num_pickups;    /**<Number of active pickups in the level*/
     Entity  *core_A;        /**<Pointer to the level core for team A*/
     Entity  *core_B;        /**<Pointer to the level core for team B*/
+    Entity  *neutral_monster;/**<Pointer to the neutral monster in the level*/
 }Level;
 
 /**
