@@ -72,6 +72,13 @@ void entity_update(Entity *self){
     }
     if (self->touch){
         entity_collision_check(self);
+        if (self->type == ENT_RAYSCAN){
+            // slog("this is rayscan");
+            // Projectile *p = (Projectile *)self->typeOfEnt;
+            //     if (p->firstContact){
+            //         self->touch(self, p->firstContact);
+            //     }
+            }
     }else if (!self->touch && self->name){
         // slog("No touch func for %s", self->name);
     }
@@ -111,11 +118,9 @@ void entity_draw(Entity *self){
         (Uint32)self->frame
     );
     if (self->health && self->type == ENT_PLAYER){
-        Player *p = (Player *)self->typeOfEnt;
-
         char hp[16];
         snprintf(hp,16, "%.2f", self->health);
-        SDL_Surface* surfaceMessage = TTF_RenderText_Solid(entity_manager_get_active().font, &hp, entity_manager_get_active().font_color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+        SDL_Surface* surfaceMessage = TTF_RenderText_Solid(entity_manager_get_active().font, hp, entity_manager_get_active().font_color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
         SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); //now you can convert it into a texture
         SDL_RenderCopy(
         gf2d_graphics_get_renderer(), 
@@ -166,14 +171,41 @@ void entity_entity_collide(Entity *e1, Entity *e2)
     if (e1->collider_shape == SHAPE_RECT){
         //TODO: Add check for rect collision
     }
-    if (e1->collider_shape == SHAPE_LINE && e1->type == ENT_HITSCAN){
+    if (e1->collider_shape == SHAPE_LINE){
+        // slog("%s is a  line ", e1->name);
+
         if (e2->collider_shape == SHAPE_CIRCLE && e2->type == ENT_PLAYER){
+
             if (lineCircle(e1->position, e1->size, e2->position, e2->radius_body))
             {//Line to circle
-                if (e1->touch)
-                {
-                    e1->touch(e1,e2);
+                slog("%s hit %s ", e1->name, e2->name);
+                if (e1->type == ENT_RAYSCAN){
+                    Projectile *h = (Projectile *)e1->typeOfEnt;
+                    if (!h)return;
+                    if (e2 == h->owner_entity)return;
+
+                    if (h->firstContact == NULL){
+                        slog("fresh collision %s",e2->name);
+                        h->firstContact = e2;
+                    }
+                    else if (h->firstContact)
+                    {
+                        slog("%d", h->firstContact->team);
+                        // if (fabsf((e1->position.x) - e2->position.x) < fabsf((e1->position.x) - h->firstContact->position.x)    &&
+                        // fabsf((e1->position.y) - e2->position.y) < fabsf((e1->position.y) - h->firstContact->position.y)){
+                        //     slog("new collision %f",fabsf((e1->position.x) - h->firstContact->position.x));
+                        //     // h->firstContact = e2;
+                        // }
+                    }    
                 }
+                else if (e1->type == ENT_HITSCAN){
+                    
+                    if (e1->touch)
+                    {
+                        e1->touch(e1,e2);
+                    }                    
+                }
+
             }
         }
     }

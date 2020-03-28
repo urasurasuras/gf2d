@@ -115,7 +115,7 @@ void enemy_detect(Entity *self, Entity *other){
         pickup_health,
         SHAPE_CIRCLE,
         25,
-        NULL,
+        0,
         vector2d(-25,-25),
         25,
         3,
@@ -135,7 +135,7 @@ void not_enemy_think (Entity *self){
     // int ne_random_x = 1;
     // int ne_random_y = 1;
     int ne_random_dir;
-    srand((unsigned) level_get_active()->frame * time(NULL));
+    // srand((unsigned) level_get_active()->frame * time(NULL));
     if (b->last_randomized + b->cldn_randomized < level_get_active()->frame ){
         ne_random_dir = rand() %2;
         slog("direction %d", ne_random_dir);

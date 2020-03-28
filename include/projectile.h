@@ -37,6 +37,8 @@ typedef struct Projectile_S
     int         time_to_live;   /**<Maximum amount of tine this projectile has to live*/
     float       strength;       /**<Power level of a projectile*/
 
+    Entity      *firstContact;  /**<Entity that has the first point of contact (mostly intended for hitscan)*/
+
     int         cldn_1;
     int         last_cldn_1;
 
@@ -91,7 +93,8 @@ Entity *hitscan_generic(
     float strength,
     int time_to_live,
     void (*think)(struct Entity_S *self),
-    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    void (*touch)(struct Entity_S *self, struct Entity_S *other),
+    int type
 );
 
 // /**
@@ -131,6 +134,8 @@ void healingAura_touch(Entity *self, Entity *other);
 void damageAura_touch(Entity *self, Entity *other);
 
 void hitscan_touch(Entity *self, Entity *other);
+
+void rayscan_touch(Entity *self, Entity *other);
 
 void turret_touch(Entity *self, Entity *other);
 

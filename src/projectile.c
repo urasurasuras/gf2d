@@ -120,8 +120,6 @@ Entity *projectile_generic(
         self = entity_new();
         if (!self)return NULL;
         //Init ent
-        Player  *owner_player;
-        owner_player = owner_entity->typeOfEnt;
         strcpy(self->name, name);
         self->sprite = sprite;
         self->collider_shape = collider_shape;
@@ -160,14 +158,13 @@ Entity *hitscan_generic(
     float strength,
     int time_to_live,
     void (*think)(struct Entity_S *self),
-    void (*touch)(struct Entity_S *self, struct Entity_S *other)
+    void (*touch)(struct Entity_S *self, struct Entity_S *other),
+    int type
     ){
         Entity *self;
         self = entity_new();
         if (!self)return NULL;
         //Init ent
-        Player  *owner_player;
-        owner_player = owner_entity->typeOfEnt;
         strcpy(self->name, name);
         // self->sprite = sprite;
         self->collider_shape = collider_shape;
@@ -188,8 +185,11 @@ Entity *hitscan_generic(
         hitscan->time_to_live = time_to_live;
         hitscan->time_alive = 0;
         hitscan->strength = strength;
+
+        // hitscan->firstContact = (Entity *)malloc
+
         self->typeOfEnt = (Projectile *)hitscan;
-        self->type = ENT_HITSCAN;
+        self->type = type;
         self->team = owner_entity->team;
         self->think = think;
         self->touch = touch;
@@ -315,6 +315,7 @@ void damageAura_touch(Entity *self, Entity *other){
 void hitscan_touch(Entity *self, Entity *other){
     //TODO: circle detecction
     if (!self)return;
+    if (!other)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
     // slog("Self team %d other ");
@@ -332,6 +333,14 @@ void hitscan_touch(Entity *self, Entity *other){
             // slog("Damaged %s %f", other->name, other_player->health);
         }
     }
+}
+
+void rayscan_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+
+
 }
 
 void turret_touch(Entity *self, Entity *other){
@@ -360,7 +369,7 @@ void turret_detect(Entity *self, Entity *other){
         fireball,
         SHAPE_CIRCLE,
         25,
-        NULL,
+        0,
         vector2d(-25,-25),
         25 * p->strength,
         3,

@@ -34,7 +34,7 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
     }
     level = (Level*)gfc_allocate_array(sizeof(Level), 1); //allocate array
     if(!level)return NULL;
-    level->background = gf2d_sprite_load_image(backgroundFile);
+    level->background = backgroundFile;
     gfc_rect_set(level->bounds_level, bounds_level.x, bounds_level.y, bounds_level.w, bounds_level.h);
     gfc_rect_set(level->bounds_stage, bounds_stage_wide.x, bounds_stage_wide.y, bounds_stage_wide.w, bounds_stage_wide.h);
     slog("Level created %d x %d", level->bounds_level.w, level->bounds_level.h);
@@ -70,7 +70,7 @@ void level_pickups_spawn(){
     pickup_array_config = sj_object_get_value(config, "Pickups");
     static int random_number = 1;
 
-    srand((unsigned) level_get_active()->frame * time(NULL));
+    // srand((unsigned) level_get_active()->frame * time(NULL));
 
     random_number = rand() % sj_array_get_count(pickup_array_config);
     float randomX = 30 + rand() % LEVEL_WIDTH-30;

@@ -283,9 +283,10 @@ void player_think_1 (Entity *self){
                 "Hitscan",
                 SHAPE_LINE,
                 .1,
-                50,
+                1,
                 hitscan_think,
-                hitscan_touch
+                hitscan_touch,
+                ENT_HITSCAN
             );
                 break;
             case 2: 
@@ -295,7 +296,7 @@ void player_think_1 (Entity *self){
                 healing_aura,
                 SHAPE_CIRCLE,
                 100,
-                NULL,
+                0,
                 vector2d(-100,-100),
                 0.1 * p->strength,
                 5,
@@ -326,7 +327,7 @@ void player_think_1 (Entity *self){
                 fireball,
                 SHAPE_CIRCLE,
                 25,
-                NULL,
+                0,
                 vector2d(-25,-25),
                 25 * p->strength,
                 3,
@@ -351,7 +352,7 @@ void player_think_1 (Entity *self){
                 damage_aura,
                 SHAPE_CIRCLE,
                 100,
-                NULL,
+                0,
                 vector2d(-100,-100),
                 0.1 * p->strength,
                 5,

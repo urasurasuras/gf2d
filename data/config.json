@@ -3,7 +3,7 @@
 		{
 		"Name":"Player1",
 		"Sprite":"images/players/white-circle.png",
-		"ControllerIndex":"1",
+		"ControllerIndex":"0",
 		"Position":["100.000000","100.000000"],
 		"Health":"100.000000",
 		"Cooldowns":["50","100"],
@@ -21,7 +21,7 @@
 		{
 		"Name":"Player3",
 		"Sprite":"images/players/blue-circle.png",
-		"ControllerIndex":"0",
+		"ControllerIndex":"2",
 		"Position":["100.000000","620.000000"],
 		"Health":"100.000000",
 		"Cooldowns":["500","100"],
