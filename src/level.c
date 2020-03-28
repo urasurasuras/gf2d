@@ -73,8 +73,8 @@ void level_pickups_spawn(){
     srand((unsigned) level_get_active()->frame * time(NULL));
 
     random_number = rand() % sj_array_get_count(pickup_array_config);
-    float randomX = rand() % LEVEL_WIDTH;
-    float randomY = rand() % LEVEL_HEIGHT;
+    float randomX = 30 + rand() % LEVEL_WIDTH-30;
+    float randomY = 30 + rand() % LEVEL_HEIGHT-30;
 
     SJson *current_pickup = sj_array_get_nth(pickup_array_config,random_number);
     SJson *pickup_name = sj_object_get_value(current_pickup, "Name");
