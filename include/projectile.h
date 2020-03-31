@@ -125,6 +125,8 @@ void damageAura_think(Entity *self);
 
 void hitscan_think(Entity *self);
 
+void rayscan_think(Entity *self);
+
 void turret_think(Entity *self);
 
 void fireball_touch(Entity *self, Entity *other);

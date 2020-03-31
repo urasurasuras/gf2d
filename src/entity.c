@@ -178,7 +178,7 @@ void entity_entity_collide(Entity *e1, Entity *e2)
 
             if (lineCircle(e1->position, e1->size, e2->position, e2->radius_body))
             {//Line to circle
-                slog("%s hit %s ", e1->name, e2->name);
+                // slog("%s hit %s ", e1->name, e2->name);
                 if (e1->type == ENT_RAYSCAN){
                     Projectile *h = (Projectile *)e1->typeOfEnt;
                     if (!h)return;
@@ -186,16 +186,17 @@ void entity_entity_collide(Entity *e1, Entity *e2)
 
                     if (h->firstContact == NULL){
                         slog("fresh collision %s",e2->name);
+
                         h->firstContact = e2;
                     }
                     else if (h->firstContact)
                     {
-                        slog("%d", h->firstContact->team);
-                        // if (fabsf((e1->position.x) - e2->position.x) < fabsf((e1->position.x) - h->firstContact->position.x)    &&
-                        // fabsf((e1->position.y) - e2->position.y) < fabsf((e1->position.y) - h->firstContact->position.y)){
-                        //     slog("new collision %f",fabsf((e1->position.x) - h->firstContact->position.x));
-                        //     // h->firstContact = e2;
-                        // }
+                        // slog("%d", h->firstContact->team);
+                        if (fabsf((e1->position.x) - e2->position.x) < fabsf((e1->position.x) - h->firstContact->position.x)    &&
+                        fabsf((e1->position.y) - e2->position.y) < fabsf((e1->position.y) - h->firstContact->position.y)){
+                            slog("new collision %f",fabsf((e1->position.x) - h->firstContact->position.x));
+                            h->firstContact = e2;
+                        }
                     }    
                 }
                 else if (e1->type == ENT_HITSCAN){

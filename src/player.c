@@ -283,10 +283,10 @@ void player_think_1 (Entity *self){
                 "Hitscan",
                 SHAPE_LINE,
                 .1,
-                1,
-                hitscan_think,
+                2,
+                rayscan_think,
                 hitscan_touch,
-                ENT_HITSCAN
+                ENT_RAYSCAN
             );
                 break;
             case 2: 

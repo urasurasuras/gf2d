@@ -186,7 +186,7 @@ Entity *hitscan_generic(
         hitscan->time_alive = 0;
         hitscan->strength = strength;
 
-        // hitscan->firstContact = (Entity *)malloc
+        hitscan->firstContact = (Entity *)malloc(sizeof(Entity));
 
         self->typeOfEnt = (Projectile *)hitscan;
         self->type = type;
@@ -228,6 +228,17 @@ void hitscan_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
 
+    if (p->time_alive > p->time_to_live){
+        self->_inuse = 0;
+        return;
+    }
+}
+
+void rayscan_think(Entity *self){
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    p->time_alive += 1;
+    slog("hit %s ", p->firstContact->name);
+    p->firstContact->health -= 0.1;
     if (p->time_alive > p->time_to_live){
         self->_inuse = 0;
         return;
