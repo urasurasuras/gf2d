@@ -1,47 +1,5 @@
 #include "projectile.h"
 
-// Projectile *projectile_new(Entity *owner_entity, float speed){
-//     //Initializations of owner player
-//     Player  *owner_player;
-//     owner_player = owner_entity->typeOfEnt;
-//     //Declaration of projectile
-//     Projectile *projectile;
-//     projectile = (Projectile * )malloc(sizeof(Projectile));
-//     //Initialization of projectile
-//     projectile->owner_entity = owner_entity;
-//     vector2d_copy(projectile->direction, owner_player->direction);
-//     projectile->speed = speed;
-//     projectile->time_to_live = LEVEL_WIDTH/speed;
-//     projectile->time_alive = 0;
-//     projectile->strength = 50;  //TODO: no magic number
-//     return projectile;
-// }
-
-// Entity *projectile_new_ent(
-//     Entity *owner_entity, 
-//     float speed, 
-//     char sprite_path[], 
-//     Vector2D init_pos
-//     )
-//     {
-//         Entity *self;
-//         self = entity_new();
-//         if (!self)return NULL;
-//         //Init ent
-//         strcpy(self->name, "Projectile");
-//         self->sprite = gf2d_sprite_load_image(
-//             sprite_path
-//         );
-//         self->radius = 20;
-//         vector2d_set(self-> drawOffset,-25,-25);
-//         vector2d_copy(self->position, init_pos);  
-
-//         Player  *owner_player;
-//         owner_player = owner_entity->typeOfEnt;
-        
-//         return self;
-// }
-
 void projectile_load_sprites(){
     SJson *config = level_get_active()->config;
 
@@ -195,7 +153,8 @@ Entity *hitscan_generic(
         self->touch = touch;
         return self;
     }
-void fireball_think(Entity *self){
+
+void think_move_constVel(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
@@ -206,7 +165,7 @@ void fireball_think(Entity *self){
     self->position.y += self->size.y * p->speed;
 }
 
-void healingAura_think(Entity *self){
+void think_stationary(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
@@ -215,24 +174,37 @@ void healingAura_think(Entity *self){
     }
 }
 
-void damageAura_think(Entity *self){
-    Projectile *p = (Projectile *)self->typeOfEnt;
-    p->time_alive += 1;
-    if (p->time_alive > p->time_to_live){
-        self->_inuse = 0;
-        return;
-    }
-}
+// void fireball_think(Entity *self){
 
-void hitscan_think(Entity *self){
-    Projectile *p = (Projectile *)self->typeOfEnt;
-    p->time_alive += 1;
+// }
 
-    if (p->time_alive > p->time_to_live){
-        self->_inuse = 0;
-        return;
-    }
-}
+// void healingAura_think(Entity *self){
+//     Projectile *p = (Projectile *)self->typeOfEnt;
+//     p->time_alive += 1;
+//     if (p->time_alive > p->time_to_live){
+//         self->_inuse = 0;
+//         return;
+//     }
+// }
+
+// void damageAura_think(Entity *self){
+//     Projectile *p = (Projectile *)self->typeOfEnt;
+//     p->time_alive += 1;
+//     if (p->time_alive > p->time_to_live){
+//         self->_inuse = 0;
+//         return;
+//     }
+// }
+
+// void hitscan_think(Entity *self){
+//     Projectile *p = (Projectile *)self->typeOfEnt;
+//     p->time_alive += 1;
+
+//     if (p->time_alive > p->time_to_live){
+//         self->_inuse = 0;
+//         return;
+//     }
+// }
 
 void rayscan_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
@@ -372,7 +344,7 @@ void turret_detect(Entity *self, Entity *other){
         self->size.x = cos(vector2d_angle(v) * M_PI/180);
         self->size.y = sin(vector2d_angle(v) * M_PI/180);
         // vector2d_copy(self->size, other->position);
-        slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
+        // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 
         projectile_generic(
         self,
@@ -385,7 +357,7 @@ void turret_detect(Entity *self, Entity *other){
         25 * p->strength,
         3,
         self->position,
-        fireball_think,
+        think_move_constVel,
         fireball_touch,
         NULL
         ); 

@@ -301,7 +301,7 @@ void player_think_1 (Entity *self){
                 0.1 * p->strength,
                 5,
                 self->position,
-                healingAura_think,
+                think_stationary,
                 healingAura_touch,
                 NULL
             );
@@ -332,7 +332,7 @@ void player_think_1 (Entity *self){
                 25 * p->strength,
                 3,
                 self->position,
-                fireball_think,
+                think_move_constVel,
                 fireball_touch,
                 NULL
             );
@@ -357,7 +357,7 @@ void player_think_1 (Entity *self){
                 0.1 * p->strength,
                 5,
                 vScaled,
-                damageAura_think,
+                think_stationary,
                 damageAura_touch,
                 NULL
             );

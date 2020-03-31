@@ -114,9 +114,22 @@ Entity *hitscan_generic(
 // Entity *projectile_new_ent(Entity *owner_entity, float speed, char sprite_path[], Vector2D init_pos);
 
 /**
- * @brief Called every frame
+ * @brief Generic think function for entites that have 
+ * constant velocity inherited from its owner 
+ * (used for projectiles etc.)
  * @param self Pointer to self ent
+ * @return Then time_to_live is exceeded
  * */
+void think_move_constVel(Entity *self);
+
+/**
+ * @brief Generic think function for entities that are 
+ * stationary (used for turrets, auras etc.)
+ * @param self Pointer to self
+ * @return Then time_to_live is exceeded
+ * */
+void think_stationary(Entity *self);
+
 void fireball_think(Entity *self);
 
 void healingAura_think(Entity *self);

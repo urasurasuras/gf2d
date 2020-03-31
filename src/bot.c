@@ -120,7 +120,7 @@ void enemy_detect(Entity *self, Entity *other){
         25,
         3,
         self->position,
-        fireball_think,
+        think_move_constVel,
         pickup_health_touch,
         NULL
         ); 
