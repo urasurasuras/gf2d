@@ -1,61 +1,72 @@
 #include "projectile.h"
 
 void projectile_load_sprites(){
-    SJson *config = level_get_active()->config;
 
-    SJson *projectile_array_config = sj_object_get_value(config, "Projectiles");
-    int i;
-    for (i = 0;i < sj_array_get_count(projectile_array_config);i++){
-        SJson *config_proj_data = sj_array_get_nth(projectile_array_config, i);
+    fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
+    healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
+    damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
+    turret = gf2d_sprite_load_image("images/projectiles/turret.png");
+    heal_dart = gf2d_sprite_load_image("images/projectiles/heal_dart.png");
 
-        SJson *projectile_name = sj_object_get_value(config_proj_data, "Name");
-        SJson *projectile_spritePath = sj_object_get_value(config_proj_data, "Sprite");
-        char *name_string = (char *)sj_get_string_value(projectile_name);
-        char *spritePath_string = (char *)sj_get_string_value(projectile_spritePath);
-        slog("Loaded sprite %s", name_string);
+    pickup_health = gf2d_sprite_load_image("images/pickups/pickup_health.png");
+    pickup_boost = gf2d_sprite_load_image("images/pickups/pickup_boost.png");
+    pickup_speed = gf2d_sprite_load_image("images/pickups/pickup_speed.png");
 
-        if (!strcmp(name_string, "projectile_fireball")){
-            fireball = gf2d_sprite_load_image(spritePath_string);
-        }
-        else if (!strcmp(name_string, "projectile_healingAura")){
-            healing_aura = gf2d_sprite_load_image(spritePath_string);
-        }
-        else if (!strcmp(name_string, "projectile_damageAura")){
-            damage_aura = gf2d_sprite_load_image(spritePath_string);
-        }
-        else if (!strcmp(name_string, "turret.png")){
-            turret = gf2d_sprite_load_image(spritePath_string);
-        }
-        else
-        {
-            slog("no matching spritepath");// code to be executed if n doesn't match any cases
-        }
-    }
+    // SJson *config = level_get_active()->config;
 
-    SJson *pickup_array_config = sj_object_get_value(config, "Pickups");
+    // SJson *projectile_array_config = sj_object_get_value(config, "Projectiles");
     // int i;
-    for (i = 0;i < sj_array_get_count(pickup_array_config);i++){
-        SJson *config_pickup_data = sj_array_get_nth(pickup_array_config, i);
+    // for (i = 0;i < sj_array_get_count(projectile_array_config);i++){
+    //     SJson *config_proj_data = sj_array_get_nth(projectile_array_config, i);
 
-        SJson *pickup_name = sj_object_get_value(config_pickup_data, "Name");
-        SJson *pickup_spritePath = sj_object_get_value(config_pickup_data, "Sprite");
-        char *name_string = (char *)sj_get_string_value(pickup_name);
-        char *spritePath_string = (char *)sj_get_string_value(pickup_spritePath);
-        // slog("%s", name_string);
-        if (!strcmp(name_string, "pickup_heal")){
-            pickup_health = gf2d_sprite_load_image(spritePath_string);
-        }
-        else if (!strcmp(name_string, "pickup_boost")){
-            pickup_boost = gf2d_sprite_load_image(spritePath_string);
-        }
-        else if (!strcmp(name_string, "pickup_speed")){
-            pickup_speed = gf2d_sprite_load_image(spritePath_string);
-        }
-        else
-        {
-            slog("no matching spritepath");// code to be executed if n doesn't match any cases
-        }
-    }
+    //     SJson *projectile_name = sj_object_get_value(config_proj_data, "Name");
+    //     SJson *projectile_spritePath = sj_object_get_value(config_proj_data, "Sprite");
+    //     char *name_string = (char *)sj_get_string_value(projectile_name);
+    //     char *spritePath_string = (char *)sj_get_string_value(projectile_spritePath);
+    //     slog("Loaded sprite %s", name_string);
+
+    //     if (!strcmp(name_string, "projectile_fireball")){
+    //         fireball = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else if (!strcmp(name_string, "projectile_healingAura")){
+    //         healing_aura = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else if (!strcmp(name_string, "projectile_damageAura")){
+    //         damage_aura = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else if (!strcmp(name_string, "turret.png")){
+    //         turret = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else
+    //     {
+    //         slog("no matching spritepath");// code to be executed if n doesn't match any cases
+    //     }
+    // }
+
+    // SJson *pickup_array_config = sj_object_get_value(config, "Pickups");
+    // // int i;
+    // for (i = 0;i < sj_array_get_count(pickup_array_config);i++){
+    //     SJson *config_pickup_data = sj_array_get_nth(pickup_array_config, i);
+
+    //     SJson *pickup_name = sj_object_get_value(config_pickup_data, "Name");
+    //     SJson *pickup_spritePath = sj_object_get_value(config_pickup_data, "Sprite");
+    //     char *name_string = (char *)sj_get_string_value(pickup_name);
+    //     char *spritePath_string = (char *)sj_get_string_value(pickup_spritePath);
+    //     // slog("%s", name_string);
+    //     if (!strcmp(name_string, "pickup_heal")){
+    //         pickup_health = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else if (!strcmp(name_string, "pickup_boost")){
+    //         pickup_boost = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else if (!strcmp(name_string, "pickup_speed")){
+    //         pickup_speed = gf2d_sprite_load_image(spritePath_string);
+    //     }
+    //     else
+    //     {
+    //         slog("no matching spritepath");// code to be executed if n doesn't match any cases
+    //     }
+    // }
 }
 
 Entity *projectile_generic(
@@ -169,6 +180,8 @@ void think_stationary(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
     if (p->time_alive > p->time_to_live){
+        Player *owner_player = (Player *)p->owner_entity->typeOfEnt;
+        owner_player->deployables -= 1;
         self->_inuse = 0;
         return;
     }
@@ -230,28 +243,29 @@ void turret_think(Entity *self){
 }
 
 void fireball_touch(Entity *self, Entity *other){
-    // slog("touch called");
+    if(!self)return;
+    if (!other)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
-    // Player *owner_player = (Player *)owner_ent->typeOfEnt;
-    // Projectile *other_projectile = (Projectile *)other->typeOfEnt;
-    if (other != owner_ent){
+
+    if (other == owner_ent)return;;
+
+    if (other->team != owner_ent->team){
         if (other->type == ENT_PLAYER ){
             Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
-            // slog("%s has %f", other->name, other_player->health);
             self->_inuse = 0;
             return;
         }
         else if (other->type == ENT_CORE ){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
-            // slog("%s has %f", other->name, other_core->health);
             self->_inuse = 0;
             return;
         }
         else if (other->type == ENT_PROJECTILE){
-            // slog("hit another projectile");
+            self->_inuse = 0;
+            return;
         }
     }
 }
@@ -320,6 +334,7 @@ void hitscan_touch(Entity *self, Entity *other){
 
 void rayscan_touch(Entity *self, Entity *other){
     if (!self)return;
+    if (!other)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
 
@@ -327,6 +342,53 @@ void rayscan_touch(Entity *self, Entity *other){
 }
 
 void turret_touch(Entity *self, Entity *other){
+    
+}
+
+void heal_dart_touch(Entity *self, Entity *other){
+    if(!self)return;
+    if (!other)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+
+    if (other == owner_ent)return;
+
+    if (other->team != self->team){
+        if (other->type == ENT_PLAYER ){
+            Player *other_player = (Player *)other->typeOfEnt;
+            other->health -= p->strength;
+            self->_inuse = 0;
+            return;
+        }
+        else if (other->type == ENT_CORE ){
+            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            other->health -= p->strength;
+            self->_inuse = 0;
+            return;
+        }
+        else if (other->type == ENT_PROJECTILE){
+            self->_inuse = 0;
+            return;
+        }
+    }
+    else if (other->team == self->team){
+        if (other->type == ENT_PLAYER ){
+            Player *other_player = (Player *)other->typeOfEnt;
+            other->health += p->strength;
+            self->_inuse = 0;
+            return;
+        }
+        else if (other->type == ENT_CORE ){
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // other->health -= p->strength;
+            self->_inuse = 0;
+            return;
+        }
+        else if (other->type == ENT_PROJECTILE){
+            self->_inuse = 0;
+            return;
+        }
+    }
     
 }
 

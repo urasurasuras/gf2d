@@ -290,6 +290,7 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 2: 
+            if (!p->deployables){
                 projectile_generic(
                 self,
                 "Healing",
@@ -304,11 +305,29 @@ void player_think_1 (Entity *self){
                 think_stationary,
                 healingAura_touch,
                 NULL
-            );
+                );
+                p->deployables += 1;
+            }
                 break;
             case 3:
-                    p->speed = 5;                
+                p->speed = 5;                
                 break;
+            case 4:
+                projectile_generic(
+                    self,
+                    "Healdart",
+                    heal_dart,
+                    SHAPE_CIRCLE,
+                    8,
+                    0,
+                    vector2d(-8,-8),
+                    15 * p->strength,
+                    3,
+                    self->position,
+                    think_move_constVel,
+                    heal_dart_touch,
+                    NULL                    
+                );
             default: 
                 slog("no attack");
         }           
@@ -338,6 +357,7 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 2: 
+            if (!p->deployables){
 
                 vector2d_scale(vScale, self->size, 200);
 
@@ -360,7 +380,9 @@ void player_think_1 (Entity *self){
                 think_stationary,
                 damageAura_touch,
                 NULL
-            );
+                );
+                p->deployables += 1;
+            }
                 break;
                 case 3:
             if (!p->deployables){

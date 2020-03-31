@@ -23,6 +23,7 @@ Sprite *fireball;
 Sprite *healing_aura;
 Sprite *damage_aura;
 Sprite *turret;
+Sprite *heal_dart;
 //Pickup sprites
 Sprite *pickup_health;
 Sprite *pickup_boost;
@@ -153,6 +154,8 @@ void hitscan_touch(Entity *self, Entity *other);
 void rayscan_touch(Entity *self, Entity *other);
 
 void turret_touch(Entity *self, Entity *other);
+
+void heal_dart_touch(Entity *self, Entity *other);
 
 void turret_detect(Entity *self, Entity *other);
 
