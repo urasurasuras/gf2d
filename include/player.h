@@ -40,6 +40,8 @@ typedef struct Player_S
     int                 last_skill2;
     int                 cldn_skill3;
     int                 last_skill3;
+    int                 cldn_skill4;
+    int                 last_skill4;
 
     int                 cldn_action1;
     int                 last_action1;

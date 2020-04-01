@@ -224,6 +224,7 @@ Entity *player_generic(
     player->last_skill1 = 0;
     player->last_skill2 = 0;
     player->last_skill3 = 0;
+    player->last_skill4 = 0;
     player->last_action1 = 0;
     player->cldn_action1 = 50;
     player->companion = (Entity *)malloc(sizeof(Entity));
@@ -621,6 +622,38 @@ void player_think_1 (Entity *self){
             break;
         }
         p->last_skill3 = level_get_active()->frame;
+    }
+
+    if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_Y) && p->last_skill4 + p->cldn_skill4 < level_get_active()->frame){
+        switch (p->index)
+        {
+        case 1:
+            /* code */
+            break;
+        case 2:
+            /* code */
+            break;
+        case 3:
+            hitscan_generic(
+                self,
+                "Hitscan",
+                SHAPE_LINE,
+                10,
+                2,
+                180,
+                rayscan_think,
+                hitscan_touch,
+                ENT_RAYSCAN
+            );            
+            break;
+        case 4:
+            /* code */
+            break;
+        
+        default:
+            break;
+        }
+        p->last_skill4 = level_get_active()->frame;
     }
 
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);

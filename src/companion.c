@@ -65,7 +65,7 @@ void lucioAura_touch(Entity *self, Entity *other){
         switch (c->behavior)
         {
         case 1:
-            healingAura_touch(self, other);
+            lucio_healingAura_touch(self, other);
             // slog("%s heailng %s", self->name, other->name);
             break;
         case 2:
@@ -74,6 +74,25 @@ void lucioAura_touch(Entity *self, Entity *other){
             break;
         default:
             break;
+        }
+    }
+}
+
+void lucio_healingAura_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Companion *p = (Companion *)self->typeOfEnt;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
+
+    if (self->team == other->team){
+        if (other->type == ENT_PLAYER){
+            // Player *other_player = (Player *)other->typeOfEnt;
+            other->health += p->strength;
+            // slog("Damaged %s %f", other->name, other_player->health);
+        }
+        else if (other->type == ENT_CORE){
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
+            other->health += p->strength;
+            // slog("Damaged %s %f", other->name, other_player->health);
         }
     }
 }
