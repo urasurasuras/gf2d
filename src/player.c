@@ -222,9 +222,11 @@ Entity *player_generic(
     player->index = char_index;
     player->last_skill1 = 0;
     player->last_skill2 = 0;
+    player->last_skill3 = 0;
     player->last_action1 = 0;
     player->cldn_action1 = 50;
     player->companion = (Entity *)malloc(sizeof(Entity));
+    player->deployables = 0;
     // slog("Player created with index: %d", player->index);
     player->speed = default_speed;
     player->strength = 1;
