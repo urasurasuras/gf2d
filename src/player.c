@@ -525,6 +525,9 @@ void player_think_1 (Entity *self){
 
 
     if (self->health <= 0){
+        if (p->companion){
+            p->companion->_inuse = 0;
+        }
         self->_inuse = 0;
         //TODO: not free
     }
