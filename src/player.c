@@ -40,7 +40,7 @@ void players_spawn(){
         SJson *player_spritePath;
         SJson *player_controller;
         SJson *player_pos;
-        SJson *player_health;
+        // SJson *player_health;
         SJson *player_cooldowns;
         SJson *player_cldn1;
         SJson *player_cldn2;
@@ -51,7 +51,7 @@ void players_spawn(){
         char* spritePath_string;
         int contIndex;
         Vector2D pos;
-        float *hp;
+        // float *hp;
         int cldn1;
         int cldn2;
         int cldn3;
@@ -79,7 +79,7 @@ void players_spawn(){
                     // slog("Existing player");
                     player_name = sj_object_get_value(saved_player_data, "Name");
                     player_pos = sj_object_get_value(saved_player_data, "Position");
-                    player_health = sj_object_get_value(saved_player_data, "Health");
+                    // player_health = sj_object_get_value(saved_player_data, "Health");
                 }
                 else
                 {
@@ -87,7 +87,7 @@ void players_spawn(){
 
                     player_name = sj_object_get_value(config_player_data, "Name");
                     player_pos = sj_object_get_value(config_player_data, "Position");
-                    player_health = sj_object_get_value(config_player_data, "Health");
+                    // player_health = sj_object_get_value(config_player_data, "Health");
                 }
                 
          
@@ -98,7 +98,7 @@ void players_spawn(){
 
                 player_name = sj_object_get_value(config_player_data, "Name");
                 player_pos = sj_object_get_value(config_player_data, "Position");
-                player_health = sj_object_get_value(config_player_data, "Health");
+                // player_health = sj_object_get_value(config_player_data, "Health");
             }
 
             //Set name
@@ -518,12 +518,7 @@ void player_think_1 (Entity *self){
         default:
             break;
         }
-
-    
     }
-
-
-
     if (self->health <= 0){
         if (p->companion){
             p->companion->_inuse = 0;

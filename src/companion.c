@@ -54,10 +54,6 @@ void think_behavior(Entity *self){
     if (!self)return;
     Companion *c = (Companion *)self->typeOfEnt;
     if (!c->owner_entity)return;
-    Vector2D vScale;
-    Vector2D vScaled;  
-    Player *p = (Player *)c->owner_entity->typeOfEnt;
-    SDL_GameController *controller = p->controller;
 
     vector2d_add(self->position, c->owner_entity->position, c->followOffset);
 }
@@ -90,12 +86,12 @@ void musicBee_touch(Entity *self, Entity *other){
     if (self->team != other->team){
         // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
         if (other->type == ENT_PLAYER){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
         else if (other->type == ENT_CORE){
-            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
@@ -105,7 +101,7 @@ void musicBee_touch(Entity *self, Entity *other){
 void musicBee_detect(Entity *self, Entity *other){
     if (!self)return;
     Companion *p = (Companion *)self->typeOfEnt;
-    Entity *owner_ent = (Entity *)p->owner_entity;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
 
     if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
         && other->type == ENT_PLAYER){

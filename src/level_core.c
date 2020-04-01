@@ -4,8 +4,8 @@
 Entity *level_core_new(Sprite *sprite, int team){
     Entity *core_ent = entity_new();
     strcpy(core_ent->name, "Core");
-    Level_core *core;
-    core = (Level_core *)malloc(sizeof(Level_core));
+    // Level_core *core;
+    // core = (Level_core *)malloc(sizeof(Level_core));
     core_ent->sprite = sprite;
     core_ent->position = vector2d(LEVEL_WIDTH/2, LEVEL_HEIGHT/2);
     slog("%s location: %f,%f", core_ent->name, core_ent->position.x, core_ent->position.y);
@@ -31,7 +31,7 @@ Entity *level_core_new(Sprite *sprite, int team){
         break;
     }
     core_ent->type = ENT_CORE;
-    core_ent->typeOfEnt = (Level_core *)core;
+    // core_ent->typeOfEnt = (Level_core *)core;
 
     return core_ent;
 }

@@ -18,9 +18,9 @@ int main(int argc, char * argv[])
     int mx,my;
     float mf = 0;
     Sprite *mouse;
-    Menu *menu_exit;
-    Menu *menu_save;
-    Menu *menu_level;
+    // Menu *menu_exit;
+    // Menu *menu_save;
+    // Menu *menu_level;
 
     SDL_Rect box_lvl_b = {
         (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 

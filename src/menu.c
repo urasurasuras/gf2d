@@ -186,7 +186,7 @@ void button_save_think (Menu *self){
                 if (entity_manager_get_active().entityList[i].type == ENT_PLAYER){
                     
                     Entity current_ent = entity_manager_get_active().entityList[i];
-                    Player *current_player = (Player *)current_ent.typeOfEnt;
+                    // Player *current_player = (Player *)current_ent.typeOfEnt;
 
                     player_object = sj_object_new();
                     player_pos = sj_array_new();

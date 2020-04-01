@@ -286,12 +286,12 @@ void healingAura_touch(Entity *self, Entity *other){
 
     if (self->team == other->team){
         if (other->type == ENT_PLAYER){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health += p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
         else if (other->type == ENT_CORE){
-            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health += p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
@@ -306,12 +306,12 @@ void damageAura_touch(Entity *self, Entity *other){
     if (self->team != other->team){
         // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
         if (other->type == ENT_PLAYER){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
         else if (other->type == ENT_CORE){
-            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
@@ -320,7 +320,7 @@ void damageAura_touch(Entity *self, Entity *other){
 
 void speedAura_touch(Entity *self, Entity *other){
     if (!self)return;
-    Projectile *p = (Projectile *)self->typeOfEnt;
+    // Projectile *p = (Projectile *)self->typeOfEnt;
 
     if (self->team == other->team){
         if (other->type == ENT_PLAYER){
@@ -341,12 +341,12 @@ void hitscan_touch(Entity *self, Entity *other){
     if (self->team != other->team && other != owner_ent){
 
         if (other->type == ENT_PLAYER){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other->health);
         }
         else if (other->type == ENT_CORE){
-            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
         }
@@ -356,10 +356,8 @@ void hitscan_touch(Entity *self, Entity *other){
 void rayscan_touch(Entity *self, Entity *other){
     if (!self)return;
     if (!other)return;
-    Projectile *p = (Projectile *)self->typeOfEnt;
-    Entity *owner_ent = (Entity *)p->owner_entity;
-
-
+    // Projectile *p = (Projectile *)self->typeOfEnt;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
 }
 
 void turret_touch(Entity *self, Entity *other){
@@ -376,13 +374,13 @@ void heal_dart_touch(Entity *self, Entity *other){
 
     if (other->team != self->team){
         if (other->type == ENT_PLAYER ){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
             self->_inuse = 0;
             return;
         }
         else if (other->type == ENT_CORE ){
-            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             self->_inuse = 0;
             return;
@@ -394,7 +392,7 @@ void heal_dart_touch(Entity *self, Entity *other){
     }
     else if (other->team == self->team){
         if (other->type == ENT_PLAYER ){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health += p->strength;
             self->_inuse = 0;
             return;
@@ -448,7 +446,7 @@ void detect_test(Entity *self, Entity *other){
 void turret_detect(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
-    Entity *owner_ent = (Entity *)p->owner_entity;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
 
     if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
         && other->type == ENT_PLAYER){
@@ -505,7 +503,7 @@ Entity *level_pickup_new(
 
 void pickup_health_touch(Entity *self, Entity *other){
     if (!self)return;
-    Player *other_player = (Player *)other->typeOfEnt;
+    // Player *other_player = (Player *)other->typeOfEnt;
 
     if (other->type == ENT_PLAYER){
         other->health += 50;
