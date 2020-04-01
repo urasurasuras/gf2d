@@ -11,7 +11,9 @@ void projectile_load_sprites(){
 
     pickup_health = gf2d_sprite_load_image("images/pickups/pickup_health.png");
     pickup_boost = gf2d_sprite_load_image("images/pickups/pickup_boost.png");
-    pickup_speed = gf2d_sprite_load_image("images/pickups/pickup_speed.png");
+
+    companion_musicBee = gf2d_sprite_load_all("images/companions/music_bee.png", 28, 28, 2);
+    // companion_musicBee = gf2d_sprite_load_image("images/companions/music_bee.png");
 
     // SJson *config = level_get_active()->config;
 

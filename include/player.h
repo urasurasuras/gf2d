@@ -45,6 +45,8 @@ typedef struct Player_S
 
     int                 deployables;        /**<Number of active deployables the players has*/
 
+    Entity              *companion;         /**<Pointer to the player's companion*/
+
     // float               health;    
     float               speed;              /**<Speed multipler*/
     float               strength;           /**<Strength multiplier*/

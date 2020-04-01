@@ -224,6 +224,7 @@ Entity *player_generic(
     player->last_skill2 = 0;
     player->last_action1 = 0;
     player->cldn_action1 = 50;
+    player->companion = (Entity *)malloc(sizeof(Entity));
     // slog("Player created with index: %d", player->index);
     player->speed = default_speed;
     player->strength = 1;
@@ -231,7 +232,26 @@ Entity *player_generic(
     self->type = ENT_PLAYER;
     self->team = team;
 
+    if (char_index == 1){
+        player->companion = 
+        companion_generic(
+            self,
+            "MusicBee",
+            companion_musicBee,
+            SHAPE_CIRCLE,
+            14,
+            100,
+            vector2d(-14,-14),
+            vector2d(50,-50),
+            1,
+            0,
+            think_behavior,
+            musicBee_touch,
+            musicBee_detect
+        );
+    }
     if (char_index == 4){
+        player->companion = 
         companion_generic(
             self,
             "LucioAura",
@@ -240,7 +260,9 @@ Entity *player_generic(
             256,
             0,
             vector2d(-200,-200),
+            vector2d(0, 0),
             1,
+            50,
             think_behavior,
             lucioAura_touch,
             NULL
@@ -251,6 +273,7 @@ Entity *player_generic(
 
 void player_think_1 (Entity *self){
     Player *p = (Player *)self->typeOfEnt;
+    Companion *companion = (Companion *)p->companion->typeOfEnt;
     // SDL_GameController *c = p->controller;
     Vector2D vScale;
     Vector2D vScaled;    
@@ -467,6 +490,39 @@ void player_think_1 (Entity *self){
         p->speed = 1;
         p->last_action1 = level_get_active()->frame;
     }
+
+    if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_X) && p->last_skill3 + p->cldn_skill3 < level_get_active()->frame){
+
+        switch (p->index)
+        {
+        case 1:
+            slog("Companion %s", p->companion->name);
+            break;
+        case 4:
+            switch (companion->behavior)
+                {
+                case 1:
+                    companion->behavior = 2;
+                    p->companion->color = &v4d_blue;
+                    break;
+                case 2:
+                    companion->behavior = 1;
+                    p->companion->color = &v4d_yellow;
+                    break;
+                default:
+                    break;
+                }
+                p->last_skill3 = level_get_active()->frame;
+            // slog("Companion %s", p->companion->name);
+            break;
+        default:
+            break;
+        }
+
+    
+    }
+
+
 
     if (self->health <= 0){
         self->_inuse = 0;

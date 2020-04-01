@@ -29,6 +29,8 @@ Sprite *landmine;
 Sprite *pickup_health;
 Sprite *pickup_boost;
 Sprite *pickup_speed;
+//Companion sprites
+Sprite *companion_musicBee;
 
 typedef struct Projectile_S
 {

@@ -10,6 +10,10 @@ typedef struct Companion_S
     int         time_alive;     /**<Time this companion has been alive for*/
     float       strength;       /**<Power level of a projectile*/
     int         behavior;        /**<Current behavior index for companion*/
+    Vector2D    followOffset;   /**<Offset position from owner ent*/
+
+    int         cldn_1;
+    int         last_cldn_1;
 }Companion;
 
 /**
@@ -32,7 +36,9 @@ Entity *companion_generic(
     int radius_body,
     int radius_range,
     Vector2D draw_offset,
+    Vector2D followOffset,
     float strength,
+    int cldn_1,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     void (*detect)(struct Entity_S *self, struct Entity_S *other)
@@ -45,5 +51,9 @@ Entity *companion_generic(
 void think_behavior(Entity *self);
 
 void lucioAura_touch(Entity *self, Entity *other);
+
+void musicBee_touch(Entity *self, Entity *other);
+
+void musicBee_detect(Entity *self, Entity *other);
 
 #endif

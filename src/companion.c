@@ -8,7 +8,9 @@ Entity *companion_generic(
     int radius_body,
     int radius_range,
     Vector2D draw_offset,
+    Vector2D followOffset,
     float strength,
+    int cldn_1,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     void (*detect)(struct Entity_S *self, struct Entity_S *other)
@@ -35,6 +37,10 @@ Entity *companion_generic(
         c->time_alive = 0;
         c->strength = strength;
         c->behavior = 1;
+        vector2d_copy(c->followOffset, followOffset);
+        c->cldn_1 = cldn_1;
+        c->last_cldn_1 = 0;
+
         self->typeOfEnt = (Companion *)c;
         self->type = ENT_COMPANION;
         self->team = owner_entity->team;
@@ -48,28 +54,12 @@ void think_behavior(Entity *self){
     if (!self)return;
     Companion *c = (Companion *)self->typeOfEnt;
     if (!c->owner_entity)return;
-
+    Vector2D vScale;
+    Vector2D vScaled;  
     Player *p = (Player *)c->owner_entity->typeOfEnt;
     SDL_GameController *controller = p->controller;
 
-    if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_X) && p->last_skill3 + p->cldn_skill3 < level_get_active()->frame){
-        switch (c->behavior)
-        {
-        case 1:
-            c->behavior = 2;
-            self->color = &v4d_blue;
-            break;
-        case 2:
-            c->behavior = 1;
-            self->color = &v4d_yellow;
-            break;
-        default:
-            break;
-        }
-        p->last_skill3 = level_get_active()->frame;
-    }
-    
-    vector2d_copy(self->position, c->owner_entity->position);
+    vector2d_add(self->position, c->owner_entity->position, c->followOffset);
 }
 
 void lucioAura_touch(Entity *self, Entity *other){
@@ -89,5 +79,62 @@ void lucioAura_touch(Entity *self, Entity *other){
         default:
             break;
         }
+    }
+}
+
+void musicBee_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Companion *p = (Companion *)self->typeOfEnt;
+    // Entity *owner_ent = (Entity *)p->owner_entity;
+
+    if (self->team != other->team){
+        // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
+        if (other->type == ENT_PLAYER){
+            Player *other_player = (Player *)other->typeOfEnt;
+            other->health -= p->strength;
+            // slog("Damaged %s %f", other->name, other_player->health);
+        }
+        else if (other->type == ENT_CORE){
+            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            other->health -= p->strength;
+            // slog("Damaged %s %f", other->name, other_player->health);
+        }
+    }
+}
+
+void musicBee_detect(Entity *self, Entity *other){
+    if (!self)return;
+    Companion *p = (Companion *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+
+    if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
+        && other->type == ENT_PLAYER){
+
+        Vector2D v;
+        vector2d_sub(v, other->position, self->position); 
+
+        self->size.x = cos(vector2d_angle(v) * M_PI/180);
+        self->size.y = sin(vector2d_angle(v) * M_PI/180);
+        // vector2d_copy(self->size, other->position);
+        // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
+
+        projectile_generic(
+            self,
+            "BeeNote",
+            fireball,
+            SHAPE_CIRCLE,
+            25,
+            0,
+            vector2d(-25,-25),
+            25 * p->strength,
+            3,
+            LEVEL_WIDTH/3,
+            self->position,
+            think_move_constVel,
+            fireball_touch,
+            NULL
+        ); 
+
+        p->last_cldn_1 = level_get_active()->frame;
     }
 }
