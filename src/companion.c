@@ -97,6 +97,18 @@ void lucio_healingAura_touch(Entity *self, Entity *other){
     }
 }
 
+void speedAura_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Companion *p = (Companion *)self->typeOfEnt;
+
+    if (self->team == other->team){
+        if (other->type == ENT_PLAYER){
+            Player *other_player = (Player *)other->typeOfEnt;
+            other_player->speed = p->strength*160;
+        }
+    }
+}
+
 void musicBee_touch(Entity *self, Entity *other){
     if (!self)return;
     Companion *p = (Companion *)self->typeOfEnt;

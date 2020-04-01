@@ -157,8 +157,6 @@ void healingAura_touch(Entity *self, Entity *other);
 
 void damageAura_touch(Entity *self, Entity *other);
 
-void speedAura_touch(Entity *self, Entity *other);
-
 void hitscan_touch(Entity *self, Entity *other);
 
 void rayscan_touch(Entity *self, Entity *other);

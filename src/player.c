@@ -265,7 +265,7 @@ Entity *player_generic(
             0,
             vector2d(-256,-256),
             vector2d(0, 0),
-            1,
+            .01,
             50,
             think_behavior,
             lucioAura_touch,
@@ -311,7 +311,24 @@ void player_think_1 (Entity *self){
     }
 
     if (p->last_action1 + p->cldn_action1 < level_get_active()->frame){
-        p->speed = 1;
+        switch (p->index)
+        {
+        case 1:
+            /* code */
+            break;
+        case 2:
+            /* code */
+            break;
+        case 3:
+            p->speed = 1;
+            break;
+        case 4:
+            slog("set to nonrma");
+            companion->strength = .01;
+            break;
+        default:
+            break;
+        }
         p->last_action1 = level_get_active()->frame;
     }
 
@@ -321,8 +338,12 @@ void player_think_1 (Entity *self){
         }
         self->_inuse = 0;
         //TODO: not free
+    }else if (self->health >= 200)
+    {
+        self->health = 200;
     }
-    slog("%d", last_freeze);
+    
+    // slog("%d", last_freeze);
     if (last_freeze + 250 < SDL_GetTicks()){
         switch (p->index)
         {
@@ -647,7 +668,10 @@ void player_think_1 (Entity *self){
             );            
             break;
         case 4:
-            /* code */
+            if (companion->last_cldn_1 + companion->cldn_1 < level_get_active()->frame){
+                companion->strength = .02;                slog("set to M<EGA");
+                companion->last_cldn_1 = level_get_active()->frame;
+            }
             break;
         
         default:

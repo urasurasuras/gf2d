@@ -54,6 +54,8 @@ void lucioAura_touch(Entity *self, Entity *other);
 
 void lucio_healingAura_touch(Entity *self, Entity *other);
 
+void speedAura_touch(Entity *self, Entity *other);
+
 void musicBee_touch(Entity *self, Entity *other);
 
 void musicBee_detect(Entity *self, Entity *other);

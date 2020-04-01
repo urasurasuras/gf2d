@@ -236,7 +236,7 @@ void think_stationary(Entity *self){
 void rayscan_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
-    slog("hit %s ", p->firstContact->name);
+    // slog("hit %s ", p->firstContact->name); TODO:look
     p->firstContact->health -= 0.1;
     if (p->time_alive > p->time_to_live){
         self->_inuse = 0;
@@ -320,18 +320,6 @@ void damageAura_touch(Entity *self, Entity *other){
             // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
-        }
-    }
-}
-
-void speedAura_touch(Entity *self, Entity *other){
-    if (!self)return;
-    // Projectile *p = (Projectile *)self->typeOfEnt;
-
-    if (self->team == other->team){
-        if (other->type == ENT_PLAYER){
-            Player *other_player = (Player *)other->typeOfEnt;
-            other_player->speed = 1.5;
         }
     }
 }
