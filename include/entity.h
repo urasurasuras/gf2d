@@ -28,6 +28,7 @@
 #define ENT_RAYSCAN     4
 #define ENT_PICKUP      5
 #define ENT_CORE        6
+#define ENT_COMPANION   7
 
 #define TEAM_0          0
 #define TEAM_A          1

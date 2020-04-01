@@ -24,6 +24,7 @@ Sprite *healing_aura;
 Sprite *damage_aura;
 Sprite *turret;
 Sprite *heal_dart;
+Sprite *landmine;
 //Pickup sprites
 Sprite *pickup_health;
 Sprite *pickup_boost;
@@ -81,6 +82,7 @@ Entity *projectile_generic(
     Vector2D draw_offset,
     float strength,
     float speed,
+    int time_to_live,
     Vector2D init_pos,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
@@ -149,6 +151,8 @@ void healingAura_touch(Entity *self, Entity *other);
 
 void damageAura_touch(Entity *self, Entity *other);
 
+void speedAura_touch(Entity *self, Entity *other);
+
 void hitscan_touch(Entity *self, Entity *other);
 
 void rayscan_touch(Entity *self, Entity *other);
@@ -156,6 +160,9 @@ void rayscan_touch(Entity *self, Entity *other);
 void turret_touch(Entity *self, Entity *other);
 
 void heal_dart_touch(Entity *self, Entity *other);
+
+void landmine_touch(Entity *self, Entity *other);
+void detect_test(Entity *self, Entity *other);
 
 void turret_detect(Entity *self, Entity *other);
 

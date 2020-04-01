@@ -19,6 +19,7 @@
 // #include "collision.h"
 #include "projectile.h"
 #include "entity.h"
+#include "companion.h"
 
 // Vector2D spawn_top_left;
 // Vector2D spawn_top_right;
@@ -38,6 +39,9 @@ typedef struct Player_S
     int                 last_skill2;
     int                 cldn_skill3;
     int                 last_skill3;
+
+    int                 cldn_action1;
+    int                 last_action1;
 
     int                 deployables;        /**<Number of active deployables the players has*/
 
@@ -82,6 +86,7 @@ Entity *player_generic(
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int cldn_skill1,
     int cldn_skill2,
+    int cldn_skill3,
     int team
     );
 /**

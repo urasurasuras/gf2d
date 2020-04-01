@@ -117,8 +117,8 @@ int main(int argc, char * argv[])
     bg_grass = gf2d_sprite_load_image("images/backgrounds/bg_grass.png");
     level = level_new(bg_grass, bounds_level,bounds_stage_wide,1);
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    players_spawn();
     projectile_load_sprites();
+    players_spawn();
     if(TTF_Init()==-1) {
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);

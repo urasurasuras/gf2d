@@ -16,6 +16,7 @@ SDL_Rect bounds_stage_narrow    = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET, LEVEL
 Vector4D v4d_red   = {255, 100, 100, 255};
 Vector4D v4d_green = {100, 255, 100, 255};
 Vector4D v4d_blue  = {100, 100, 255, 255};
+Vector4D v4d_yellow= {255, 255, 100, 255};
 
 static Level *current_level = NULL;
 

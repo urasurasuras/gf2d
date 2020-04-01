@@ -44,6 +44,7 @@ void players_spawn(){
         SJson *player_cooldowns;
         SJson *player_cldn1;
         SJson *player_cldn2;
+        SJson *player_cldn3;
         SJson *player_team;
 
         TextWord *name;
@@ -53,6 +54,7 @@ void players_spawn(){
         float *hp;
         int cldn1;
         int cldn2;
+        int cldn3;
         int team;
         
         for (i = 0;i < sj_array_get_count(pArray_config);i++){
@@ -68,6 +70,7 @@ void players_spawn(){
 
             player_cldn1 = sj_array_get_nth(player_cooldowns, 0);
             player_cldn2 = sj_array_get_nth(player_cooldowns, 1);
+            player_cldn3 = sj_array_get_nth(player_cooldowns, 2);
 
             if (pArray_save){
                 saved_player_data = sj_array_get_nth(pArray_save, i);
@@ -117,6 +120,7 @@ void players_spawn(){
             //Set cooldowns
             sj_get_integer_value(player_cldn1, &cldn1);
             sj_get_integer_value(player_cldn2, &cldn2);
+            sj_get_integer_value(player_cldn3, &cldn3);
 
             //Set team
             sj_get_integer_value(player_team, &team);
@@ -136,6 +140,7 @@ void players_spawn(){
                 player_touch, 
                 cldn1,
                 cldn2,
+                cldn3,
                 team
             );
 
@@ -167,6 +172,7 @@ Entity *player_generic(
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int cldn_skill1,
     int cldn_skill2,
+    int cldn_skill3,
     int team
     )
     {
@@ -211,18 +217,35 @@ Entity *player_generic(
     player->controller = controller;
     player->cldn_skill1 = cldn_skill1;
     player->cldn_skill2 = cldn_skill2;
+    player->cldn_skill3 = cldn_skill3;
     self->health = 100;
     player->index = char_index;
     player->last_skill1 = 0;
     player->last_skill2 = 0;
-    player->last_skill3 = 0;
-    player->cldn_skill3 = 50;
+    player->last_action1 = 0;
+    player->cldn_action1 = 50;
     // slog("Player created with index: %d", player->index);
     player->speed = default_speed;
     player->strength = 1;
     self->typeOfEnt = (Player *)player;
     self->type = ENT_PLAYER;
     self->team = team;
+
+    if (char_index == 4){
+        companion_generic(
+            self,
+            "LucioAura",
+            healing_aura,
+            SHAPE_CIRCLE,
+            256,
+            0,
+            vector2d(-200,-200),
+            1,
+            think_behavior,
+            lucioAura_touch,
+            NULL
+        );
+    }
     return self;
 }
 
@@ -301,6 +324,7 @@ void player_think_1 (Entity *self){
                 vector2d(-100,-100),
                 0.1 * p->strength,
                 5,
+                p->cldn_skill1,
                 self->position,
                 think_stationary,
                 healingAura_touch,
@@ -322,12 +346,14 @@ void player_think_1 (Entity *self){
                     0,
                     vector2d(-8,-8),
                     15 * p->strength,
-                    3,
+                    5,
+                    LEVEL_WIDTH/5,
                     self->position,
                     think_move_constVel,
                     heal_dart_touch,
                     NULL                    
                 );
+                break;
             default: 
                 slog("no attack");
         }           
@@ -349,7 +375,8 @@ void player_think_1 (Entity *self){
                 0,
                 vector2d(-25,-25),
                 25 * p->strength,
-                3,
+                5,
+                LEVEL_WIDTH/5,
                 self->position,
                 think_move_constVel,
                 fireball_touch,
@@ -375,7 +402,8 @@ void player_think_1 (Entity *self){
                 0,
                 vector2d(-100,-100),
                 0.1 * p->strength,
-                5,
+                0,
+                p->cldn_skill2,
                 vScaled,
                 think_stationary,
                 damageAura_touch,
@@ -395,25 +423,49 @@ void player_think_1 (Entity *self){
                     200,
                     vector2d(-16,-16),
                     0.1 * p->strength,
-                    0.5,
+                    0,
+                    0,
                     self->position,
                     turret_think,
                     turret_touch,
                     turret_detect
                 );
+                slog("%s spawned %s", self->name, "turet");
                 p->deployables += 1;
             }
                 break;
+                case 4:
+            if (p->deployables <= 2 ){
+                projectile_generic(
+                    self,
+                    "Landmine",
+                    landmine,
+                    SHAPE_CIRCLE,
+                    32,
+                    128,
+                    vector2d(-32,-32),
+                    50*p->strength,
+                    0,
+                    0,
+                    self->position,
+                    turret_think,
+                    landmine_touch,
+                    NULL
+                );
+                slog("spawned landmine");
+                p->deployables += 1;
+                break;
+            }
             default: 
-                slog("no attack");
+                slog("no attack for %s index %d", self->name, p->index);
         }   
         p->last_skill2 = level_get_active()->frame;
         // slog("got b");
     }
 
-    if (p->last_skill3 + p->cldn_skill3 < level_get_active()->frame){
+    if (p->last_action1 + p->cldn_action1 < level_get_active()->frame){
         p->speed = 1;
-        p->last_skill3 = level_get_active()->frame;
+        p->last_action1 = level_get_active()->frame;
     }
 
     if (self->health <= 0){

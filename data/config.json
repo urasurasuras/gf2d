@@ -6,25 +6,25 @@
 		"ControllerIndex":"0",
 		"Position":["100.000000","100.000000"],
 		"Health":"100.000000",
-		"Cooldowns":["50","100"],
+		"Cooldowns":["50","100","50"],
 		"Team":"1"
 		},
 		{
 		"Name":"Player2",
 		"Sprite":"images/players/red-circle.png",
-		"ControllerIndex":"0",
+		"ControllerIndex":"1",
 		"Position":["1100.000000","100.000000"],
 		"Health":"100.000000",
-		"Cooldowns":["500","100"],
+		"Cooldowns":["500","100","50"],
 		"Team":"2"
 		},
 		{
 		"Name":"Player3",
 		"Sprite":"images/players/blue-circle.png",
-		"ControllerIndex":"2",
+		"ControllerIndex":"0",
 		"Position":["100.000000","620.000000"],
 		"Health":"100.000000",
-		"Cooldowns":["500","100"],
+		"Cooldowns":["50","100","50"],
 		"Team":"1"
 		},
 		{
@@ -33,7 +33,7 @@
 		"ControllerIndex":"0",
 		"Position":["1100.000000","620.000000"],
 		"Health":"100.000000",
-		"Cooldowns":["50","100"],
+		"Cooldowns":["50","100","50"],
 		"Team":"2"
 		}
 	],

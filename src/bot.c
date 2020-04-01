@@ -119,6 +119,7 @@ void enemy_detect(Entity *self, Entity *other){
         vector2d(-25,-25),
         25,
         3,
+        LEVEL_WIDTH/3,
         self->position,
         think_move_constVel,
         pickup_health_touch,
@@ -138,7 +139,7 @@ void not_enemy_think (Entity *self){
     // srand((unsigned) level_get_active()->frame * time(NULL));
     if (b->last_randomized + b->cldn_randomized < level_get_active()->frame ){
         ne_random_dir = rand() %2;
-        slog("direction %d", ne_random_dir);
+        // slog("direction %d", ne_random_dir);
         if (ne_random_dir){
             self->size.x = rand() % 16;
         }
@@ -156,7 +157,7 @@ void not_enemy_think (Entity *self){
             self->size.y = rand() % 4;
             self->size.y = -self->size.y;
         }
-        slog("vector %d.%d", self->size.x, self->size.y);
+        // slog("vector %d.%d", self->size.x, self->size.y);
 
         b->last_randomized = level_get_active()->frame;
     }

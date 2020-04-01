@@ -7,6 +7,7 @@ void projectile_load_sprites(){
     damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
     turret = gf2d_sprite_load_image("images/projectiles/turret.png");
     heal_dart = gf2d_sprite_load_image("images/projectiles/heal_dart.png");
+    landmine = gf2d_sprite_load_image("images/projectiles/landmine.png");
 
     pickup_health = gf2d_sprite_load_image("images/pickups/pickup_health.png");
     pickup_boost = gf2d_sprite_load_image("images/pickups/pickup_boost.png");
@@ -79,6 +80,7 @@ Entity *projectile_generic(
     Vector2D draw_offset,
     float strength,
     float speed,
+    int time_to_live,
     Vector2D init_pos,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
@@ -105,7 +107,7 @@ Entity *projectile_generic(
         projectile->owner_entity = owner_entity;
         vector2d_copy(self->size, owner_entity->size);
         projectile->speed = speed;
-        projectile->time_to_live = LEVEL_WIDTH/speed;
+        projectile->time_to_live = time_to_live;
         projectile->time_alive = 0;
         projectile->strength = strength;
         self->typeOfEnt = (Projectile *)projectile;
@@ -114,9 +116,10 @@ Entity *projectile_generic(
         self->think = think;
         self->touch = touch;
         self->detect = detect;
+        self->health = 75; //TODO: fix
         // slog("%s: %f.%f %f.%f",self->name, self->position.x, self->position.y,self->size.x, self->size.y);
         // slog("%s team %d", self->name, self->team);
-        slog("%s Going to %f.%f",self->name, self->size.x, self->size.y);
+        // slog("%s Going to %f.%f",self->name, self->size.x, self->size.y);
         return self;
     }
 
@@ -173,7 +176,8 @@ void think_move_constVel(Entity *self){
             return;
     }
     self->position.x += self->size.x * p->speed;
-    self->position.y += self->size.y * p->speed;
+    self->position.y += self->size.y * p->speed;    slog("%s %d",self->name, level_get_active()->frame);
+
 }
 
 void think_stationary(Entity *self){
@@ -232,9 +236,9 @@ void rayscan_think(Entity *self){
 
 void turret_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
-    p->time_alive += 1;
+    // p->time_alive += 1;
 
-    if (p->time_alive > p->time_to_live){
+    if (self->health <= 0){
         Player *owner_player = (Player *)p->owner_entity->typeOfEnt;
         owner_player->deployables -= 1;
         self->_inuse = 0;
@@ -248,7 +252,7 @@ void fireball_touch(Entity *self, Entity *other){
     Projectile *p = (Projectile *)self->typeOfEnt;
     Entity *owner_ent = (Entity *)p->owner_entity;
 
-    if (other == owner_ent)return;;
+    if (other == owner_ent)return;
 
     if (other->team != owner_ent->team){
         if (other->type == ENT_PLAYER ){
@@ -305,6 +309,18 @@ void damageAura_touch(Entity *self, Entity *other){
             Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             // slog("Damaged %s %f", other->name, other_player->health);
+        }
+    }
+}
+
+void speedAura_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+
+    if (self->team == other->team){
+        if (other->type == ENT_PLAYER){
+            Player *other_player = (Player *)other->typeOfEnt;
+            other_player->speed = 1.5;
         }
     }
 }
@@ -392,6 +408,38 @@ void heal_dart_touch(Entity *self, Entity *other){
     
 }
 
+void landmine_touch(Entity *self, Entity *other){
+    if (!self)return;
+    Projectile *p = (Projectile *)self->typeOfEnt;
+    Entity *owner_ent = (Entity *)p->owner_entity;
+    if (other == owner_ent)return;
+    if (other->team == self->team)return;
+    // slog("%s triggered by %s", self->name, other->name);
+    // slog("%d vs %d", self->team, other->team);
+
+    if (other->type == ENT_PLAYER && other->team != self->team){
+        int i;
+        for (i = 0;i < entity_manager_get_active().maxEnts;i++)
+        {    
+
+            if (!entity_manager_get_active().entityList[i]._inuse)continue;
+            if (&entity_manager_get_active().entityList[i] == self)continue;
+            if (entity_manager_get_active().entityList[i].type != ENT_PLAYER)continue;
+            if (entity_manager_get_active().entityList[i].team == self->team)continue;
+
+            if (collide_circle(self->position, self->radius_range, entity_manager_get_active().entityList[i].position, entity_manager_get_active().entityList[i].radius_body)){
+                entity_manager_get_active().entityList[i].health -= p->strength;
+                // slog("%s exploded on %s", self->name, entity_manager_get_active().entityList[i].name);
+            }
+        }
+    }   
+    Player *owner_player = (Player *)p->owner_entity->typeOfEnt;
+    owner_player->deployables -= 1;
+    self->_inuse = 0; 
+}
+void detect_test(Entity *self, Entity *other){
+    slog("%s",other->name);
+}
 void turret_detect(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
@@ -418,6 +466,7 @@ void turret_detect(Entity *self, Entity *other){
         vector2d(-25,-25),
         25 * p->strength,
         3,
+        LEVEL_WIDTH/3,
         self->position,
         think_move_constVel,
         fireball_touch,

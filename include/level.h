@@ -20,6 +20,7 @@ SDL_Rect bounds_stage_narrow;
 Vector4D v4d_red;
 Vector4D v4d_green;
 Vector4D v4d_blue;
+Vector4D v4d_yellow;
 
 Sprite *bg_grass;
 Sprite *bg_lava;
@@ -27,7 +28,7 @@ Sprite *bg_lava;
 typedef struct
 {
     Sprite *background;     /**<Background sprite*/
-    SDL_Rect bounds_level;        /**<Bounds*/
+    SDL_Rect bounds_level;  /**<Bounds*/
     SDL_Rect bounds_stage;
     int     frame;          /**<Frame ++ on update*/
     int     done;           /**<Done condition*/
