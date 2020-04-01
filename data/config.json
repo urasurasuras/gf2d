@@ -12,10 +12,10 @@
 		{
 		"Name":"Player2",
 		"Sprite":"images/players/red-circle.png",
-		"ControllerIndex":"0",
+		"ControllerIndex":"1",
 		"Position":["1100.000000","100.000000"],
 		"Health":"100.000000",
-		"Cooldowns":["500","500","50"],
+		"Cooldowns":["500","500","1"],
 		"Team":"2"
 		},
 		{
@@ -30,7 +30,7 @@
 		{
 		"Name":"Player4",
 		"Sprite":"images/players/green-circle.png",
-		"ControllerIndex":"1",
+		"ControllerIndex":"0",
 		"Position":["1100.000000","620.000000"],
 		"Health":"100.000000",
 		"Cooldowns":["50","100","50"],

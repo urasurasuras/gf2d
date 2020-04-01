@@ -2,6 +2,7 @@
 
 void projectile_load_sprites(){
 
+    blank = gf2d_sprite_load_image("images/empty.png");
     fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
     healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
     damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
@@ -141,6 +142,7 @@ Entity *hitscan_generic(
         self = entity_new();
         if (!self)return NULL;
         //Init ent
+        self->sprite = blank;
         strcpy(self->name, name);
         // self->sprite = sprite;
         self->collider_shape = collider_shape;

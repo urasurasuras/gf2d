@@ -18,6 +18,8 @@
 #include "player.h"
 #include "entity.h"
 
+//Blank sprite
+Sprite *blank;
 //Projectile sprites
 Sprite *fireball;
 Sprite *healing_aura;

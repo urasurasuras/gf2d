@@ -106,17 +106,18 @@ void entity_draw(Entity *self){
     }
     // Vector2D scaler = vector2d(0.7,0.5);
     // Vector2D *scalerPtr = &scaler;
-    if (self->sprite)
-    gf2d_sprite_draw(
-        self->sprite,
-        vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        self->color,
-        (Uint32)self->frame
-    );
+    if (self->sprite){
+        gf2d_sprite_draw(
+            self->sprite,
+            vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            self->color,
+            (Uint32)self->frame
+        );
+    }
     if (self->health && self->type == ENT_PLAYER){
         char hp[16];
         snprintf(hp,16, "%.2f", self->health);

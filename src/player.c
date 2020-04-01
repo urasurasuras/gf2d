@@ -500,6 +500,18 @@ void player_think_1 (Entity *self){
         case 1:
             slog("Companion %s", p->companion->name);
             break;
+        case 2:
+            hitscan_generic(
+                self,
+                "Hitscan",
+                SHAPE_LINE,
+                .1,
+                1,
+                rayscan_think,
+                hitscan_touch,
+                ENT_HITSCAN
+            );
+            break;
         case 4:
             switch (companion->behavior)
                 {
