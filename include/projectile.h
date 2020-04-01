@@ -25,6 +25,7 @@ Sprite *damage_aura;
 Sprite *turret;
 Sprite *heal_dart;
 Sprite *landmine;
+Sprite *lucio_aura;
 //Pickup sprites
 Sprite *pickup_health;
 Sprite *pickup_boost;

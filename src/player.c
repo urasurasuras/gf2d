@@ -255,11 +255,11 @@ Entity *player_generic(
         companion_generic(
             self,
             "LucioAura",
-            healing_aura,
+            lucio_aura,
             SHAPE_CIRCLE,
             256,
             0,
-            vector2d(-200,-200),
+            vector2d(-256,-256),
             vector2d(0, 0),
             1,
             50,
