@@ -180,8 +180,8 @@ void think_move_constVel(Entity *self){
             return;
     }
     self->position.x += self->size.x * p->speed;
-    self->position.y += self->size.y * p->speed;    slog("%s %d",self->name, level_get_active()->frame);
-
+    self->position.y += self->size.y * p->speed;    
+    // slog("%s %d",self->name, level_get_active()->frame);
 }
 
 void think_stationary(Entity *self){
@@ -260,14 +260,15 @@ void fireball_touch(Entity *self, Entity *other){
 
     if (other->team != owner_ent->team){
         if (other->type == ENT_PLAYER ){
-            Player *other_player = (Player *)other->typeOfEnt;
+            // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
             self->_inuse = 0;
             return;
         }
         else if (other->type == ENT_CORE ){
-            Level_core *other_core = (Level_core *)other->typeOfEnt;
+            // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
+            slog("%s health: %f", other->name, other->health);
             self->_inuse = 0;
             return;
         }

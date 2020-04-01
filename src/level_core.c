@@ -3,7 +3,7 @@
 
 Entity *level_core_new(Sprite *sprite, int team){
     Entity *core_ent = entity_new();
-    strcpy(core_ent->name, "Grass Core");
+    strcpy(core_ent->name, "Core");
     Level_core *core;
     core = (Level_core *)malloc(sizeof(Level_core));
     core_ent->sprite = sprite;
@@ -38,8 +38,9 @@ Entity *level_core_new(Sprite *sprite, int team){
 
 void level_core_think(Entity *self){
     if(!self)return;
-    Level_core *core = (Level_core *)self->typeOfEnt;
+    // Level_core *core = (Level_core *)self->typeOfEnt;
     if (self->health <= 0){
+        level_get_active()->paused = 1;
         self->_inuse = 0;
         //TODO: win condition
     }
