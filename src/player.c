@@ -646,13 +646,19 @@ void player_think_1 (Entity *self){
     }
 
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_Y) && p->last_skill4 + p->cldn_skill4 < level_get_active()->frame){
+        vector2d_scale(vScale, self->size, 5);
+
         switch (p->index)
         {
         case 1:
-            /* code */
+            vector2d_add(vScaled, self->position, vScale);
+            vector2d_copy(self->position, vScaled);
+            slog("pos set to %f.%f", self->position.x, self->position.y);
             break;
         case 2:
-            /* code */
+            vector2d_sub(vScaled, self->position, vScale);
+            vector2d_copy(self->position, vScaled);
+            slog("pos set to %f.%f", self->position.x, self->position.y);
             break;
         case 3:
             hitscan_generic(
