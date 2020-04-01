@@ -393,6 +393,7 @@ void player_think_1 (Entity *self){
                 SHAPE_LINE,
                 .1,
                 2,
+                0,
                 rayscan_think,
                 hitscan_touch,
                 ENT_RAYSCAN
@@ -444,9 +445,6 @@ void player_think_1 (Entity *self){
                 slog("no attack");
         }           
         p->last_skill1 = level_get_active()->frame;
-        // slog("Dir: %f.%f", p->direction.x, p->direction.y);
-        // slog("Last used after set: %d", last_s1);      
-        // slog("got a");
     }
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_B) && p->last_skill2 + p->cldn_skill2 < level_get_active()->frame){
         switch (p->index)
@@ -546,7 +544,6 @@ void player_think_1 (Entity *self){
                 slog("no attack for %s index %d", self->name, p->index);
         }   
         p->last_skill2 = level_get_active()->frame;
-        // slog("got b");
     }
 
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_X) && p->last_skill3 + p->cldn_skill3 < level_get_active()->frame){
@@ -563,9 +560,45 @@ void player_think_1 (Entity *self){
                 SHAPE_LINE,
                 .1,
                 1,
+                0,
                 rayscan_think,
                 hitscan_touch,
                 ENT_HITSCAN
+            );
+            break;
+        case 3:
+            hitscan_generic(
+                self,
+                "Hitscan",
+                SHAPE_LINE,
+                .1,
+                2,
+                0,
+                rayscan_think,
+                hitscan_touch,
+                ENT_RAYSCAN
+            );
+            hitscan_generic(
+                self,
+                "Hitscan",
+                SHAPE_LINE,
+                .1,
+                2,
+                10,
+                rayscan_think,
+                hitscan_touch,
+                ENT_RAYSCAN
+            );
+            hitscan_generic(
+                self,
+                "Hitscan",
+                SHAPE_LINE,
+                .1,
+                2,
+                -10,
+                rayscan_think,
+                hitscan_touch,
+                ENT_RAYSCAN
             );
             break;
         case 4:
@@ -582,12 +615,12 @@ void player_think_1 (Entity *self){
                 default:
                     break;
                 }
-                p->last_skill3 = level_get_active()->frame;
             // slog("Companion %s", p->companion->name);
             break;
         default:
             break;
         }
+        p->last_skill3 = level_get_active()->frame;
     }
 
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);

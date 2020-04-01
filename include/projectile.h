@@ -100,6 +100,7 @@ Entity *hitscan_generic(
     int collider_shape,
     float strength,
     int time_to_live,
+    float angleOffset,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int type

@@ -134,6 +134,7 @@ Entity *hitscan_generic(
     int collider_shape,
     float strength,
     int time_to_live,
+    float angleOffset,
     void (*think)(struct Entity_S *self),
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int type
@@ -150,7 +151,10 @@ Entity *hitscan_generic(
         self->position = owner_entity->position;
         Vector2D vScale;
 
-        vector2d_scale(vScale, owner_entity->size, 200);
+        
+        self->size.x = cos((vector2d_angle(owner_entity->size) + angleOffset)*M_PI/180);
+        self->size.y = sin((vector2d_angle(owner_entity->size) + angleOffset)*M_PI/180);
+        vector2d_scale(vScale, self->size, 200);
 
         vector2d_add(self->size, self->position, vScale);
 
