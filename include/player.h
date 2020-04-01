@@ -31,6 +31,7 @@ typedef struct Player_S
 
     int                 index;              /**<Index of character*/
     SDL_GameController *controller;         /**<Pointer to controller*/
+    int                 freeze;             /**<Don't take input if frozen (debug)*/
     Vector2D            direction;          /**<Direction based on controller axis input*/
     float               angle;              /**<angle of Direction based on controller axis input*/  
     int                 cldn_skill1;

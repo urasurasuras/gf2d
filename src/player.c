@@ -215,6 +215,7 @@ Entity *player_generic(
     player = (Player *)malloc(sizeof(Player));
     //Init player
     player->controller = controller;
+    player->freeze = 0;
     player->cldn_skill1 = cldn_skill1;
     player->cldn_skill2 = cldn_skill2;
     player->cldn_skill3 = cldn_skill3;
@@ -274,6 +275,7 @@ Entity *player_generic(
 }
 
 void player_think_1 (Entity *self){
+    static Uint32 last_freeze;
     Player *p = (Player *)self->typeOfEnt;
     Companion *companion = (Companion *)p->companion->typeOfEnt;
     // SDL_GameController *c = p->controller;
@@ -287,24 +289,10 @@ void player_think_1 (Entity *self){
         
     // }
 
+
     float x = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
     
-    //Direction update
-    if (abs(x) < DEADZONE && abs(y) < DEADZONE){
-        //If stick is at origin
-        //dont update direction
-    }else{
-        // slog("%f",vector2d_angle(vector2d(x,y)));
-        self->size.x = cos(vector2d_angle(vector2d(x,y)) * M_PI/180);
-        self->size.y = sin(vector2d_angle(vector2d(x,y)) * M_PI/180);
-        // self->size.x = x;
-        // self->size.y = y;
-    }
-    //Movement
-    // slog("Speed of %s: %f", self->name, p->speed);
-    self->position.x += x*p->speed;
-    self->position.y += y*p->speed;
     if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
     {
         //TODO: Do something is ent hits bounds
@@ -320,6 +308,79 @@ void player_think_1 (Entity *self){
             p->speed = 0.5;
         }
     }
+
+    if (p->last_action1 + p->cldn_action1 < level_get_active()->frame){
+        p->speed = 1;
+        p->last_action1 = level_get_active()->frame;
+    }
+
+    if (self->health <= 0){
+        if (p->companion){
+            p->companion->_inuse = 0;
+        }
+        self->_inuse = 0;
+        //TODO: not free
+    }
+    slog("%d", last_freeze);
+    if (last_freeze + 250 < SDL_GetTicks()){
+        switch (p->index)
+        {
+        case 1:
+            if (keys[SDL_SCANCODE_F1]){
+                if (p->freeze)p->freeze = 0;
+                else p->freeze = 1;
+                last_freeze = SDL_GetTicks();
+            }
+            break;
+        case 2:
+            if (keys[SDL_SCANCODE_F2]){
+                if (p->freeze)p->freeze = 0;
+                else p->freeze = 1;
+                last_freeze = SDL_GetTicks();
+            }
+            break;
+        case 3:
+            if (keys[SDL_SCANCODE_F3]){
+                if (p->freeze)p->freeze = 0;
+                else p->freeze = 1;
+                last_freeze = SDL_GetTicks();
+            }
+            break;
+        case 4:
+            if (keys[SDL_SCANCODE_F4]){
+                if (p->freeze)p->freeze = 0;
+                else p->freeze = 1;
+                last_freeze = SDL_GetTicks();
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    // if (keys[SDL_SCANCODE_TAB] && last_tab + 750 < SDL_GetTicks()){
+    //         last_tab = SDL_GetTicks();
+    //         slog("tab");
+    //         if (level_get_active()->paused)level_get_active()->paused = 0;
+    //         else if (!level_get_active()->paused) level_get_active()->paused = 1;
+    //     }
+
+    if (p->freeze)return;
+
+    //Direction update
+    if (abs(x) < DEADZONE && abs(y) < DEADZONE){
+        //If stick is at origin
+        //dont update direction
+    }else{
+        // slog("%f",vector2d_angle(vector2d(x,y)));
+        self->size.x = cos(vector2d_angle(vector2d(x,y)) * M_PI/180);
+        self->size.y = sin(vector2d_angle(vector2d(x,y)) * M_PI/180);
+        // self->size.x = x;
+        // self->size.y = y;
+    }
+    //Movement
+    // slog("Speed of %s: %f", self->name, p->speed);
+    self->position.x += x*p->speed;
+    self->position.y += y*p->speed;
 
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_A) && p->last_skill1 + p->cldn_skill1 < level_get_active()->frame){
         // slog("Char: %d",p->index);
@@ -488,11 +549,6 @@ void player_think_1 (Entity *self){
         // slog("got b");
     }
 
-    if (p->last_action1 + p->cldn_action1 < level_get_active()->frame){
-        p->speed = 1;
-        p->last_action1 = level_get_active()->frame;
-    }
-
     if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_X) && p->last_skill3 + p->cldn_skill3 < level_get_active()->frame){
 
         switch (p->index)
@@ -533,13 +589,7 @@ void player_think_1 (Entity *self){
             break;
         }
     }
-    if (self->health <= 0){
-        if (p->companion){
-            p->companion->_inuse = 0;
-        }
-        self->_inuse = 0;
-        //TODO: not free
-    }
+
     // slog("Direction of player: %f.%f", p->direction.x, p->direction.y);
     // slog("Axis: %f.%f", x, y);
     // slog("Angle of player %f", p->angle);

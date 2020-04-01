@@ -12,9 +12,6 @@
 
 int main(int argc, char * argv[])
 {
-    /*variable declarations*/
-
-    const Uint8 * keys;
     int mx,my;
     float mf = 0;
     Sprite *mouse;
