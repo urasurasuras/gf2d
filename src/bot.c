@@ -6,12 +6,12 @@ Entity *lavaGuy_new(){
     enemy->sprite = gf2d_sprite_load_image("images/enemies/enemy.png");
     enemy->position = vector2d(LEVEL_WIDTH/2, LEVEL_HEIGHT/2);
     enemy->radius_body = 64; //TODO: radius per sprite
-    enemy->radius_range = 256;
+    // enemy->radius_range = 256;
     enemy->collider_shape = SHAPE_CIRCLE;
     enemy->drawOffset = vector2d(-64,-64);
     enemy->think = not_enemy_think;
     enemy->touch = enemy_touch;
-    enemy->detect = enemy_detect;
+    // enemy->detect = enemy_detect;
 
     Bot *bot;
     bot = (Bot * )malloc(sizeof(Bot));
@@ -28,21 +28,25 @@ Entity *grassGuy_new(){
     enemy->sprite = gf2d_sprite_load_image("images/enemies/not_enemy.png");
     enemy->position = vector2d(LEVEL_WIDTH/2, LEVEL_HEIGHT/2);
     enemy->radius_body = 64; //TODO: radius per sprite
-    enemy->radius_range = 256;
+    // enemy->radius_range = 256;
     enemy->collider_shape = SHAPE_CIRCLE;
     enemy->drawOffset = vector2d(-64,-64);
     enemy->think = not_enemy_think;
     enemy->touch = not_enemy_touch;
-    enemy->detect = enemy_detect;
+    // enemy->detect = enemy_detect;
 
     Bot *bot;
     bot = (Bot * )malloc(sizeof(Bot));
-    bot->cldn_action = 3000;
+    bot->cldn_action = 300;
     bot->cldn_movement = 180;
     bot->cldn_randomized = 180;
+    bot->last_action =0;
+    bot->last_movement =0;
+    bot->last_randomized=0;
     enemy->typeOfEnt = bot;
     return enemy;
 }
+
 void enemy_think (Entity *self){
     Bot *b = (Bot *)self->typeOfEnt;
     //move
@@ -83,6 +87,28 @@ void enemy_think (Entity *self){
         self->position.x -= self->size.x;
         self->position.y -= self->size.y;
     }
+
+    if (b->last_action + b->cldn_action < level_get_active()->frame){
+        projectile_generic(
+        self,
+        "EnemyShoot",
+        fireball,
+        SHAPE_CIRCLE,
+        25,
+        0,
+        vector2d(-25,-25),
+        25,
+        1,
+        LEVEL_WIDTH/3,
+        self->position,
+        think_move_constVel,
+        pickup_health_touch,
+        NULL
+        ); 
+        slog("dud");
+
+        b->last_action = level_get_active()->frame;
+    }
 }
 
 void enemy_touch (Entity *self, Entity *other){
@@ -118,7 +144,7 @@ void enemy_detect(Entity *self, Entity *other){
         0,
         vector2d(-25,-25),
         25,
-        3,
+        1,
         LEVEL_WIDTH/3,
         self->position,
         think_move_constVel,
@@ -132,6 +158,7 @@ void enemy_detect(Entity *self, Entity *other){
 
 void not_enemy_think (Entity *self){
     Bot *b = (Bot *)self->typeOfEnt;
+    // slog("%d %d %d",b->last_action,b->last_movement,b->last_randomized);
     //move
     // int ne_random_x = 1;
     // int ne_random_y = 1;
@@ -170,6 +197,33 @@ void not_enemy_think (Entity *self){
         self->position.x -= self->size.x;
         self->position.y -= self->size.y;
     }
+
+    if (b->last_action + b->cldn_action < level_get_active()->frame){
+        // Vector2D v;
+        // vector2d_sub(v, other->position, self->position); 
+
+        // self->size.x = cos(vector2d_angle(v) * M_PI/180);
+        // self->size.y = sin(vector2d_angle(v) * M_PI/180);
+
+        projectile_generic(
+        self,
+        "nEnemyHeal",
+        pickup_health,
+        SHAPE_CIRCLE,
+        25,
+        0,
+        vector2d(-25,-25),
+        25,
+        1,
+        LEVEL_WIDTH/3,
+        self->position,
+        think_move_constVel,
+        pickup_health_touch,
+        NULL
+        ); 
+
+        b->last_action = level_get_active()->frame;
+    }
 }
 
 void not_enemy_touch (Entity *self, Entity *other){
@@ -177,5 +231,12 @@ void not_enemy_touch (Entity *self, Entity *other){
 }
 
 void not_enemy_detect(Entity *self, Entity *other){
-    //throw healing orb
+    // Bot *b = (Bot *)self->typeOfEnt;
+    //throw fireballs
+    // slog("enemy detecting");
+    // if (self->team != other->team && b->last_action + b->cldn_action < level_get_active()->frame
+    //     && other->type == ENT_PLAYER){
+
+
+    // }
 }
