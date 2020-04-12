@@ -1,8 +1,15 @@
 # Features to add/propose & quality of life improvements:
+
 ..* Start menu / Title screen
+
 ..* Character select / team select / map select / controller assignment
+
 ..* Animated sprites (lol)
+
 ..* Mouse/keyboard support for at least 1 player
+
+..* Customized controls
+
 ..* Scalable UI (optional fullscreen)
 
 
