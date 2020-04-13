@@ -1,6 +1,5 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <stdlib.h>
