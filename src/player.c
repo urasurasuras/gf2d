@@ -294,13 +294,31 @@ void player_think_1 (Entity *self){
     float x = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
     
-    if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
+    switch (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
     {
-        //TODO: Do something is ent hits bounds
-        self->position.x -= x*p->speed;
-        self->position.y -= y*p->speed;
+    case BOUND_TOP:
+        self->position.y = self->radius_body + 1;
+        break;
+    case BOUND_RIGHT:
+        self->position.x = LEVEL_WIDTH - self->radius_body - 1;
+        break;
+    case BOUND_BOTTOM:
+        self->position.y = LEVEL_HEIGHT - self->radius_body - 1;
+        break;
+    case BOUND_LEFT:
+        self->position.x = self->radius_body + 1;
+        break;
+    default:
+        break;
     }
-    if (level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius_body)){
+    //if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
+    //{
+
+    //    //TODO: Do something is ent hits bounds
+    //    self->position.x -= x*p->speed;
+    //    self->position.y -= y*p->speed;
+    //}
+    if (level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius_body)){//Check for inner bound
         if (level_get_active()->level_type == LEVEL_T_LAVA){
             self->health -= 0.1;
             // slog("%s health: %f", self->name, p->health);
@@ -308,6 +326,10 @@ void player_think_1 (Entity *self){
         else if (level_get_active()->level_type == LEVEL_T_NORMAL){
             p->speed = 0.5;
         }
+    }
+    else
+    {//set to default
+        p->speed = 1;
     }
 
     if (p->last_action1 + p->cldn_action1 < level_get_active()->frame){
@@ -409,6 +431,7 @@ void player_think_1 (Entity *self){
         switch (p->index)
         {
             case 1:
+                //Railgun
             hitscan_generic(
                 self,
                 "Hitscan",
@@ -422,6 +445,7 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 2: 
+                //Healing aura
             if (!p->deployables){
                 projectile_generic(
                 self,
@@ -443,9 +467,11 @@ void player_think_1 (Entity *self){
             }
                 break;
             case 3:
+                //Dash~
                 p->speed = 5;                
                 break;
             case 4:
+                //Healing dart
                 projectile_generic(
                     self,
                     "Healdart",
@@ -472,6 +498,7 @@ void player_think_1 (Entity *self){
         switch (p->index)
         {
             case 1: 
+                //Fireball
                 projectile_generic(
                 self,
                 "Fireball",
@@ -490,6 +517,7 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 2: 
+                //Damage aura
             if (!p->deployables){
 
                 vector2d_scale(vScale, self->size, 200);
@@ -519,6 +547,7 @@ void player_think_1 (Entity *self){
             }
                 break;
                 case 3:
+                    //Turret
             if (!p->deployables){
                 projectile_generic(
                     self,
@@ -541,6 +570,7 @@ void player_think_1 (Entity *self){
             }
                 break;
                 case 4:
+                    //Landmine
             if (p->deployables <= 2 ){
                 projectile_generic(
                     self,
@@ -573,9 +603,11 @@ void player_think_1 (Entity *self){
         switch (p->index)
         {
         case 1:
+            //Companion Bee
             slog("Companion %s", p->companion->name);
             break;
         case 2:
+            //Railgun ??
             hitscan_generic(
                 self,
                 "Hitscan",
@@ -589,6 +621,7 @@ void player_think_1 (Entity *self){
             );
             break;
         case 3:
+            //3 pellet shotgun
             hitscan_generic(
                 self,
                 "Hitscan",
@@ -624,6 +657,7 @@ void player_think_1 (Entity *self){
             );
             break;
         case 4:
+            //Lucio shift
             switch (companion->behavior)
                 {
                 case 1:
@@ -674,6 +708,7 @@ void player_think_1 (Entity *self){
             );            
             break;
         case 4:
+            //Lucio AMP
             if (companion->last_cldn_1 + companion->cldn_1 < level_get_active()->frame){
                 companion->strength = .02;                slog("set to M<EGA");
                 companion->last_cldn_1 = level_get_active()->frame;

@@ -13,6 +13,11 @@
 #define LEVEL_T_NORMAL 1
 #define LEVEL_T_LAVA   2
 
+#define BOUND_TOP       1
+#define BOUND_RIGHT     2
+#define BOUND_BOTTOM    3
+#define BOUND_LEFT      4
+
 /*variable declarations*/
 
 const Uint8 * keys;

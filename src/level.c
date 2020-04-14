@@ -128,7 +128,7 @@ Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius)
     // }
     if (center.x - radius < bounds.x)
     {
-        hit = 1;    
+        hit = 4;    
         // slog("Hitting left border");
     }
     if (center.y - radius < bounds.y)
@@ -138,12 +138,12 @@ Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius)
     }
     if (center.x + radius > bounds.x + bounds.w)
     {
-        hit = 1;
+        hit = 2;
         // slog("Hitting right border");
     }
     if (center.y + radius > bounds.y + bounds.h)
     {
-        hit = 1;
+        hit = 3;
         // slog("Hitting bottom border");
     }
     return hit;
