@@ -59,6 +59,8 @@ typedef struct
  * */
 Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage, int type);
 
+void level_bound_collision_check();
+
 /**
  * @brief Frees level and its sprite
  * */

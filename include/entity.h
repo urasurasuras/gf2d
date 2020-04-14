@@ -62,6 +62,7 @@ typedef struct Entity_S
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/
     void        (*detect)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity detects another entity within its range*/
+    void        (*bound_hit)(struct Entity_S* self, int hit_edge);/**<Called when this entity hit the level bounds*/
 
 }Entity;
 

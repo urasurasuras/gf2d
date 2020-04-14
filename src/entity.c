@@ -91,10 +91,15 @@ void entity_update(Entity *self){
 void entity_update_all(){
     level_get_active()->frame ++;
     int i;
+    int hit_edge;
     for (i = 0;i < entity_manager.maxEnts;i++)
     {
         if (!entity_manager.entityList[i]._inuse)continue;
         entity_update(&entity_manager.entityList[i]);
+        hit_edge = level_bounds_test_circle(level_get_active()->bounds_level, entity_manager.entityList[i].position, entity_manager.entityList[i].radius_body);
+        if (entity_manager.entityList[i].bound_hit && hit_edge) {
+            entity_manager.entityList[i].bound_hit(&entity_manager.entityList[i], hit_edge);
+        }
     }
     //Update map
 }

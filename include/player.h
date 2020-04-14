@@ -103,4 +103,6 @@ void player_think_1 (Entity *self);
 
 void player_touch(Entity *self,Entity *other);
 
+void player_bound_hit(Entity* self, int hit_edge);
+
 #endif

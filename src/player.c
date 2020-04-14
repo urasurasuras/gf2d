@@ -192,6 +192,7 @@ Entity *player_generic(
     //
     self->think = think;
     self->touch = touch;
+    self->bound_hit = player_bound_hit;
     self->maxFrames = 1;
     self->ui_box.w = 50;
     self->ui_box.h = 50;
@@ -294,23 +295,7 @@ void player_think_1 (Entity *self){
     float x = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTX)/ANALOG_SCALE;
     float y = SDL_GameControllerGetAxis(p->controller, SDL_CONTROLLER_AXIS_LEFTY)/ANALOG_SCALE;
     
-    switch (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
-    {
-    case BOUND_TOP:
-        self->position.y = self->radius_body + 1;
-        break;
-    case BOUND_RIGHT:
-        self->position.x = LEVEL_WIDTH - self->radius_body - 1;
-        break;
-    case BOUND_BOTTOM:
-        self->position.y = LEVEL_HEIGHT - self->radius_body - 1;
-        break;
-    case BOUND_LEFT:
-        self->position.x = self->radius_body + 1;
-        break;
-    default:
-        break;
-    }
+
     //if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
     //{
 
@@ -735,4 +720,24 @@ void player_touch(Entity *self,Entity *other)
 {
     if ((!self) || (!other))return;
     // slog("Player touched thing");
+}
+
+void player_bound_hit(Entity *self, int hit_edge) {
+    switch (hit_edge)
+    {
+    case BOUND_TOP:
+        self->position.y = self->radius_body + 1;
+        break;
+    case BOUND_RIGHT:
+        self->position.x = LEVEL_WIDTH - self->radius_body - 1;
+        break;
+    case BOUND_BOTTOM:
+        self->position.y = LEVEL_HEIGHT - self->radius_body - 1;
+        break;
+    case BOUND_LEFT:
+        self->position.x = self->radius_body + 1;
+        break;
+    default:
+        break;
+    }
 }

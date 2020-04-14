@@ -51,6 +51,21 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
     return level;
 }
 
+//void level_bound_collision_check() {
+//    int i;
+//    for (i = 0; i < entity_manager_get_active().maxEnts; i++)
+//    {
+//        Entity e;
+//        e = entity_manager_get_active().entityList[i];
+//
+//        if (!e._inuse)continue;
+//        //if (&entity_manager_get_active().entityList[i] == entity)continue;
+//
+//        if (e.bound_hit) {
+//            e.bound_hit(&e);
+//        }
+//    }
+//}
 void level_free(Level *level){
     if (!level)return;
     gf2d_sprite_free(level->background);
