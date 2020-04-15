@@ -133,9 +133,11 @@ void level_pickups_spawn(){
     }
 }
 
-Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius)
+int_Vector2D level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius)
 {
-    Uint8 hit = 0;
+    int_Vector2D hit;
+    hit.x = 0;
+    hit.y = 0;
     // if (!bounds)
     // {
     //     slog("no level provided for test");
@@ -143,22 +145,22 @@ Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius)
     // }
     if (center.x - radius < bounds.x)
     {
-        hit = 4;    
+        hit.x = BOUND_LEFT;    
         // slog("Hitting left border");
     }
     if (center.y - radius < bounds.y)
     {
-        hit = 1;
+        hit.y = BOUND_TOP;
         // slog("Hitting top border");
     }
     if (center.x + radius > bounds.x + bounds.w)
     {
-        hit = 2;
+        hit.x = BOUND_RIGHT;
         // slog("Hitting right border");
     }
     if (center.y + radius > bounds.y + bounds.h)
     {
-        hit = 3;
+        hit.y = BOUND_BOTTOM;
         // slog("Hitting bottom border");
     }
     return hit;

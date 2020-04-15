@@ -11,8 +11,9 @@ Entity *lavaGuy_new(){
     enemy->drawOffset = vector2d(-64,-64);
     enemy->think = not_enemy_think;
     enemy->touch = enemy_touch;
+    enemy->bound_hit = player_bound_hit;
     // enemy->detect = enemy_detect;
-
+    enemy->type = ENT_NEUTRAL_MONSTER;
     Bot *bot;
     bot = (Bot * )malloc(sizeof(Bot));
     bot->cldn_action = 300;
@@ -33,8 +34,9 @@ Entity *grassGuy_new(){
     enemy->drawOffset = vector2d(-64,-64);
     enemy->think = not_enemy_think;
     enemy->touch = not_enemy_touch;
+    enemy->bound_hit = player_bound_hit;
     // enemy->detect = enemy_detect;
-
+    enemy->type = ENT_NEUTRAL_MONSTER;
     Bot *bot;
     bot = (Bot * )malloc(sizeof(Bot));
     bot->cldn_action = 300;
@@ -81,12 +83,12 @@ void enemy_think (Entity *self){
     self->position.x += self->size.x;
     self->position.y += self->size.y;
 
-    if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
-    {
-        //TODO: Do something is ent hits bounds
-        self->position.x -= self->size.x;
-        self->position.y -= self->size.y;
-    }
+    //if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
+    //{
+    //    //TODO: Do something is ent hits bounds
+    //    self->position.x -= self->size.x;
+    //    self->position.y -= self->size.y;
+    //}
 
     if (b->last_action + b->cldn_action < level_get_active()->frame){
         projectile_generic(
@@ -191,12 +193,12 @@ void not_enemy_think (Entity *self){
     self->position.x += self->size.x;
     self->position.y += self->size.y;
 
-    if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
-    {
-        //TODO: Do something is ent hits bounds
-        self->position.x -= self->size.x;
-        self->position.y -= self->size.y;
-    }
+    //if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
+    //{
+    //    //TODO: Do something is ent hits bounds
+    //    self->position.x -= self->size.x;
+    //    self->position.y -= self->size.y;
+    //}
 
     if (b->last_action + b->cldn_action < level_get_active()->frame){
         // Vector2D v;

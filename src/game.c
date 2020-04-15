@@ -116,6 +116,7 @@ int main(int argc, char * argv[])
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     projectile_load_sprites();
     players_spawn();
+    level_pickups_spawn();//FIXME: spawn pickups before main game loop
     if(TTF_Init()==-1) {
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
@@ -144,7 +145,6 @@ int main(int argc, char * argv[])
             level_draw(level);
             //Draw entities
             entity_draw_all();
-     level_pickups_spawn();
 
             //UI elements last      
             if (level_get_active()->paused){

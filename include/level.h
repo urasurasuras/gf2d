@@ -14,9 +14,10 @@
 #define LEVEL_T_LAVA   2
 
 #define BOUND_TOP       1
+#define BOUND_BOTTOM    2
+
+#define BOUND_LEFT      1
 #define BOUND_RIGHT     2
-#define BOUND_BOTTOM    3
-#define BOUND_LEFT      4
 
 /*variable declarations*/
 
@@ -59,6 +60,12 @@ typedef struct
  * */
 Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage, int type);
 
+typedef struct int_Vector2D
+{
+    int x;
+    int y;
+}int_Vector2D;
+
 void level_bound_collision_check();
 
 /**
@@ -83,6 +90,6 @@ Level *level_get_active();
  * @brief test if a circle is touching or exceeding the level bounds
  * @return 1 if anything exceeds level bounds
  */
-Uint8 level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius);
+int_Vector2D level_bounds_test_circle(SDL_Rect bounds, Vector2D center, float radius);
 
 #endif

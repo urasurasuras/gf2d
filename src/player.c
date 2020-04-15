@@ -303,7 +303,9 @@ void player_think_1 (Entity *self){
     //    self->position.x -= x*p->speed;
     //    self->position.y -= y*p->speed;
     //}
-    if (level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius_body)){//Check for inner bound
+    int_Vector2D hit_edges;
+    hit_edges = level_bounds_test_circle(level_get_active()->bounds_stage, self->position, self->radius_body);
+    if (hit_edges.x != 0 || hit_edges.y != 0){//Check for inner bound
         if (level_get_active()->level_type == LEVEL_T_LAVA){
             self->health -= 0.1;
             // slog("%s health: %f", self->name, p->health);
@@ -722,22 +724,9 @@ void player_touch(Entity *self,Entity *other)
     // slog("Player touched thing");
 }
 
-void player_bound_hit(Entity *self, int hit_edge) {
-    switch (hit_edge)
-    {
-    case BOUND_TOP:
-        self->position.y = self->radius_body + 1;
-        break;
-    case BOUND_RIGHT:
-        self->position.x = LEVEL_WIDTH - self->radius_body - 1;
-        break;
-    case BOUND_BOTTOM:
-        self->position.y = LEVEL_HEIGHT - self->radius_body - 1;
-        break;
-    case BOUND_LEFT:
-        self->position.x = self->radius_body + 1;
-        break;
-    default:
-        break;
-    }
+void player_bound_hit(Entity *self, int_Vector2D hit_edge) {
+    if (hit_edge.y == BOUND_TOP)          self->position.y = self->radius_body + 1;
+    else if (hit_edge.y == BOUND_BOTTOM)  self->position.y = LEVEL_HEIGHT - self->radius_body - 1;
+    if (hit_edge.x == BOUND_LEFT)         self->position.x = self->radius_body + 1;
+    else if (hit_edge.x == BOUND_RIGHT)   self->position.x = LEVEL_WIDTH - self->radius_body - 1;
 }
