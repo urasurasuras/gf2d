@@ -82,7 +82,6 @@ Entity *projectile_generic(
     int collider_shape,
     int radius_body,
     int radius_range,
-    Vector2D draw_offset,
     float strength,
     float speed,
     int time_to_live,
@@ -101,7 +100,7 @@ Entity *projectile_generic(
         self->collider_shape = collider_shape;
         if (collider_shape == SHAPE_CIRCLE)self->radius_body = radius_body;
         self->position = init_pos;
-        self->drawOffset = draw_offset;   
+        self->drawOffset = vector2d(-radius_body, -radius_body);
         self->radius_body = radius_body;  
         self->radius_range = radius_range;   
 
@@ -460,7 +459,6 @@ void turret_detect(Entity *self, Entity *other){
         SHAPE_CIRCLE,
         25,
         0,
-        vector2d(-25,-25),
         25 * p->strength,
         3,
         LEVEL_WIDTH/3,

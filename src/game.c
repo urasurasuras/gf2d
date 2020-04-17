@@ -12,6 +12,14 @@
 
 int main(int argc, char * argv[])
 {
+    char cwd[64];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Current working dir: %s\n", cwd);
+    }
+    else {
+        perror("getcwd() error");
+        return 1;
+    }
     int mx,my;
     float mf = 0;
     Sprite *mouse;

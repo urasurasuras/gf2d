@@ -84,7 +84,6 @@ Entity *projectile_generic(
     int collider_shape,
     int radius_body,
     int radius_range,
-    Vector2D draw_offset,
     float strength,
     float speed,
     int time_to_live,

@@ -152,7 +152,6 @@ void musicBee_detect(Entity *self, Entity *other){
             SHAPE_CIRCLE,
             25,
             0,
-            vector2d(-25,-25),
             25 * p->strength,
             3,
             LEVEL_WIDTH/3,
