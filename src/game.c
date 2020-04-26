@@ -21,9 +21,7 @@ int main(int argc, char * argv[])
         perror("getcwd() error");
         return 1;
     }
-    int mx,my;
-    float mf = 0;
-    Sprite *mouse;
+    
     // Menu *menu_exit;
     // Menu *menu_save;
     // Menu *menu_level;
@@ -47,7 +45,6 @@ int main(int argc, char * argv[])
         MENU_BUTTON_HALF_HEIGHT
     };
     
-    Vector4D mouseColor = {255,100,255,200};
 
     Level *level;
 
@@ -119,11 +116,13 @@ int main(int argc, char * argv[])
     int last_tab = 0;
     
     /*demo setup*/
-    Scene* title = scene_new();
-    title->menu_manager = get_menu_active();
     bg_grass = gf2d_sprite_load_image("images/backgrounds/bg_grass.png");
-    level = level_new(bg_grass, bounds_level,bounds_stage_wide,1);
-    mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+    level = level_new(bg_grass, bounds_level, bounds_stage_wide, 1);
+
+    Scene* title = scene_new();
+    //title->menu_manager = get_menu_active();
+    //title->level = level;
+    
     projectile_load_sprites();
     players_spawn();
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
@@ -141,32 +140,22 @@ int main(int argc, char * argv[])
         
         //
         /*update things here*/
-        SDL_GetMouseState(&mx,&my);
-        mf+=0.1;
-        if (mf >= 16.0)mf = 0;
         
-        level_update(level);
+        
+        //level_update(level);
+        scene_update(title);
     
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
             // gf2d_sprite_draw_image(sprite,vector2d(0,0));
-            level_draw(level);
+            //level_draw(level);
+            scene_draw(title);
 
             //UI elements last      
             if (level_get_active()->paused){
-                menu_update_all();
-                menu_draw_all();
-                // slog("Paused");
-            gf2d_sprite_draw(
-                mouse,
-                vector2d(mx,my),
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                &mouseColor,
-                (int)mf);}      
+                
+            }      
 
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         

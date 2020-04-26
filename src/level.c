@@ -83,9 +83,11 @@ void level_update(Level* level) {
 
 void level_draw(Level *level){
     if (!level)return;
+    //Bg drawn first
     gf2d_sprite_draw_image(level->background,vector2d(0,0));
     gf2d_draw_rect(level->bounds_level, vector4d(0,255,0,255));
     gf2d_draw_rect(level->bounds_stage, vector4d(0,255,100,255));
+    //Entities drawn last
     entity_draw_all();
     // level_core_draw();
 }
