@@ -34,6 +34,8 @@ typedef struct Menu_S
 
 typedef struct
 {
+    Sprite* bg;
+
     Uint32      maxMenus;         /**<Maximum number of entities*/
     Menu* menuList;     /**<List of entities*/
     TTF_Font* text;
@@ -50,8 +52,7 @@ Menu *menu_new();
  * @brief initialize entity resource manager
  * @param maxEnts maximum entities
  * */
-void menu_manager_init(Uint32 maxEnts);
-
+void menu_manager_init(Uint32 maxMenus, Sprite* bg);
 /**
  * @brief Close entity system
  */

@@ -29,6 +29,7 @@ void scene_draw(Scene* self) {
 	if (self->data) {
 		slog("drawing scene data");
 	}
+	
 	if (self->level && self->type == scn_LEVEL) {
 		level_draw(self->level);
 	}

@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
-    menu_manager_init(32);
+    menu_manager_init(32, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
 
     	
     if(TTF_Init()==-1) {
@@ -120,7 +120,7 @@ int main(int argc, char * argv[])
     level = level_new(bg_grass, bounds_level, bounds_stage_wide, 1);
 
     Scene* title = scene_new();
-    //title->menu_manager = get_menu_active();
+    title->menu_manager = get_menu_active();
     //title->level = level;
     
     projectile_load_sprites();

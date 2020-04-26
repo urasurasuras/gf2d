@@ -30,7 +30,7 @@ Menu *menu_new(){
     return NULL;
 }
 
-void menu_manager_init(Uint32 maxMenus){
+void menu_manager_init(Uint32 maxMenus, Sprite *bg){
     if (menu_manager.menuList != NULL){
         //TODO: cleanup
     }
@@ -43,6 +43,7 @@ void menu_manager_init(Uint32 maxMenus){
         slog("failed to allocate %i menus for the menu manager",maxMenus);
     }
     menu_manager.maxMenus = maxMenus;
+    menu_manager.bg = bg;
     memset(menu_manager.menuList,0,sizeof(Menu)*maxMenus);
     slog("Menu manager initalized");
     atexit(menu_manager_close);
@@ -117,6 +118,15 @@ void menu_draw(Menu *self){
 
 void menu_draw_all()
 {
+    gf2d_sprite_draw(
+        menu_manager.bg,
+        vector2d(0,0),
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL);
     int i;
     for (i = 0;i < menu_manager.maxMenus;i++)
     {
