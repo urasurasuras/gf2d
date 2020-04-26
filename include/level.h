@@ -37,6 +37,8 @@ Sprite *bg_lava;
 
 typedef struct
 {
+    EntityManager *entity_manager;
+
     Sprite *background;     /**<Background sprite*/
     SDL_Rect bounds_level;  /**<Bounds*/
     SDL_Rect bounds_stage;
@@ -73,6 +75,7 @@ void level_bound_collision_check();
  * */
 void level_free(Level *level);
 
+void level_draw(Level* level);
 /**
  * @brief Draw level bg image and bounds
  * */

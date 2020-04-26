@@ -415,17 +415,17 @@ void landmine_touch(Entity *self, Entity *other){
 
     if (other->type == ENT_PLAYER && other->team != self->team){
         int i;
-        for (i = 0;i < entity_manager_get_active().maxEnts;i++)
+        for (i = 0;i < entity_manager_get_active()->maxEnts;i++)
         {    
 
-            if (!entity_manager_get_active().entityList[i]._inuse)continue;
-            if (&entity_manager_get_active().entityList[i] == self)continue;
-            if (entity_manager_get_active().entityList[i].type != ENT_PLAYER)continue;
-            if (entity_manager_get_active().entityList[i].team == self->team)continue;
+            if (!entity_manager_get_active()->entityList[i]._inuse)continue;
+            if (&entity_manager_get_active()->entityList[i] == self)continue;
+            if (entity_manager_get_active()->entityList[i].type != ENT_PLAYER)continue;
+            if (entity_manager_get_active()->entityList[i].team == self->team)continue;
 
-            if (collide_circle(self->position, self->radius_range, entity_manager_get_active().entityList[i].position, entity_manager_get_active().entityList[i].radius_body)){
-                entity_manager_get_active().entityList[i].health -= p->strength;
-                // slog("%s exploded on %s", self->name, entity_manager_get_active().entityList[i].name);
+            if (collide_circle(self->position, self->radius_range, entity_manager_get_active()->entityList[i].position, entity_manager_get_active()->entityList[i].radius_body)){
+                entity_manager_get_active()->entityList[i].health -= p->strength;
+                // slog("%s exploded on %s", self->name, entity_manager_get_active()->entityList[i].name);
             }
         }
     }   

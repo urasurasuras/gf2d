@@ -64,7 +64,6 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
-    entity_manager_init(32);
     menu_manager_init(32);
 
     	

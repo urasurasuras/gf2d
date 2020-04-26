@@ -179,11 +179,11 @@ void button_save_think (Menu *self){
             allData = sj_object_new();
             playerData = sj_array_new();
             int i;
-            for (i = 0;i < entity_manager_get_active().maxEnts;i++)
+            for (i = 0;i < entity_manager_get_active()->maxEnts;i++)
             {
-                if (entity_manager_get_active().entityList[i].type == ENT_PLAYER){
+                if (entity_manager_get_active()->entityList[i].type == ENT_PLAYER){
                     
-                    Entity current_ent = entity_manager_get_active().entityList[i];
+                    Entity current_ent = entity_manager_get_active()->entityList[i];
                     // Player *current_player = (Player *)current_ent.typeOfEnt;
 
                     player_object = sj_object_new();
@@ -201,7 +201,7 @@ void button_save_think (Menu *self){
 
                     sj_array_append(playerData, player_object);
 
-                    // slog("Name: %s", entity_manager_get_active().entityList[i].name);
+                    // slog("Name: %s", entity_manager_get_active()->entityList[i].name);
                 }
                 
             }

@@ -78,7 +78,7 @@ typedef struct
 /**
  * @brief Returns a pointer to the entity_manager
  * */
-EntityManager entity_manager_get_active();
+EntityManager *entity_manager_get_active();
 
 /**
  * @brief get a pointer to a new entity

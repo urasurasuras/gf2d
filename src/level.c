@@ -35,6 +35,8 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
     }
     level = (Level*)gfc_allocate_array(sizeof(Level), 1); //allocate array
     if(!level)return NULL;
+    entity_manager_init(32);
+    level->entity_manager = entity_manager_get_active();
     level->background = backgroundFile;
     gfc_rect_set(level->bounds_level, bounds_level.x, bounds_level.y, bounds_level.w, bounds_level.h);
     gfc_rect_set(level->bounds_stage, bounds_stage_wide.x, bounds_stage_wide.y, bounds_stage_wide.w, bounds_stage_wide.h);
@@ -53,13 +55,13 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
 
 //void level_bound_collision_check() {
 //    int i;
-//    for (i = 0; i < entity_manager_get_active().maxEnts; i++)
+//    for (i = 0; i < entity_manager_get_active()->maxEnts; i++)
 //    {
 //        Entity e;
-//        e = entity_manager_get_active().entityList[i];
+//        e = entity_manager_get_active()->entityList[i];
 //
 //        if (!e._inuse)continue;
-//        //if (&entity_manager_get_active().entityList[i] == entity)continue;
+//        //if (&entity_manager_get_active()->entityList[i] == entity)continue;
 //
 //        if (e.bound_hit) {
 //            e.bound_hit(&e);
