@@ -75,7 +75,8 @@ void level_bound_collision_check();
  * */
 void level_free(Level *level);
 
-void level_draw(Level* level);
+void level_update(Level* level);
+
 /**
  * @brief Draw level bg image and bounds
  * */

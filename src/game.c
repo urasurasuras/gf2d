@@ -144,17 +144,14 @@ int main(int argc, char * argv[])
         SDL_GetMouseState(&mx,&my);
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
-
-        if (!level_get_active()->paused)
-        entity_update_all();
+        
+        level_update(level);
     
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
             // gf2d_sprite_draw_image(sprite,vector2d(0,0));
             level_draw(level);
-            //Draw entities
-            entity_draw_all();
 
             //UI elements last      
             if (level_get_active()->paused){

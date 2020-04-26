@@ -75,11 +75,18 @@ void level_free(Level *level){
     slog("Level freed %d x %d", level->bounds_level.w, level->bounds_level.h);
 }
 
+void level_update(Level* level) {
+    if (!level)return;
+    entity_update_all();
+    slog("updating level");
+}
+
 void level_draw(Level *level){
     if (!level)return;
     gf2d_sprite_draw_image(level->background,vector2d(0,0));
     gf2d_draw_rect(level->bounds_level, vector4d(0,255,0,255));
     gf2d_draw_rect(level->bounds_stage, vector4d(0,255,100,255));
+    entity_draw_all();
     // level_core_draw();
 }
 
