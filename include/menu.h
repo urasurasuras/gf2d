@@ -10,6 +10,7 @@
 
 #define MENU_BUTTON_HALF_WIDTH 165
 #define MENU_BUTTON_HALF_HEIGHT 100
+
 typedef struct Menu_S
 {
     char        name[20];           /**<Name of this entity (for debugging)*/
@@ -29,6 +30,14 @@ typedef struct Menu_S
 
 }Menu;
 
+typedef struct
+{
+    Uint32      maxMenus;         /**<Maximum number of entities*/
+    Menu* menuList;     /**<List of entities*/
+    TTF_Font* text;
+}MenuManager;
+
+MenuManager *get_menu_active();
 /**
  * @brief get a pointer to a new entity
  * @return NULL on out of memory or error, a pointer to a blank entity otherwise

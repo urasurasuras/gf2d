@@ -11,14 +11,12 @@
 #include "entity.h"
 #include "player.h"
 
-typedef struct 
-{
-    Uint32      maxMenus;         /**<Maximum number of entities*/
-    Menu        *menuList;     /**<List of entities*/
-    TTF_Font    *text;           
-}MenuManager;
 
 static MenuManager menu_manager = {0};
+
+MenuManager *get_menu_active() {
+    return &menu_manager;
+}
 
 Menu *menu_new(){
     int i;
