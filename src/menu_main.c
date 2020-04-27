@@ -1,6 +1,10 @@
 #include "menu.h"
+#include "menu_main.h"
+#include "menu_pause.h"
 
 void menu_main_init() {
+    //
+    menu_manager_init(8, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
 
     //play button
     menu_generic(
@@ -31,4 +35,6 @@ void menu_main_init() {
         Sans,
         "Exit"
     );
+
+    scene_get_active()->menu_manager = get_menu_active();
 }

@@ -8,6 +8,7 @@
 #include "player.h"
 #include "level.h"
 #include "menu.h"
+#include "menu_main.h"
 #include "projectile.h"
 #include "scene.h"
 
@@ -37,7 +38,6 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
-    menu_manager_init(32, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
 
     	
     if(TTF_Init()==-1) {
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
     Sans = TTF_OpenFont("fonts/bignoodletoo.ttf", 72); //this opens a font style and sets a size
     if (!Sans)slog("no font");
     
-    menu_pause_init();
+    
     
     SDL_ShowCursor(SDL_DISABLE);
     //UI cooldowns
@@ -59,7 +59,9 @@ int main(int argc, char * argv[])
 
     scene_new();
     Scene* title = scene_get_active();
-    title->menu_manager = get_menu_active();
+    menu_main_init();//This also initializes MenuManager;
+    //menu_pause_init();
+    //title->menu_manager = get_menu_active();
     //title->level = level;
     
     projectile_load_sprites();

@@ -57,7 +57,7 @@ Menu *menu_new();
  * @brief initialize entity resource manager
  * @param maxEnts maximum entities
  * */
-void menu_manager_init(Uint32 maxMenus, Sprite* bg);
+MenuManager *menu_manager_init(Uint32 maxMenus, Sprite* bg);
 /**
  * @brief Close entity system
  */
@@ -98,11 +98,5 @@ Menu *menu_generic(
     TTF_Font* Sans,
     TextLine     text
 );
-
-void button_exit_think (Menu *self);
-
-void button_save_think (Menu *self);
-
-void button_level_think (Menu *self);
 
 #endif

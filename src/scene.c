@@ -13,6 +13,10 @@ void scene_new() {
 	scene.mf = 0;
 }
 
+//void scene_reload(
+//	Sprite *
+//)
+
 void scene_update() {
 	if (scene.data) {
 		slog("updating scene data");
