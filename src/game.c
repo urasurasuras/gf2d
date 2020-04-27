@@ -57,7 +57,8 @@ int main(int argc, char * argv[])
     bg_grass = gf2d_sprite_load_image("images/backgrounds/bg_grass.png");
     level = level_new(bg_grass, bounds_level, bounds_stage_wide, 1);
 
-    Scene* title = scene_new();
+    scene_new();
+    Scene* title = scene_get_active();
     title->menu_manager = get_menu_active();
     //title->level = level;
     

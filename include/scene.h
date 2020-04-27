@@ -23,10 +23,10 @@ typedef struct {
 
 Scene* scene_get_active();
 
-Scene *scene_new();
+void scene_new();
 
-void scene_update(Scene *self);
+void scene_update();
 
-void scene_draw(Scene *self);
+void scene_draw();
 
 #endif // !_SCENE_H_
