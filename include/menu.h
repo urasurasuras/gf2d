@@ -32,8 +32,9 @@ typedef struct Menu_S
     SDL_Rect    box;                /**<Bounds of menu*/
     SDL_Texture *Message;
 
+    Uint32      last_click;         /**<Stores the last SDL Tick this button was clicked*/
 
-    void        (*think)(struct Menu_S *self);
+    void        (*onClick)(struct Menu_S *self);
 
 }Menu;
 

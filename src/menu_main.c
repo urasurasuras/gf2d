@@ -31,7 +31,7 @@ void menu_main_init() {
         box_exit,
         vector2d(-100, -250),
         gf2d_sprite_load_image("images/ui/button.png"),
-        button_exit_think,
+        onClick_exit,
         Sans,
         "Exit"
     );
