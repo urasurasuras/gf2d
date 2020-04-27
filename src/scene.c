@@ -1,22 +1,28 @@
 #include "scene.h"
 
-Scene *scene_new() {
-	Scene *self = (Scene *)malloc(sizeof(Scene));
-	self->mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
-	self->mouse_color = vector4d(255,255,255,255);
-	self->mf = 0;
-	return self;
+static Scene *scene = { 0 };
+
+MenuManager* get_scene_active() {
+	return scene;
 }
 
-void scene_update(Scene *self) {
-	if (!self)return;
-	if (self->data) {
+Scene *scene_new() {
+	scene = (Scene *)malloc(sizeof(Scene));
+	scene->mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
+	scene->mouse_color = vector4d(255,255,255,255);
+	scene->mf = 0;
+	return scene;
+}
+
+void scene_update(Scene *scene) {
+	if (!scene)return;
+	if (scene->data) {
 		slog("updating scene data");
 	}
-	if (self->level && self->type == scn_LEVEL) {
-		level_update(self->level);
+	if (scene->level && scene->type == scn_LEVEL) {
+		level_update(scene->level);
 	}
-	if (self->menu_manager) {
+	if (scene->menu_manager) {
 		menu_update_all();
 
 	}
@@ -24,32 +30,32 @@ void scene_update(Scene *self) {
 	slog("updating scene");
 }
 
-void scene_draw(Scene* self) {
-	if (!self)return;
-	if (self->data) {
+void scene_draw(Scene* scene) {
+	if (!scene)return;
+	if (scene->data) {
 		slog("drawing scene data");
 	}
 	
-	if (self->level && self->type == scn_LEVEL) {
-		level_draw(self->level);
+	if (scene->level && scene->type == scn_LEVEL) {
+		level_draw(scene->level);
 	}
-	if (self->menu_manager) {
+	if (scene->menu_manager) {
 		menu_draw_all();
 
 		// slog("Paused");
 		gf2d_sprite_draw(
-			self->mouse_sprite,
-			vector2d(self->mx, self->my),
+			scene->mouse_sprite,
+			vector2d(scene->mx, scene->my),
 			NULL,
 			NULL,
 			NULL,
 			NULL,
-			&self->mouse_color,
-			(int)self->mf);
+			&scene->mouse_color,
+			(int)scene->mf);
 
-		SDL_GetMouseState(&self->mx, &self->my);
-		self->mf += 0.1;
-		if (self->mf >= 16.0)self->mf = 0;
+		SDL_GetMouseState(&scene->mx, &scene->my);
+		scene->mf += 0.1;
+		if (scene->mf >= 16.0)scene->mf = 0;
 
 	}
 

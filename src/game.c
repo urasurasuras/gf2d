@@ -21,30 +21,6 @@ int main(int argc, char * argv[])
         perror("getcwd() error");
         return 1;
     }
-    
-    // Menu *menu_exit;
-    // Menu *menu_save;
-    // Menu *menu_level;
-
-    SDL_Rect box_lvl_b = {
-        (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
-        (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT, 
-        MENU_BUTTON_HALF_WIDTH*2, 
-        MENU_BUTTON_HALF_HEIGHT
-    };
-    SDL_Rect box_save = {
-        (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
-        (LEVEL_HEIGHT/2) - MENU_BUTTON_HALF_HEIGHT*2, 
-        MENU_BUTTON_HALF_WIDTH*2, 
-        MENU_BUTTON_HALF_HEIGHT
-    };
-    SDL_Rect box_exit = {
-        (LEVEL_WIDTH/2)- MENU_BUTTON_HALF_WIDTH, 
-        (LEVEL_HEIGHT/2) + MENU_BUTTON_HALF_HEIGHT, 
-        MENU_BUTTON_HALF_WIDTH*2, 
-        MENU_BUTTON_HALF_HEIGHT
-    };
-    
 
     Level *level;
 
@@ -68,49 +44,11 @@ int main(int argc, char * argv[])
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
-    TTF_Font* Sans = TTF_OpenFont("fonts/bignoodletoo.ttf", 72); //this opens a font style and sets a size
+    Sans = TTF_OpenFont("fonts/bignoodletoo.ttf", 72); //this opens a font style and sets a size
     if (!Sans)slog("no font");
-    // //Exit button
-    menu_generic(
-        box_exit,
-        vector2d(-100,-250),
-        gf2d_sprite_load_image("images/ui/button.png"),
-        button_exit_think,
-        Sans,
-        "Exit"
-    );
-    // menu_exit = menu_new();
-    // menu_exit->box = box_exit;
-    // menu_exit->drawOffset = vector2d(-100,-250);
-    // menu_exit->position = vector2d(500,500);
-    // menu_exit->sprite = gf2d_sprite_load_image("images/ui/button.png");
-    // menu_exit->think = button_exit_think;
-    // //save button
-    menu_generic(
-        box_save,
-        vector2d(-100,-250),
-        gf2d_sprite_load_image("images/ui/button.png"),
-        button_save_think,
-        Sans,
-        "Save"
-    );
-    // menu_save = menu_new();
-    // menu_save->box = box_save;
-    // menu_save->think = button_save_think;
-    // //Level button
-    menu_generic(
-        box_lvl_b,
-        vector2d(-100,-250),
-        gf2d_sprite_load_image("images/ui/button.png"),
-        button_level_think,
-        Sans,
-        "Next level"
-    );
-    // menu_level = menu_new();
-    // menu_level->box = box_lvl_b;
-    // menu_level->think = button_level_think;
-
-
+    
+    menu_pause_init();
+    
     SDL_ShowCursor(SDL_DISABLE);
     //UI cooldowns
     int last_tab = 0;

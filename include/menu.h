@@ -11,6 +11,7 @@
 #define MENU_BUTTON_HALF_WIDTH 165
 #define MENU_BUTTON_HALF_HEIGHT 100
 
+TTF_Font* Sans;
 
 
 typedef struct Menu_S
