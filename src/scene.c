@@ -2,7 +2,7 @@
 
 static Scene *scene = { 0 };
 
-MenuManager* get_scene_active() {
+Scene* scene_get_active() {
 	return scene;
 }
 

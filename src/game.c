@@ -88,7 +88,7 @@ int main(int argc, char * argv[])
             //backgrounds drawn first
             // gf2d_sprite_draw_image(sprite,vector2d(0,0));
             //level_draw(level);
-            scene_draw(title);
+            scene_draw(scene_get_active());
 
             //UI elements last      
             if (level_get_active()->paused){

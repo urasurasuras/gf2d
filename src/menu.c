@@ -271,3 +271,23 @@ void button_level_think (Menu *self){
         }
     }
 }
+
+SDL_Rect box_lvl_b = {
+        (LEVEL_WIDTH / 2) - MENU_BUTTON_HALF_WIDTH,
+        (LEVEL_HEIGHT / 2) - MENU_BUTTON_HALF_HEIGHT,
+        MENU_BUTTON_HALF_WIDTH * 2,
+        MENU_BUTTON_HALF_HEIGHT
+};
+
+SDL_Rect box_save = {
+    (LEVEL_WIDTH / 2) - MENU_BUTTON_HALF_WIDTH,
+    (LEVEL_HEIGHT / 2) - MENU_BUTTON_HALF_HEIGHT * 2,
+    MENU_BUTTON_HALF_WIDTH * 2,
+    MENU_BUTTON_HALF_HEIGHT
+};
+SDL_Rect box_exit = {
+    (LEVEL_WIDTH / 2) - MENU_BUTTON_HALF_WIDTH,
+    (LEVEL_HEIGHT / 2) + MENU_BUTTON_HALF_HEIGHT,
+    MENU_BUTTON_HALF_WIDTH * 2,
+    MENU_BUTTON_HALF_HEIGHT
+};

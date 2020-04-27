@@ -13,6 +13,10 @@
 
 TTF_Font* Sans;
 
+SDL_Rect box_lvl_b;
+SDL_Rect box_save;
+SDL_Rect box_exit;
+
 
 typedef struct Menu_S
 {

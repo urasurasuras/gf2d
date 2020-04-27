@@ -21,6 +21,8 @@ typedef struct {
 	int paused;
 }Scene;
 
+Scene* scene_get_active();
+
 Scene *scene_new();
 
 void scene_update(Scene *self);
