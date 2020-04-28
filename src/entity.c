@@ -92,6 +92,8 @@ void entity_update_all(){
     level_get_active()->frame ++;
     int i;
     int_Vector2D hit_edges;
+    slog("Updating level %d", SDL_GetTicks());
+
     for (i = 0;i < entity_manager.maxEnts;i++)
     {
         if (!entity_manager.entityList[i]._inuse)continue;

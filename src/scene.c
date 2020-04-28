@@ -18,19 +18,31 @@ void scene_purge() {
 
 void scene_update() {
 	if (keys[SDL_SCANCODE_ESCAPE] && last_pause + 256 < SDL_GetTicks()) {
-		if (scene.menu_manager->type == MENU_PAUSE) {
+		if (scene.type == scn_LEVEL) {
 			last_pause = SDL_GetTicks();
-			switch (scene.menu_manager->_inuse)
+	
+			switch (scene.paused)
 			{
 			case 0:
-				scene.menu_manager->_inuse = 1;
+				scene.paused = 1;
 				break;
 			case 1:
-				scene.menu_manager->_inuse = 0;
+				scene.paused = 0;
 				break;
 			default:
+				slog("How did you even- what ??");
 				break;
 			}
+		}
+
+		if (!scene.paused) {
+			scene.menu_manager->_inuse	= 1;
+			scene.level->_inuse = 0;
+		}
+		else
+		{
+			scene.menu_manager->_inuse = 0;
+			scene.level->_inuse = 1;
 		}
 	}
 	if (scene.data) {

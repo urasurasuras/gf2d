@@ -35,6 +35,7 @@ Sprite *bg_lava;
 
 typedef struct
 {
+    Uint32          _inuse;
     EntityManager *entity_manager;
 
     Sprite *background;     /**<Background sprite*/

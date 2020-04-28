@@ -77,6 +77,7 @@ void level_free(Level *level){
 
 void level_update(Level* level) {
     if (!level)return;
+    if (!level->_inuse)return;
     entity_update_all();
     slog("updating level");
 }

@@ -61,6 +61,7 @@ void onClick_play() {
     players_spawn();
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
 
+    scene_get_active()->type = scn_LEVEL;
 
     slog("Clicked play on %d", SDL_GetTicks());
 }
