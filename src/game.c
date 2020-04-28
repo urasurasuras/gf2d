@@ -80,7 +80,7 @@ int main(int argc, char * argv[])
         
         
         //level_update(level);
-        scene_update(title);
+        scene_update(scene_get_active());
     
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame

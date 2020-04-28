@@ -138,6 +138,8 @@ void entity_draw(Entity *self){
         SDL_RenderCopy(
         gf2d_graphics_get_renderer(), 
         Message, NULL, &self->ui_box); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
+        SDL_DestroyTexture(Message);
+        SDL_FreeSurface(surfaceMessage);
     }
 
     else if (self->collider_shape == SHAPE_LINE){
