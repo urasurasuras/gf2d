@@ -41,7 +41,11 @@ void menu_main_init() {
 
 void onClick_play() {
     //Purge current scene
-
+    //memset(scene_get_active(), 0, sizeof(Scene));
+    //Load pause menu
+    menu_free_all();
+    menu_pause_init();
+    //scene_get_active()->menu_manager-
     //Load grass level
     scene_get_active()->level = level_new(
         gf2d_sprite_load_image("images/backgrounds/bg_grass.png"),
@@ -51,6 +55,7 @@ void onClick_play() {
     projectile_load_sprites();
     players_spawn();
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
+
 
     slog("Clicked play on %d", SDL_GetTicks());
 }

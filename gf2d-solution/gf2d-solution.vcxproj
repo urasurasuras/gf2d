@@ -154,6 +154,7 @@
     <ClInclude Include="..\include\collision.h" />
     <ClInclude Include="..\include\companion.h" />
     <ClInclude Include="..\include\entity.h" />
+    <ClInclude Include="..\include\game.h" />
     <ClInclude Include="..\include\gf2d_draw.h" />
     <ClInclude Include="..\include\gf2d_graphics.h" />
     <ClInclude Include="..\include\gf2d_sprite.h" />

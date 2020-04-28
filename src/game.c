@@ -1,5 +1,4 @@
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <game.h>
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 #include "gf2d_draw.h"

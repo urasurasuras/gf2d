@@ -42,7 +42,8 @@ typedef struct
 {
     Uint8       _inuse;
 
-    Sprite* bg;
+    Sprite*     bg;
+    Vector4D*   bg_color;   /**<Color value of menu bg color*/
 
     Uint32      maxMenus;         /**<Maximum number of entities*/
     Menu* menuList;     /**<List of entities*/
@@ -68,6 +69,11 @@ MenuManager *menu_manager_init(Uint32 maxMenus, Sprite* bg);
 void menu_manager_close();
 
 /**
+ * @brief Free every button that is used
+ */
+void menu_free_all();
+
+/**
  * @brief free previously allocated entity
  * @param self a pointer to the entity to free
  */
@@ -83,6 +89,8 @@ void menu_update(Menu *self);
  * @brief update every active entity
  */
 void menu_update_all();
+
+void menu_draw(Menu* self);
 
 /**
  * @brief draw every active entity

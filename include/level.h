@@ -21,8 +21,6 @@
 
 /*variable declarations*/
 
-const Uint8 * keys;
-
 SDL_Rect bounds_level;
 SDL_Rect bounds_stage_wide;
 SDL_Rect bounds_stage_narrow;

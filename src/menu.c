@@ -51,16 +51,21 @@ MenuManager *menu_manager_init(Uint32 maxMenus, Sprite *bg){
 }
 
 void menu_manager_close(){
-    int i;
-    for (i=0; i < menu_manager.maxMenus; i++){
-        if(menu_manager.menuList[i]._inuse){
-            menu_free(&menu_manager.menuList[i]);
-        }
-    }
+    menu_free_all();
     menu_manager.maxMenus = 0;
     free(menu_manager.menuList);
     menu_manager.menuList =NULL;
     slog("menu manager closed");
+}
+
+void menu_free_all()
+{
+    int i;
+    for (i = 0; i < menu_manager.maxMenus; i++) {
+        if (menu_manager.menuList[i]._inuse) {
+            menu_free(&menu_manager.menuList[i]);
+        }
+    }
 }
 
 void menu_free(Menu *self){
@@ -135,7 +140,7 @@ void menu_draw_all()
         NULL,
         NULL,
         NULL,
-        NULL,
+        menu_manager.bg_color,
         NULL);
     int i;
     for (i = 0;i < menu_manager.maxMenus;i++)
