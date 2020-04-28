@@ -54,8 +54,7 @@ int main(int argc, char * argv[])
     int last_tab = 0;
     
     /*demo setup*/
-    bg_grass = gf2d_sprite_load_image("images/backgrounds/bg_grass.png");
-    level = level_new(bg_grass, bounds_level, bounds_stage_wide, 1);
+
 
     scene_new();
     Scene* title = scene_get_active();
@@ -64,9 +63,7 @@ int main(int argc, char * argv[])
     //title->menu_manager = get_menu_active();
     //title->level = level;
     
-    projectile_load_sprites();
-    players_spawn();
-    level_pickups_spawn();//FIXME: spawn pickups before main game loop
+    
     if(TTF_Init()==-1) {
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
@@ -74,7 +71,7 @@ int main(int argc, char * argv[])
 
     
     /*main game loop*/
-    while(!level_get_active()->done)
+    while(!scene_get_active()->done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
@@ -107,11 +104,11 @@ int main(int argc, char * argv[])
             else if (!level_get_active()->paused) level_get_active()->paused = 1;
         }
         // slog("Tick: %d", SDL_GetTicks());
-        if (keys[SDL_SCANCODE_ESCAPE])level_get_active()->done = 1; // exit condition
+        //if (keys[SDL_SCANCODE_ESCAPE])scene_get_active()->menu_manager->_inuse = 0; // exit condition
         // slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     slog("---==== END ====---");
-    level_free(level);
+    //free(scene_get_active());
     return 0;
 }
 /*eol@eof*/

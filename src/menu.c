@@ -127,6 +127,7 @@ void menu_draw(Menu *self){
 
 void menu_draw_all()
 {
+    if (!menu_manager._inuse)return;
     gf2d_sprite_draw(
         menu_manager.bg,
         vector2d(0,0),

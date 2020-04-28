@@ -35,8 +35,7 @@ void menu_pause_init() {
 
 
 void onClick_exit(Menu* self) {
-
-     level_get_active()->done = 1;
+    scene_get_active()->done = 1;
 }
 
 void onClick_save(Menu* self) {

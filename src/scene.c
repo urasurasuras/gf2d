@@ -13,13 +13,13 @@ void scene_new() {
 	scene.mf = 0;
 }
 
-//void scene_reload(
-//	Sprite *
-//)
+void scene_purge() {
+	//scene = memset(scene, ;
+}
 
 void scene_update() {
 	if (scene.data) {
-		slog("updating scene data");
+		//slog("updating scene data");
 	}
 	if (scene.level && scene.type == scn_LEVEL) {
 		level_update(scene.level);
@@ -29,7 +29,7 @@ void scene_update() {
 
 	}
 	
-	slog("updating scene");
+	//slog("updating scene");
 }
 
 void scene_draw() {
@@ -60,5 +60,5 @@ void scene_draw() {
 
 	}
 
-	slog("drawing scene");
+	//slog("drawing scene");
 }

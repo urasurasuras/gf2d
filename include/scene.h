@@ -19,6 +19,7 @@ typedef struct {
 	Vector4D mouse_color;
 
 	int paused;
+	int done;
 }Scene;
 
 Scene* scene_get_active();

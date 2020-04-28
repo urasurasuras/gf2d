@@ -11,7 +11,7 @@ void menu_main_init() {
         box_save,
         vector2d(-100, -250),
         gf2d_sprite_load_image("images/ui/button.png"),
-        NULL,
+        onClick_play,
         Sans,
         "Play"
     );
@@ -35,6 +35,22 @@ void menu_main_init() {
         Sans,
         "Exit"
     );
-
+    get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
+}
+
+void onClick_play() {
+    //Purge current scene
+
+    //Load grass level
+    scene_get_active()->level = level_new(
+        gf2d_sprite_load_image("images/backgrounds/bg_grass.png"),
+        bounds_level, bounds_stage_wide, 
+        1
+    );
+    projectile_load_sprites();
+    players_spawn();
+    level_pickups_spawn();//FIXME: spawn pickups before main game loop
+
+    slog("Clicked play on %d", SDL_GetTicks());
 }
