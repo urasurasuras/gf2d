@@ -2,6 +2,7 @@
 #define _SCENE_H_
 
 #include "menu.h"
+#include "game.h"
 
 #define scn_MENU 1
 #define scn_LEVEL 2
@@ -11,12 +12,6 @@ typedef struct {
 	MenuManager* menu_manager;
 	Level* level;
 	void* data;
-
-	//mouse
-	int mx, my;
-	float mf;
-	Sprite *mouse_sprite;
-	Vector4D mouse_color;
 
 	int paused;
 	int done;

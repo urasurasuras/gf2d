@@ -32,6 +32,7 @@ void menu_pause_init() {
         Sans,
         "Exit"
     );
+    get_menu_active()->type = MENU_PAUSE;
 }
 
 

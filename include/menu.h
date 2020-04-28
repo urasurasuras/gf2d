@@ -11,6 +11,9 @@
 #define MENU_BUTTON_HALF_WIDTH 165
 #define MENU_BUTTON_HALF_HEIGHT 100
 
+#define MENU_MAIN   1
+#define MENU_PAUSE  2
+
 TTF_Font* Sans;
 
 SDL_Rect box_lvl_b;
@@ -42,12 +45,21 @@ typedef struct
 {
     Uint8       _inuse;
 
+    int         type;       /**<Type of menu (pause, main)*/
+
     Sprite*     bg;
     Vector4D*   bg_color;   /**<Color value of menu bg color*/
 
     Uint32      maxMenus;         /**<Maximum number of entities*/
     Menu* menuList;     /**<List of entities*/
     TTF_Font* text;
+
+    //mouse
+    int mx, my;
+    float mf;
+    Sprite* mouse_sprite;
+    Vector4D mouse_color;
+
 }MenuManager;
 
 MenuManager *get_menu_active();

@@ -1,5 +1,6 @@
 #include "scene.h"
 
+static int last_pause = 0;
 static Scene scene = { 0 };
 
 Scene* scene_get_active() {
@@ -8,9 +9,7 @@ Scene* scene_get_active() {
 
 void scene_new() {
 	//scene = (Scene *)malloc(sizeof(Scene));
-	scene.mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
-	scene.mouse_color = vector4d(255,255,255,255);
-	scene.mf = 0;
+
 }
 
 void scene_purge() {
@@ -18,6 +17,22 @@ void scene_purge() {
 }
 
 void scene_update() {
+	if (keys[SDL_SCANCODE_ESCAPE] && last_pause + 256 < SDL_GetTicks()) {
+		if (scene.menu_manager->type == MENU_PAUSE) {
+			last_pause = SDL_GetTicks();
+			switch (scene.menu_manager->_inuse)
+			{
+			case 0:
+				scene.menu_manager->_inuse = 1;
+				break;
+			case 1:
+				scene.menu_manager->_inuse = 0;
+				break;
+			default:
+				break;
+			}
+		}
+	}
 	if (scene.data) {
 		//slog("updating scene data");
 	}
@@ -44,20 +59,7 @@ void scene_draw() {
 		menu_draw_all();
 
 		// slog("Paused");
-		gf2d_sprite_draw(
-			scene.mouse_sprite,
-			vector2d(scene.mx, scene.my),
-			NULL,
-			NULL,
-			NULL,
-			NULL,
-			&scene.mouse_color,
-			(int)scene.mf);
-
-		SDL_GetMouseState(&scene.mx, &scene.my);
-		scene.mf += 0.1;
-		if (scene.mf >= 16.0)scene.mf = 0;
-
+		
 	}
 
 	//slog("drawing scene");

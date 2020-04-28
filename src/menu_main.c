@@ -6,6 +6,10 @@ void menu_main_init() {
     //
     menu_manager_init(8, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
 
+    get_menu_active()->mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
+    get_menu_active()->mouse_color = vector4d(255, 255, 255, 255);
+    get_menu_active()->mf = 0;
+
     //play button
     menu_generic(
         box_save,
@@ -35,6 +39,7 @@ void menu_main_init() {
         Sans,
         "Exit"
     );
+    get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
 }

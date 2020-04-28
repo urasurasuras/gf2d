@@ -148,6 +148,20 @@ void menu_draw_all()
         if (!menu_manager.menuList[i]._inuse)continue;
         menu_draw(&menu_manager.menuList[i]);
     }
+    gf2d_sprite_draw(
+        menu_manager.mouse_sprite,
+        vector2d(menu_manager.mx, menu_manager.my),
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        &menu_manager.mouse_color,
+        (int)menu_manager.mf);
+
+    SDL_GetMouseState(&menu_manager.mx, &menu_manager.my);
+    menu_manager.mf += 0.1;
+    if (menu_manager.mf >= 16.0)menu_manager.mf = 0;
+
 }
 
 Menu *menu_generic(
