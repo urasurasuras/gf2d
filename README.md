@@ -1,10 +1,10 @@
 # Features to add/propose & quality of life improvements:
-[x] Start menu / Title screen
-[ ] Character select / team select / map select / controller assignment
-[ ] Animated sprites (lol)
-[ ] Mouse/keyboard support for at least 1 player
-[ ] Customized controls
-[ ] Scale entities based on window size (optional fullscreen)
+ [x] Start menu / Title screen
+ [ ] Character select / team select / map select / controller assignment
+ [ ] Animated sprites (lol)
+ [ ] Mouse/keyboard support for at least 1 player
+ [ ] Customized controls
+ [ ] Scale entities based on window size (optional fullscreen)
 
 # gameframework2d (GF2D)
 a collection of utlitity functions designed to facilitate creating 2D games with SDL2
