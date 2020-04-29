@@ -37,8 +37,11 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
+    menu_manager_init(8, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
+    get_menu_active()->mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
+    get_menu_active()->mouse_color = vector4d(255, 255, 255, 255);
+    get_menu_active()->mf = 0;
 
-    	
     if(TTF_Init()==-1) {
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
@@ -99,8 +102,16 @@ int main(int argc, char * argv[])
         if (keys[SDL_SCANCODE_TAB] && last_tab + 750 < SDL_GetTicks()){
             last_tab = SDL_GetTicks();
             slog("tab");
-            if (level_get_active()->paused)level_get_active()->paused = 0;
-            else if (!level_get_active()->paused) level_get_active()->paused = 1;
+            
+            SDL_SetWindowFullscreen(gf2d_get_mainWin(), SDL_WINDOW_FULLSCREEN);
+            //SDL_SetWindowDisplayMode(m_sdlWindow, &m_fullscreenDisplayMode);
+
+            //SDL_GetWindowData(SDL_GL_GetCurrentWindow(), "gf2d");
+            
+
+
+            //if (level_get_active()->paused)level_get_active()->paused = 0;
+            //else if (!level_get_active()->paused) level_get_active()->paused = 1;
         }
         // slog("Tick: %d", SDL_GetTicks());
         //if (keys[SDL_SCANCODE_ESCAPE])scene_get_active()->menu_manager->_inuse = 0; // exit condition

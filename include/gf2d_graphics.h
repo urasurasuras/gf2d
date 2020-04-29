@@ -26,6 +26,7 @@ void gf2d_graphics_initialize(
     Bool fullscreen
 );
 
+SDL_Window* gf2d_get_mainWin();
 /**
  * @brief sets the amount of delay to aim for between frames.
  * @param frameDelay the amount of time, in milliseconds, that each frame should take

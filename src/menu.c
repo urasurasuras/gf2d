@@ -70,23 +70,38 @@ void menu_free_all()
 
 void menu_free(Menu *self){
     if (!self)return;
+    self->_inuse = 0;
+
     if (!self->sprite)
+
     gf2d_sprite_free(self->sprite);
     memset(self,0,sizeof(Menu));
 }
 
 void menu_update(Menu *self){
     if (!self)return;
-    int mx, my;
-    SDL_GetMouseState(&mx, &my);
-    if (collide_menu(self->box, vector2d(mx, my))) {
-        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
-            self->last_click = SDL_GetTicks();
-            if (self->onClick) {
-                self->onClick(self);
+    if (self->_inuse == 0) {
+        return;
+    }
+    else if (self->started )
+    {
+        int mx = get_menu_active()->mx;
+        int my = get_menu_active()->my;
+
+        
+        if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
+            if (collide_menu(self->box, vector2d(mx, my))) {
+                self->last_click = SDL_GetTicks();
+                if (self->onClick) {
+                    slog("%s clicked", self->name);
+                    self->onClick(self);
+                    menu_manager.clickedThisFrame = 1;
+                }
             }
         }
     }
+    
+    
     
     // self->frame = self->frame + 0.1;
     // if (self->frame > self->maxFrames)self->frame=0;
@@ -99,11 +114,17 @@ void menu_update(Menu *self){
 
 void menu_update_all(){
     // level_get_active()->frame ++;
-    int i;
-    for (i = 0;i < menu_manager.maxMenus;i++)
+    if (!menu_manager.clickedThisFrame) {
+        int i;
+        for (i = 0; i < menu_manager.maxMenus; i++)
+        {
+            if (!menu_manager.menuList[i]._inuse)continue;
+            menu_update(&menu_manager.menuList[i]);
+        }
+    }
+    else
     {
-        if (!menu_manager.menuList[i]._inuse)continue;
-        menu_update(&menu_manager.menuList[i]);
+        menu_manager.clickedThisFrame = 0;
     }
 }
 
@@ -174,10 +195,14 @@ Menu *menu_generic(
 ){
     Menu *menu;
     menu = menu_new();
+    strcpy(menu->name, text);
     menu->box = box;
     menu->drawOffset = drawOffset;
     menu->sprite = sprite;
     menu->onClick = think;
+    menu->_inuse = 1;
+
+    menu->started = SDL_GetTicks();
 
     SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
@@ -202,7 +227,19 @@ SDL_Rect box_save = {
     MENU_BUTTON_HALF_WIDTH * 2,
     MENU_BUTTON_HALF_HEIGHT
 };
+SDL_Rect box_play = {
+    (LEVEL_WIDTH / 2) - MENU_BUTTON_HALF_WIDTH,
+    (LEVEL_HEIGHT / 2) - MENU_BUTTON_HALF_HEIGHT * 2,
+    MENU_BUTTON_HALF_WIDTH * 2,
+    MENU_BUTTON_HALF_HEIGHT
+};
 SDL_Rect box_exit = {
+    (LEVEL_WIDTH / 2) - MENU_BUTTON_HALF_WIDTH,
+    (LEVEL_HEIGHT / 2) + MENU_BUTTON_HALF_HEIGHT,
+    MENU_BUTTON_HALF_WIDTH * 2,
+    MENU_BUTTON_HALF_HEIGHT
+};
+SDL_Rect box_backToMain = {
     (LEVEL_WIDTH / 2) - MENU_BUTTON_HALF_WIDTH,
     (LEVEL_HEIGHT / 2) + MENU_BUTTON_HALF_HEIGHT,
     MENU_BUTTON_HALF_WIDTH * 2,

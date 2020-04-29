@@ -25,19 +25,14 @@ void menu_pause_init() {
 
     // //Exit button
     menu_generic(
-        box_exit,
+        box_backToMain,
         vector2d(-100, -250),
         gf2d_sprite_load_image("images/ui/button.png"),
-        onClick_exit,
+        onClick_backToMain,
         Sans,
-        "Exit"
+        "Main Menu"
     );
     get_menu_active()->type = MENU_PAUSE;
-}
-
-
-void onClick_exit(Menu* self) {
-    scene_get_active()->done = 1;
 }
 
 void onClick_save(Menu* self) {
@@ -110,12 +105,7 @@ void onClick_save(Menu* self) {
 }
 
 void onClick_level(Menu* self) {
-    //static int last_level_change = 0;
-    //int mx, my;
-    //SDL_GetMouseState(&mx, &my);
-    //if (collide_menu(self->box, vector2d(mx, my))) {
-    //    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && last_level_change + 750 < SDL_GetTicks()) {
-    //        last_level_change = SDL_GetTicks();
+
     if (level_get_active()->level_type == LEVEL_T_NORMAL) {
         gf2d_sprite_free(level_get_active()->background);
         level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_lava.png");
@@ -136,7 +126,12 @@ void onClick_level(Menu* self) {
 
         slog("Level type: %d", level_get_active()->level_type);
     }
-    // SDL_Log("done = %d", done);
-    //    }
-    //}
+}
+
+void onClick_backToMain() {
+    menu_free_all();
+    level_free(level_get_active());
+
+    menu_main_init();
+
 }

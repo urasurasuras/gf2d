@@ -32,6 +32,10 @@ typedef struct
 /*local gobals*/
 static Graphics gf2d_graphics;
 
+SDL_Window *gf2d_get_mainWin() {
+    return gf2d_graphics.main_window;
+}
+
 /*forward declarations*/
 void gf2d_graphics_close();
 

@@ -3,32 +3,15 @@
 #include "menu_pause.h"
 
 void menu_main_init() {
-    //
-    menu_manager_init(8, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
-
-    get_menu_active()->mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
-    get_menu_active()->mouse_color = vector4d(255, 255, 255, 255);
-    get_menu_active()->mf = 0;
-
     //play button
     menu_generic(
-        box_save,
+        box_play,
         vector2d(-100, -250),
         gf2d_sprite_load_image("images/ui/button.png"),
         onClick_play,
         Sans,
         "Play"
     );
-
-    ////Level button
-    //menu_generic(
-    //    box_lvl_b,
-    //    vector2d(-100, -250),
-    //    gf2d_sprite_load_image("images/ui/button.png"),
-    //    button_level_think,
-    //    Sans,
-    //    "Next level"
-    //);
 
     // //Exit button
     menu_generic(
@@ -64,4 +47,8 @@ void onClick_play() {
     scene_get_active()->type = scn_LEVEL;
 
     slog("Clicked play on %d", SDL_GetTicks());
+}
+
+void onClick_exit(Menu* self) {
+    scene_get_active()->done = 1;
 }

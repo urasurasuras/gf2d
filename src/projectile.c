@@ -17,62 +17,6 @@ void projectile_load_sprites(){
 
     companion_musicBee = gf2d_sprite_load_all("images/companions/music_bee.png", 28, 28, 2);
     // companion_musicBee = gf2d_sprite_load_image("images/companions/music_bee.png");
-
-    // SJson *config = level_get_active()->config;
-
-    // SJson *projectile_array_config = sj_object_get_value(config, "Projectiles");
-    // int i;
-    // for (i = 0;i < sj_array_get_count(projectile_array_config);i++){
-    //     SJson *config_proj_data = sj_array_get_nth(projectile_array_config, i);
-
-    //     SJson *projectile_name = sj_object_get_value(config_proj_data, "Name");
-    //     SJson *projectile_spritePath = sj_object_get_value(config_proj_data, "Sprite");
-    //     char *name_string = (char *)sj_get_string_value(projectile_name);
-    //     char *spritePath_string = (char *)sj_get_string_value(projectile_spritePath);
-    //     slog("Loaded sprite %s", name_string);
-
-    //     if (!strcmp(name_string, "projectile_fireball")){
-    //         fireball = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else if (!strcmp(name_string, "projectile_healingAura")){
-    //         healing_aura = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else if (!strcmp(name_string, "projectile_damageAura")){
-    //         damage_aura = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else if (!strcmp(name_string, "turret.png")){
-    //         turret = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else
-    //     {
-    //         slog("no matching spritepath");// code to be executed if n doesn't match any cases
-    //     }
-    // }
-
-    // SJson *pickup_array_config = sj_object_get_value(config, "Pickups");
-    // // int i;
-    // for (i = 0;i < sj_array_get_count(pickup_array_config);i++){
-    //     SJson *config_pickup_data = sj_array_get_nth(pickup_array_config, i);
-
-    //     SJson *pickup_name = sj_object_get_value(config_pickup_data, "Name");
-    //     SJson *pickup_spritePath = sj_object_get_value(config_pickup_data, "Sprite");
-    //     char *name_string = (char *)sj_get_string_value(pickup_name);
-    //     char *spritePath_string = (char *)sj_get_string_value(pickup_spritePath);
-    //     // slog("%s", name_string);
-    //     if (!strcmp(name_string, "pickup_heal")){
-    //         pickup_health = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else if (!strcmp(name_string, "pickup_boost")){
-    //         pickup_boost = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else if (!strcmp(name_string, "pickup_speed")){
-    //         pickup_speed = gf2d_sprite_load_image(spritePath_string);
-    //     }
-    //     else
-    //     {
-    //         slog("no matching spritepath");// code to be executed if n doesn't match any cases
-    //     }
-    // }
 }
 
 Entity *projectile_generic(

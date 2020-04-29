@@ -19,11 +19,13 @@ TTF_Font* Sans;
 SDL_Rect box_lvl_b;
 SDL_Rect box_save;
 SDL_Rect box_exit;
+SDL_Rect box_backToMain;
+SDL_Rect box_play;
 
 
 typedef struct Menu_S
 {
-    char        name[20];           /**<Name of this entity (for debugging)*/
+    TextLine    name;           /**<Name of this entity (for debugging)*/
 
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
@@ -59,6 +61,10 @@ typedef struct
     float mf;
     Sprite* mouse_sprite;
     Vector4D mouse_color;
+
+    int         clickedThisFrame; /**<True of any UI button was clicked this frame, 
+                                  (turned on onClick, turned off at the end of frame)
+                                  */
 
 }MenuManager;
 

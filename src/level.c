@@ -71,7 +71,8 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
 void level_free(Level *level){
     if (!level)return;
     gf2d_sprite_free(level->background);
-    free(level);
+    level->_inuse = 0;
+    //free(level);
     slog("Level freed %d x %d", level->bounds_level.w, level->bounds_level.h);
 }
 
@@ -79,11 +80,13 @@ void level_update(Level* level) {
     if (!level)return;
     if (!level->_inuse)return;
     entity_update_all();
-    slog("updating level");
+    //slog("updating level");
 }
 
 void level_draw(Level *level){
     if (!level)return;
+    if (!level->_inuse)return;
+
     //Bg drawn first
     gf2d_sprite_draw_image(level->background,vector2d(0,0));
     gf2d_draw_rect(level->bounds_level, vector4d(0,255,0,255));
