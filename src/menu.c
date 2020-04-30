@@ -83,26 +83,20 @@ void menu_update(Menu *self){
     if (self->_inuse == 0) {
         return;
     }
-    else if (self->started )
-    {
-        int mx = get_menu_active()->mx;
-        int my = get_menu_active()->my;
+    int mx = get_menu_active()->mx;
+    int my = get_menu_active()->my;
 
         
-        if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
-            if (collide_menu(self->box, vector2d(mx, my))) {
-                self->last_click = SDL_GetTicks();
-                if (self->onClick) {
-                    slog("%s clicked", self->name);
-                    self->onClick(self);
-                    menu_manager.clickedThisFrame = 1;
-                }
+    if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
+        if (collide_menu(self->box, vector2d(mx, my))) {
+            self->last_click = SDL_GetTicks();
+            if (self->onClick) {
+                slog("%s clicked", self->name);
+                self->onClick(self);
+                menu_manager.clickedThisFrame = 1;
             }
         }
     }
-    
-    
-    
     // self->frame = self->frame + 0.1;
     // if (self->frame > self->maxFrames)self->frame=0;
     // if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
@@ -201,8 +195,6 @@ Menu *menu_generic(
     menu->sprite = sprite;
     menu->onClick = think;
     menu->_inuse = 1;
-
-    menu->started = SDL_GetTicks();
 
     SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
