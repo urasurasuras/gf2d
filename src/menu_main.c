@@ -1,8 +1,12 @@
 #include "menu.h"
 #include "menu_main.h"
 #include "menu_pause.h"
+#include "game.h"
 
 void menu_main_init() {
+    
+    gfc_sound_play(gfc_sound_load("audio/njit-theme-song.mp3", .1, 0), 0, .2, -1, -1);
+
     //play button
     menu_generic(
         box_play,

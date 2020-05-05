@@ -42,6 +42,15 @@ int main(int argc, char * argv[])
     get_menu_active()->mouse_color = vector4d(255, 255, 255, 255);
     get_menu_active()->mf = 0;
 
+    gfc_audio_init(
+        8,
+        8,
+        8,
+        8,
+        1,
+        1
+    );
+
     if(TTF_Init()==-1) {
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
