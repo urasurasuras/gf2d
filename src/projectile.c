@@ -3,7 +3,8 @@
 void projectile_load_sprites(){
 
     blank = gf2d_sprite_load_image("images/empty.png");
-    fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
+    //fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
+    fireball = gf2d_sprite_load_all("images/projectiles/fireball-Sheet.png", 50, 50, 8);
     healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
     damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
     turret = gf2d_sprite_load_image("images/projectiles/turret.png");
@@ -23,6 +24,7 @@ Entity *projectile_generic(
     Entity *owner_entity,
     TextWord name,
     Sprite *sprite,
+    int f_end,
     int collider_shape,
     int radius_body,
     int radius_range,
@@ -47,6 +49,8 @@ Entity *projectile_generic(
         self->drawOffset = vector2d(-radius_body, -radius_body);
         self->radius_body = radius_body;  
         self->radius_range = radius_range;   
+
+        self->f_end = f_end;
 
         //Declaration of projectile
         Projectile *projectile;
@@ -400,6 +404,7 @@ void turret_detect(Entity *self, Entity *other){
         self,
         "Tfire",
         fireball,
+            28,
         SHAPE_CIRCLE,
         25,
         0,

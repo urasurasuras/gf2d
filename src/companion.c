@@ -149,6 +149,7 @@ void musicBee_detect(Entity *self, Entity *other){
             self,
             "BeeNote",
             fireball,
+            28,
             SHAPE_CIRCLE,
             25,
             0,

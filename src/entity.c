@@ -14,6 +14,8 @@ Entity *entity_new(){
     for (i=0; i < entity_manager.maxEnts; i++){
         if(entity_manager.entityList[i]._inuse)continue;
         entity_manager.entityList[i]._inuse = 1;
+        entity_manager.entityList[i].f_current = 0;
+        entity_manager.entityList[i].f_end = 0;
         //slog("Items in ent list %d", i);
         return &entity_manager.entityList[i];
     }
@@ -118,6 +120,10 @@ void entity_draw(Entity *self){
     }
     // Vector2D scaler = vector2d(0.7,0.5);
     // Vector2D *scalerPtr = &scaler;
+    self->f_current++;
+    if (self->f_current > self->f_end) {
+        self->f_current = 0;
+    }
     if (self->sprite){
         gf2d_sprite_draw(
             self->sprite,
@@ -127,7 +133,7 @@ void entity_draw(Entity *self){
             NULL,
             NULL,
             self->color,
-            (Uint32)self->frame
+            (Uint32)self->f_current
         );
     }
     if (self->health && self->type == ENT_PLAYER){

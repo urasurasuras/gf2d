@@ -81,6 +81,7 @@ Entity *projectile_generic(
     Entity *owner_entity,
     TextWord name,
     Sprite *sprite,
+    int f_end,
     int collider_shape,
     int radius_body,
     int radius_range,
