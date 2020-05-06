@@ -23,7 +23,7 @@ void scene_update() {
 	if (scene.data) {
 		//slog("updating scene data");
 	}
-	if (scene.level && scene.type == scn_LEVEL) {
+	if (scene.level) {
 		level_update(scene.level);
 	}
 	if (scene.menu_manager) {
@@ -39,7 +39,7 @@ void scene_draw() {
 		slog("drawing scene data");
 	}
 	
-	if (scene.level && scene.type == scn_LEVEL) {
+	if (scene.level) {
 		level_draw(scene.level);
 	}
 	if (scene.menu_manager) {

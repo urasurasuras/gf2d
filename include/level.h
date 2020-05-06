@@ -53,6 +53,7 @@ typedef struct
     Entity  *neutral_monster;/**<Pointer to the neutral monster in the level*/
 }Level;
 
+Level* level_blank(Sprite* backgroundFile);
 /**
  * @brief Creates level with bg and bounds
  * @param backgroundFile Path to background file

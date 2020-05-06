@@ -52,6 +52,7 @@ int main(int argc, char * argv[])
         get_menu_active()->mf = 0;
 
         menu_editor_init();
+        scene_get_active()->level = level_blank(gf2d_sprite_load_image("images/backgrounds/bg_grass.png"));
 
     }
     else
@@ -107,14 +108,14 @@ int main(int argc, char * argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         
         /*update things here*/        
-        scene_update(scene_get_active());
+        scene_update();
     
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
             // gf2d_sprite_draw_image(sprite,vector2d(0,0));
             //level_draw(level);
-            scene_draw(scene_get_active());
+            scene_draw();
 
             //UI elements last      
             if (level_get_active()->paused){

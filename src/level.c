@@ -24,7 +24,21 @@ Level *level_get_active()
 {
     return current_level;
 }
+Level* level_blank(Sprite* backgroundFile) {
+    Level* level;
+    if (!backgroundFile)
+    {
+        slog("No backgroundFile provided, idiot!");
+        return NULL;
+    }
+    level = (Level*)malloc(sizeof(Level));
+    if (!level)return NULL;
+    level->background = backgroundFile;
 
+    current_level = level;
+    return level;
+
+}
 Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_stage_wide, int type)
 {
     Level *level;
@@ -33,7 +47,7 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
         slog("No backgroundFile provided, idiot!");
         return NULL;
     }
-    level = (Level*)gfc_allocate_array(sizeof(Level), 1); //allocate array
+    level = (Level*)malloc(sizeof(Level)); 
     if(!level)return NULL;
     entity_manager_init(32);
     level->entity_manager = entity_manager_get_active();
