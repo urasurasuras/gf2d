@@ -44,6 +44,7 @@ MenuManager *menu_manager_init(Uint32 maxMenus, Sprite *bg){
     }
     menu_manager.maxMenus = maxMenus;
     menu_manager.bg = bg;
+    menu_manager.last_click = 0;
     memset(menu_manager.menuList,0,sizeof(Menu)*maxMenus);
     slog("Menu manager initalized");
     atexit(menu_manager_close);
@@ -83,20 +84,27 @@ void menu_update(Menu *self){
     if (self->_inuse == 0) {
         return;
     }
-    int mx = get_menu_active()->mx;
-    int my = get_menu_active()->my;
+    
+        int mx = get_menu_active()->mx;
+        int my = get_menu_active()->my;
 
-        
-    if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
         if (collide_menu(self->box, vector2d(mx, my))) {
-            self->last_click = SDL_GetTicks();
+            //released
+
             if (self->onClick) {
                 slog("%s clicked", self->name);
+                menu_manager.last_click = SDL_GetTicks();
                 self->onClick(self);
                 menu_manager.clickedThisFrame = 1;
             }
         }
+    
+    /*if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
+        menu_manager.m_state = M_CLICKED;
     }
+    if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
+       
+    }*/
     // self->frame = self->frame + 0.1;
     // if (self->frame > self->maxFrames)self->frame=0;
     // if (level_bounds_test_circle(level_get_active(), self->position, self->radius))
@@ -108,14 +116,25 @@ void menu_update(Menu *self){
 
 void menu_update_all(){
     // level_get_active()->frame ++;
+    SDL_PollEvent(&e);
+
     if (!menu_manager.clickedThisFrame) {
-        int i;
-        for (i = 0; i < menu_manager.maxMenus; i++)
-        {
-            if (!menu_manager.menuList[i]._inuse)continue;
-            menu_update(&menu_manager.menuList[i]);
+        if (menu_manager.last_click + 500 < SDL_GetTicks()) {
+            if (e.type == SDL_MOUSEBUTTONUP) {
+
+
+                int i;
+                for (i = 0; i < menu_manager.maxMenus; i++)
+                {
+                    SDL_PollEvent(&e);
+
+                    if (!menu_manager.menuList[i]._inuse)continue;
+                    menu_update(&menu_manager.menuList[i]);
+                }
+            }
         }
     }
+    
     else
     {
         menu_manager.clickedThisFrame = 0;

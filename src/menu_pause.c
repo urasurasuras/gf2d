@@ -1,5 +1,5 @@
 #include "menu_pause.h"
-Vector4D menu_shade = { 255, 255, 255, 100 };
+Vector4D menu_shade = { 255, 255, 255, 0 };
 
 void menu_pause_init() {
     get_menu_active()->bg_color = &menu_shade;

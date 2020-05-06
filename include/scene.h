@@ -7,6 +7,7 @@
 #define scn_MENU 1
 #define scn_LEVEL 2
 
+Sound* main_theme;
 typedef struct {
 	int type;
 	MenuManager* menu_manager;
@@ -24,5 +25,8 @@ void scene_new();
 void scene_update();
 
 void scene_draw();
+
+//Toggles scene pause
+void scene_pause_toggle();
 
 #endif // !_SCENE_H_

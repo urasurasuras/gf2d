@@ -2,10 +2,12 @@
 #include "menu_main.h"
 #include "menu_pause.h"
 #include "game.h"
+Vector4D menu_noShade = { 255, 255, 255, 255 };
 
 void menu_main_init() {
-    
-    gfc_sound_play(gfc_sound_load("audio/njit-theme-song.mp3", .1, 0), 0, .2, -1, -1);
+    get_menu_active()->bg_color = &menu_noShade;
+
+    gfc_sound_play(main_theme, 0, .2, -1, -1);
 
     //play button
     menu_generic(
@@ -49,6 +51,7 @@ void onClick_play() {
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
 
     scene_get_active()->type = scn_LEVEL;
+    scene_pause_toggle();
 
     slog("Clicked play on %d", SDL_GetTicks());
 }

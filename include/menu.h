@@ -14,6 +14,10 @@
 #define MENU_MAIN   1
 #define MENU_PAUSE  2
 
+#define M_CLICKED   1
+
+SDL_Event e;
+
 TTF_Font* Sans;
 
 SDL_Rect box_lvl_b;
@@ -37,8 +41,6 @@ typedef struct Menu_S
     SDL_Rect    box;                /**<Bounds of menu*/
     SDL_Texture *Message;
 
-    Uint32      last_click;         /**<Stores the last SDL Tick this button was clicked*/
-
     void        (*onClick)(struct Menu_S *self);
 
 }Menu;
@@ -61,6 +63,9 @@ typedef struct
     float mf;
     Sprite* mouse_sprite;
     Vector4D mouse_color;
+    int m_state;                    /**<Mouse state, whether it was clicked on the latest frame update*/
+    Uint32      last_click;         /**<Stores the last SDL Tick this button was clicked*/
+
 
     int         clickedThisFrame; /**<True of any UI button was clicked this frame, 
                                   (turned on onClick, turned off at the end of frame)
