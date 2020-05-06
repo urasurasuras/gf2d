@@ -33,6 +33,8 @@ Level* level_blank(Sprite* backgroundFile) {
     }
     level = (Level*)malloc(sizeof(Level));
     if (!level)return NULL;
+    entity_manager_init(32);
+
     level->background = backgroundFile;
 
     current_level = level;

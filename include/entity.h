@@ -68,6 +68,8 @@ typedef struct Entity_S
     void        (*detect)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity detects another entity within its range*/
     void        (*bound_hit)(struct Entity_S *self, struct int_Vector2D hit_edges);/**<Called when this entity hit the level bounds*/
 
+    //Editor
+    int         pickedUp;           /**<Bool if entity is being clicked on my the mouse (on then mouse down, off when up)*/
 }Entity;
 
 typedef struct 
