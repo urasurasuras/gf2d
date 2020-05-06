@@ -161,6 +161,7 @@
     <ClInclude Include="..\include\level.h" />
     <ClInclude Include="..\include\level_core.h" />
     <ClInclude Include="..\include\menu.h" />
+    <ClInclude Include="..\include\menu_editor.h" />
     <ClInclude Include="..\include\menu_main.h" />
     <ClInclude Include="..\include\menu_pause.h" />
     <ClInclude Include="..\include\player.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="..\src\level.c" />
     <ClCompile Include="..\src\level_core.c" />
     <ClCompile Include="..\src\menu.c" />
+    <ClCompile Include="..\src\menu_editor.c" />
     <ClCompile Include="..\src\menu_main.c" />
     <ClCompile Include="..\src\menu_pause.c" />
     <ClCompile Include="..\src\player.c" />

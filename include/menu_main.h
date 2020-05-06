@@ -1,5 +1,5 @@
 #ifndef _MENU_MAIN_H_
-#define _MENU_main_H_
+#define _MENU_MAIN_H_
 #include "menu.h"
 #include "scene.h"
 
