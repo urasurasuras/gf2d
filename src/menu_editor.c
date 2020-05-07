@@ -17,6 +17,15 @@ void menu_editor_init() {
         Sans,
         "Exit"
     );
+    //Save button
+    menu_generic(
+        ed_box_save,
+        vector2d(-100, -250),
+        gf2d_sprite_load_image("images/ui/button.png"),
+        ed_save,
+        Sans,
+        "Save"
+    );
 
     menu_generic(
         ed_box_heal,
@@ -29,6 +38,38 @@ void menu_editor_init() {
     //get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
+}
+
+void ed_save() {
+    SJson* pickupArray; //array of obs
+    SJson* obj;         //ent obj
+    SJson* obj_name;    //ent name
+    SJson* obj_posArray;    //vector2d floats
+    
+    pickupArray = sj_array_new();
+
+    for (int i = 0; i < entity_manager_get_active()->maxEnts; i++)
+    {
+        if (entity_manager_get_active()->entityList[i].type == ENT_PICKUP) {
+            Entity current_ent = entity_manager_get_active()->entityList[i];
+            obj_name = sj_new_str(current_ent.name);
+
+            obj = sj_object_new();
+
+            obj_posArray = sj_array_new();
+
+            sj_array_append(obj_posArray, sj_new_float(current_ent.position.x));
+            sj_array_append(obj_posArray, sj_new_float(current_ent.position.y));
+
+            sj_object_insert(obj, "Name", obj_name);
+            sj_object_insert(obj, "Position", obj_posArray);
+
+            sj_array_append(pickupArray, obj);
+        }
+    }
+    sj_echo(pickupArray);
+    sj_save(pickupArray, "data/pickups.save");
+    sj_free(pickupArray);
 }
 
 Entity* ed_pickup_new(
@@ -87,6 +128,12 @@ void ed_move_pickup(Entity* self) {
 
 SDL_Rect ed_box_exit = { 
     0, 
+    LEVEL_HEIGHT,
+    EDITOR_MENU_HEIGHT*3,
+    EDITOR_MENU_HEIGHT
+};
+SDL_Rect ed_box_save = { 
+    LEVEL_WIDTH - (EDITOR_MENU_HEIGHT * 3),
     LEVEL_HEIGHT,
     EDITOR_MENU_HEIGHT*3,
     EDITOR_MENU_HEIGHT

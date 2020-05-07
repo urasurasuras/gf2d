@@ -8,6 +8,11 @@ void menu_editor_init();
 
 void ed_spawn_pickup_health();
 
+/**
+@brief saves all spawned pickups into a JSON file
+*/
+void ed_save();
+
 Entity* ed_pickup_new(
     TextWord    name,
     Sprite* sprite,
@@ -18,5 +23,6 @@ Entity* ed_pickup_new(
 void ed_move_pickup(Entity* self);
 
 SDL_Rect ed_box_exit;
+SDL_Rect ed_box_save;
 SDL_Rect ed_box_heal;
 #endif // !_MENU_PAUSE_H_
