@@ -58,6 +58,7 @@ typedef struct Entity_S
     int         radius_body;        /**<Radius of curcular body of entity (used for physical collisions)*/
     int         radius_range;       /**<Range for special entity behaviors*/
     Vector2D    size;               /**<Size vector*/
+    Vector3D    rotation;           /**<Rotation for sprite*/
 
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
     int         type;

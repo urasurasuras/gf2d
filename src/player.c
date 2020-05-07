@@ -176,7 +176,7 @@ Entity *player_generic(
     int cldn_skill3,
     int team
     )
-    {
+{
     Entity *self;
     self = entity_new();
     if (!self)return NULL;
@@ -403,11 +403,15 @@ void player_think_1 (Entity *self){
         //If stick is at origin
         //dont update direction
     }else{
-        // slog("%f",vector2d_angle(vector2d(x,y)));
+
+        //slog("%f",vector2d_angle(vector2d(x,y)));
         self->size.x = cos(vector2d_angle(vector2d(x,y)) * M_PI/180);
         self->size.y = sin(vector2d_angle(vector2d(x,y)) * M_PI/180);
-        // self->size.x = x;
-        // self->size.y = y;
+
+        self->rotation.x = -self->drawOffset.x;
+        self->rotation.y = -self->drawOffset.y;
+        self->rotation.z = vector2d_angle(vector2d(x, y));
+        //slog("%s sprite pos: %f.%f \n   ent pos: %f.%f",self->name, self->rotation.x, self->rotation.y, self->rotation.x, self->rotation.y);
     }
     //Movement
     // slog("Speed of %s: %f", self->name, p->speed);
