@@ -17,8 +17,9 @@ void scene_purge() {
 }
 
 void scene_update() {
-	if (keys[SDL_SCANCODE_ESCAPE] && last_pause + 256 < SDL_GetTicks()) {
-		scene_pause_toggle();
+	if (keys[SDL_SCANCODE_ESCAPE] && last_pause + 256 < SDL_GetTicks() ) {
+		if (editorMode == 0)
+			scene_pause_toggle();
 	}
 	if (scene.data) {
 		//slog("updating scene data");

@@ -26,6 +26,15 @@ void menu_editor_init() {
         Sans,
         "Save"
     );
+    //Load button
+    menu_generic(
+        ed_box_load,
+        vector2d(-100, -250),
+        gf2d_sprite_load_image("images/ui/button.png"),
+        ed_load,
+        Sans,
+        "Load"
+    );
 
     //Pickup buttons
     menu_generic(
@@ -88,6 +97,65 @@ void ed_save() {
     sj_save(pickupData, "data/pickups.save");
 
     sj_free(pickupData);
+}
+
+void ed_load() {
+    SJson* pickupData = sj_load("data/pickups.save");
+    SJson* pickupArray;  //array of obs
+    SJson* obj;         //ent obj
+    SJson* obj_name;    //ent name
+    SJson* obj_posArray;    //vector2d floats
+
+    pickupArray = sj_object_get_value(pickupData, "Pickups");
+    slog("%d asdasdasd", sj_array_get_count(pickupArray));
+    for (int i = 0; i < sj_array_get_count(pickupArray); i++) {
+        obj = sj_array_get_nth(pickupArray, i);
+
+        obj_name = sj_object_get_value(obj, "Name");
+        obj_posArray = sj_object_get_value(obj, "Position");
+
+        //Set pos
+        SJson* posX, * posY;
+        Vector2D pos;
+        posX = sj_array_get_nth(obj_posArray, 0);
+        posY = sj_array_get_nth(obj_posArray, 1);
+        sj_get_float_value(posX, &pos.x);
+        sj_get_float_value(posY, &pos.y);
+
+        if (level_get_active()->num_pickups <= 5) {
+            char* name_string = (char*)sj_get_string_value(obj_name);
+
+            if (!strcmp(name_string, "Health")) {
+                ed_pickup_new(
+                    name_string,
+                    pickup_health,
+                    pos,
+                    ed_move_pickup
+                );
+            }
+            else if (!strcmp(name_string, "Boost")) {
+                ed_pickup_new(
+                    name_string,
+                    pickup_boost,
+                    pos,
+                    ed_move_pickup
+                );
+            }
+            else if (!strcmp(name_string, "Speed")) {
+                ed_pickup_new(
+                    name_string,
+                    pickup_speed,
+                    pos,
+                    ed_move_pickup
+                );
+            }
+            else
+            {
+                slog("no matching spritepath");// code to be executed if n doesn't match any cases
+            }
+            level_get_active()->num_pickups++;
+        }
+    }
 }
 
 Entity* ed_pickup_new(
@@ -153,25 +221,33 @@ void ed_move_pickup(Entity* self) {
             self->pickedUp = 0;
         }
 
-        if (self->pickedUp) {
-            vector2d_copy(self->position, vector2d(mx, my));
-            slog("holding %s on tick %d", self->name, SDL_GetTicks());
-        }
+        
+    }
+    if (self->pickedUp) {
+        vector2d_copy(self->position, vector2d(mx, my));
+        slog("holding %s on tick %d", self->name, SDL_GetTicks());
     }
 }
 
 SDL_Rect ed_box_exit = { 
-    0, 
-    LEVEL_HEIGHT,
-    EDITOR_MENU_HEIGHT*3,
-    EDITOR_MENU_HEIGHT
-};
-SDL_Rect ed_box_save = { 
     LEVEL_WIDTH - (EDITOR_MENU_HEIGHT * 3),
     LEVEL_HEIGHT,
     EDITOR_MENU_HEIGHT*3,
     EDITOR_MENU_HEIGHT
 };
+SDL_Rect ed_box_save = { 
+    0,
+    LEVEL_HEIGHT,
+    EDITOR_MENU_HEIGHT*3,
+    EDITOR_MENU_HEIGHT
+};
+SDL_Rect ed_box_load = { 
+    EDITOR_MENU_HEIGHT * 3,
+    LEVEL_HEIGHT,
+    EDITOR_MENU_HEIGHT*3,
+    EDITOR_MENU_HEIGHT
+};
+//Pickup buttons
 SDL_Rect ed_box_heal = { 
     LEVEL_WIDTH/2, 
     LEVEL_HEIGHT,
@@ -179,13 +255,13 @@ SDL_Rect ed_box_heal = {
     EDITOR_MENU_HEIGHT
 };
 SDL_Rect ed_box_speed = { 
-    LEVEL_WIDTH/4, 
+    LEVEL_WIDTH/2 + EDITOR_MENU_HEIGHT, 
     LEVEL_HEIGHT,
     EDITOR_MENU_HEIGHT,
     EDITOR_MENU_HEIGHT
 };
 SDL_Rect ed_box_boost = { 
-    LEVEL_WIDTH/4*3, 
+    LEVEL_WIDTH / 2 - EDITOR_MENU_HEIGHT,
     LEVEL_HEIGHT,
     EDITOR_MENU_HEIGHT,
     EDITOR_MENU_HEIGHT

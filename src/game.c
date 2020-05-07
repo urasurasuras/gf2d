@@ -13,10 +13,6 @@
 
 int main(int argc, char * argv[])
 {
-    
-
-    Level *level;
-
     /*program initializtion*/
 
     //Init font
@@ -34,6 +30,7 @@ int main(int argc, char * argv[])
     init_logger("gf2d.log");
     slog("---==== BEGIN ====---");
     if (argc == 2) {
+        editorMode = 1;
         gf2d_graphics_initialize(
             "gf2d-editor",
             LEVEL_WIDTH,
@@ -57,6 +54,8 @@ int main(int argc, char * argv[])
     }
     else
     {
+        editorMode = 0;
+
         gf2d_graphics_initialize(
             "gf2d",
             LEVEL_WIDTH,

@@ -5,6 +5,7 @@
 #include "gfc_audio.h"
 
 const Uint8* keys;
+int editorMode;
 #define EDITOR_MENU_HEIGHT	50
 
 #endif // !_GAME_H_

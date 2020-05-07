@@ -15,6 +15,8 @@ void ed_spawn_pickup_speed();
 */
 void ed_save();
 
+void ed_load();
+
 Entity* ed_pickup_new(
     TextWord    name,
     Sprite* sprite,
@@ -26,6 +28,7 @@ void ed_move_pickup(Entity* self);
 
 SDL_Rect ed_box_exit;
 SDL_Rect ed_box_save;
+SDL_Rect ed_box_load;
 SDL_Rect ed_box_heal;
 SDL_Rect ed_box_speed;
 SDL_Rect ed_box_boost;
