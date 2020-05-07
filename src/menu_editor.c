@@ -27,6 +27,7 @@ void menu_editor_init() {
         "Save"
     );
 
+    //Pickup buttons
     menu_generic(
         ed_box_heal,
         vector2d(-100, -250),
@@ -35,19 +36,34 @@ void menu_editor_init() {
         Sans,
         "Health"
     );
+     menu_generic(
+        ed_box_speed,
+        vector2d(-100, -250),
+        pickup_speed,
+        ed_spawn_pickup_speed,
+        Sans,
+        "Speed"
+    );
+     menu_generic(
+        ed_box_boost,
+        vector2d(-100, -250),
+        pickup_boost,
+        ed_spawn_pickup_boost,
+        Sans,
+        "Boost"
+    );
     //get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
 }
 
 void ed_save() {
-    SJson* pickupArray; //array of obs
+    SJson* pickupData = sj_object_new();  //data obj
+    SJson* pickupArray = sj_array_new(); //array of obs
     SJson* obj;         //ent obj
     SJson* obj_name;    //ent name
     SJson* obj_posArray;    //vector2d floats
     
-    pickupArray = sj_array_new();
-
     for (int i = 0; i < entity_manager_get_active()->maxEnts; i++)
     {
         if (entity_manager_get_active()->entityList[i].type == ENT_PICKUP) {
@@ -68,8 +84,10 @@ void ed_save() {
         }
     }
     sj_echo(pickupArray);
-    sj_save(pickupArray, "data/pickups.save");
-    sj_free(pickupArray);
+    sj_object_insert(pickupData, "Pickups", pickupArray);
+    sj_save(pickupData, "data/pickups.save");
+
+    sj_free(pickupData);
 }
 
 Entity* ed_pickup_new(
@@ -96,6 +114,22 @@ void ed_spawn_pickup_health() {
     ed_pickup_new(
         "Health",
         pickup_health,
+        vector2d(0, 0),
+        ed_move_pickup
+    );
+}
+void ed_spawn_pickup_boost(){
+    ed_pickup_new(
+        "Boost",
+        pickup_boost,
+        vector2d(0, 0),
+        ed_move_pickup
+    );
+}
+void ed_spawn_pickup_speed(){
+    ed_pickup_new(
+        "Speed",
+        pickup_speed,
         vector2d(0, 0),
         ed_move_pickup
     );
@@ -140,6 +174,18 @@ SDL_Rect ed_box_save = {
 };
 SDL_Rect ed_box_heal = { 
     LEVEL_WIDTH/2, 
+    LEVEL_HEIGHT,
+    EDITOR_MENU_HEIGHT,
+    EDITOR_MENU_HEIGHT
+};
+SDL_Rect ed_box_speed = { 
+    LEVEL_WIDTH/4, 
+    LEVEL_HEIGHT,
+    EDITOR_MENU_HEIGHT,
+    EDITOR_MENU_HEIGHT
+};
+SDL_Rect ed_box_boost = { 
+    LEVEL_WIDTH/4*3, 
     LEVEL_HEIGHT,
     EDITOR_MENU_HEIGHT,
     EDITOR_MENU_HEIGHT

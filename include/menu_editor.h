@@ -7,6 +7,8 @@
 void menu_editor_init();
 
 void ed_spawn_pickup_health();
+void ed_spawn_pickup_boost();
+void ed_spawn_pickup_speed();
 
 /**
 @brief saves all spawned pickups into a JSON file
@@ -25,4 +27,6 @@ void ed_move_pickup(Entity* self);
 SDL_Rect ed_box_exit;
 SDL_Rect ed_box_save;
 SDL_Rect ed_box_heal;
+SDL_Rect ed_box_speed;
+SDL_Rect ed_box_boost;
 #endif // !_MENU_PAUSE_H_

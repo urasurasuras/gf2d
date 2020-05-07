@@ -113,54 +113,61 @@ void level_draw(Level *level){
 }
 
 void level_pickups_spawn(){
-    SJson *pickup_array_config;
-    static int max_pickups = 5;
-    SJson *config = level_get_active()->config;
-    pickup_array_config = sj_object_get_value(config, "Pickups");
-    static int random_number = 1;
+    SJson* pickupData = sj_load("data/pickups.save");
+    SJson* pickupArray;  //array of obs
+    SJson* obj;         //ent obj
+    SJson* obj_name;    //ent name
+    SJson* obj_posArray;    //vector2d floats
 
-    // srand((unsigned) level_get_active()->frame * time(NULL));
+    pickupArray = sj_object_get_value(pickupData, "Pickups");
+    slog("%d asdasdasd", sj_array_get_count(pickupArray));
+    for (int i = 0; i < sj_array_get_count(pickupArray); i++) {
+        obj = sj_array_get_nth(pickupArray, i);
 
-    random_number = rand() % sj_array_get_count(pickup_array_config);
-    float randomX = 30 + rand() % LEVEL_WIDTH-30;
-    float randomY = 30 + rand() % LEVEL_HEIGHT-30;
+        obj_name = sj_object_get_value(obj, "Name");
+        obj_posArray = sj_object_get_value(obj, "Position");
 
-    SJson *current_pickup = sj_array_get_nth(pickup_array_config,random_number);
-    SJson *pickup_name = sj_object_get_value(current_pickup, "Name");
+        //Set pos
+        SJson   *posX, *posY;
+        Vector2D pos;
+        posX = sj_array_get_nth(obj_posArray, 0);
+        posY = sj_array_get_nth(obj_posArray, 1);
+        sj_get_float_value(posX, &pos.x);
+        sj_get_float_value(posY, &pos.y);
 
-    // sj_echo(current_pickup);
-    if (level_get_active()->num_pickups <= max_pickups){
-        char *name_string = (char *)sj_get_string_value(pickup_name);
+        if (level_get_active()->num_pickups <= 5) {
+            char* name_string = (char*)sj_get_string_value(obj_name);
 
-        if (!strcmp(name_string, "pickup_heal")){
-            level_pickup_new(
-                name_string,
-                pickup_health,
-                vector2d(randomX,randomY),
-                pickup_health_touch
-            );
+            if (!strcmp(name_string, "Health")) {
+                level_pickup_new(
+                    name_string,
+                    pickup_health,
+                    pos,
+                    pickup_health_touch
+                );
+            }
+            else if (!strcmp(name_string, "Boost")) {
+                level_pickup_new(
+                    name_string,
+                    pickup_boost,
+                    pos,
+                    pickup_boost_touch
+                );
+            }
+            else if (!strcmp(name_string, "Speed")) {
+                level_pickup_new(
+                    name_string,
+                    pickup_speed,
+                    pos,
+                    pickup_speed_touch
+                );
+            }
+            else
+            {
+                slog("no matching spritepath");// code to be executed if n doesn't match any cases
+            }
+            level_get_active()->num_pickups++;
         }
-        else if (!strcmp(name_string, "pickup_boost")){
-            level_pickup_new(
-                name_string,
-                pickup_boost,
-                vector2d(randomX,randomY),
-                pickup_boost_touch
-            );
-        }
-        else if (!strcmp(name_string, "pickup_speed")){
-            level_pickup_new(
-                name_string,
-                pickup_speed,
-                vector2d(randomX,randomY),
-                pickup_speed_touch
-            );
-        }
-        else
-        {
-            slog("no matching spritepath");// code to be executed if n doesn't match any cases
-        }
-        level_get_active()->num_pickups ++;
     }
 }
 
