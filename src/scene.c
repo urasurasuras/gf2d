@@ -8,6 +8,8 @@ Scene* scene_get_active() {
 }
 
 void scene_new() {
+	scene.c = SDL_GameControllerOpen(0);
+	scene.paused = 1;
 	//scene = (Scene *)malloc(sizeof(Scene));
 	main_theme = gfc_sound_load("audio/njit-theme-song.mp3", .1, 0);
 }
@@ -17,9 +19,15 @@ void scene_purge() {
 }
 
 void scene_update() {
-	if (keys[SDL_SCANCODE_ESCAPE] && last_pause + 256 < SDL_GetTicks() ) {
-		if (editorMode == 0)
-			scene_pause_toggle();
+	if (keys[SDL_SCANCODE_ESCAPE] || SDL_GameControllerGetButton(scene.c, SDL_CONTROLLER_BUTTON_START)) {
+		if (last_pause + UI_CLDN < SDL_GetTicks()) {
+			last_pause = SDL_GetTicks();
+			slog("escape %d", SDL_GetTicks());
+
+			if (editorMode == 0 && scene.type == scn_LEVEL)
+				scene_pause_toggle();
+		}
+			
 	}
 	if (scene.data) {
 		//slog("updating scene data");
@@ -29,10 +37,7 @@ void scene_update() {
 	}
 	if (scene.menu_manager) {
 		menu_update_all();
-
 	}
-	
-	//slog("updating scene");
 }
 
 void scene_draw() {
@@ -54,22 +59,22 @@ void scene_draw() {
 }
 
 void scene_pause_toggle() {
-	if (scene.type == scn_LEVEL) {
-		last_pause = SDL_GetTicks();
 
-		switch (scene.paused)
-		{
-		case 0:
-			scene.paused = 1;
-			break;
-		case 1:
-			scene.paused = 0;
-			break;
-		default:
-			slog("How did you even- what ??");
-			break;
-		}
+	last_pause = SDL_GetTicks();
+
+	switch (scene.paused)
+	{
+	case 0:
+		scene.paused = 1;
+		break;
+	case 1:
+		scene.paused = 0;
+		break;
+	default:
+		slog("How did you even- what ??");
+		break;
 	}
+
 
 	if (!scene.paused) {
 		scene.menu_manager->_inuse = 1;

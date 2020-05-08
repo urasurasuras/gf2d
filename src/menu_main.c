@@ -54,6 +54,7 @@ void onClick_play() {
     scene_get_active()->type = scn_LEVEL;
     get_menu_active()->type = MENU_PAUSE;
     scene_pause_toggle();
+    scene_pause_toggle();
 
     slog("Clicked play on %d", SDL_GetTicks());
 }

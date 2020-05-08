@@ -195,8 +195,8 @@ Entity *player_generic(
     self->touch = touch;
     self->bound_hit = player_bound_hit;
     self->maxFrames = 1;
-    self->ui_box.w = 50;
-    self->ui_box.h = 50;
+    self->ui_box.w = -draw_offset.x;
+    self->ui_box.h = -draw_offset.y;
     self->ui_box.x = (int)self->position.x + draw_offset.x;
     self->ui_box.y = (int)self->position.y + draw_offset.y;
     switch (team)
@@ -389,12 +389,12 @@ void player_think_1 (Entity *self){
             break;
         }
     }
-    // if (keys[SDL_SCANCODE_TAB] && last_tab + 750 < SDL_GetTicks()){
-    //         last_tab = SDL_GetTicks();
-    //         slog("tab");
-    //         if (level_get_active()->paused)level_get_active()->paused = 0;
-    //         else if (!level_get_active()->paused) level_get_active()->paused = 1;
-    //     }
+
+    //do not use if one controller is assigned to multiple players
+    //so it doesn't toggle pause multiple times a frame
+    /*if (SDL_GameControllerGetButton(p->controller, SDL_CONTROLLER_BUTTON_START) && get_menu_active()->last_click + UI_CLDN < SDL_GetTicks()) {
+        scene_pause_toggle();
+    }*/
 
     if (p->freeze)return;
 

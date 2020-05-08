@@ -16,6 +16,7 @@
 
 #define M_CLICKED   1
 
+#define UI_CLDN     500 //Cooldown for UI in SDL Ticks
 SDL_Event e;
 
 TTF_Font* Sans;
@@ -41,6 +42,8 @@ typedef struct Menu_S
     SDL_Rect    box;                /**<Bounds of menu*/
     SDL_Texture *Message;
 
+    int hover;                    /**<whether mouse is hovering over this button*/
+
     void        (*onClick)(struct Menu_S *self);
 
 }Menu;
@@ -63,7 +66,6 @@ typedef struct
     float mf;
     Sprite* mouse_sprite;
     Vector4D mouse_color;
-    int m_state;                    /**<Mouse state, whether it was clicked on the latest frame update*/
     Uint32      last_click;         /**<Stores the last SDL Tick this button was clicked*/
 
 

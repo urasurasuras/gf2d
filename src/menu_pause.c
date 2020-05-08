@@ -129,6 +129,7 @@ void onClick_level(Menu* self) {
 
         slog("Level type: %d", level_get_active()->level_type);
     }
+    scene_pause_toggle();
 }
 
 void onClick_backToMain() {

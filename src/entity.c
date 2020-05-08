@@ -135,7 +135,7 @@ void entity_draw(Entity *self){
             (Uint32)self->f_current
         );
     }
-    if (self->health && self->type == ENT_PLAYER){
+    if (self->health/* && self->type == ENT_PLAYER*/){
         char hp[8];
         snprintf(hp, 8, "%.0f", self->health);
         SDL_Surface* surfaceMessage = TTF_RenderText_Solid(entity_manager_get_active()->font, hp, entity_manager_get_active()->font_color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
@@ -146,8 +146,10 @@ void entity_draw(Entity *self){
         SDL_DestroyTexture(Message);
         SDL_FreeSurface(surfaceMessage);
     }
+    //Vector4D color;
+    //gf2d_draw_rect(self->ui_box, vector4d(255, 155, 255, 255));
 
-    else if (self->collider_shape == SHAPE_LINE){
+    if (self->collider_shape == SHAPE_LINE){
         gf2d_draw_line(self->position, self->size, vector4d(255,0,255,255));
     }
     //draw circle collider

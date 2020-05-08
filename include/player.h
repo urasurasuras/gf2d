@@ -20,6 +20,7 @@
 #include "projectile.h"
 #include "entity.h"
 #include "companion.h"
+#include "menu.h"
 
 // Vector2D spawn_top_left;
 // Vector2D spawn_top_right;

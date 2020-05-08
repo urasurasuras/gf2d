@@ -59,9 +59,9 @@ int main(int argc, char * argv[])
         gf2d_graphics_initialize(
             "gf2d",
             LEVEL_WIDTH,
-            LEVEL_HEIGHT + EDITOR_MENU_HEIGHT,
+            LEVEL_HEIGHT,
             LEVEL_WIDTH,
-            LEVEL_HEIGHT + EDITOR_MENU_HEIGHT,
+            LEVEL_HEIGHT,
             vector4d(0, 0, 0, 255),
             0);
 

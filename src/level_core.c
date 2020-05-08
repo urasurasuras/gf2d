@@ -12,6 +12,7 @@ Entity *level_core_new(Sprite *sprite, int team){
     core_ent->health = 500;
     core_ent->radius_body = 75;
     vector2d_set(core_ent->drawOffset,-core_ent->radius_body,-core_ent->radius_body);
+    
     // core_ent->drawOffset.x = core_ent->position.x - core_ent->radius;
     // core_ent->drawOffset.y = core_ent->position.y - core_ent->radius;
     slog("%s draw: %f,%f", core_ent->name, core_ent->drawOffset.x, core_ent->drawOffset.y);
@@ -30,7 +31,12 @@ Entity *level_core_new(Sprite *sprite, int team){
     default:
         break;
     }
+    core_ent->ui_box.w = -core_ent->drawOffset.x;
+    core_ent->ui_box.h = -core_ent->drawOffset.y;
+    core_ent->ui_box.x = (int)core_ent->position.x + core_ent->drawOffset.x/2;
+    core_ent->ui_box.y = (int)core_ent->position.y + core_ent->drawOffset.y/2;
     core_ent->type = ENT_CORE;
+    core_ent->collider_shape = SHAPE_CIRCLE;
     // core_ent->typeOfEnt = (Level_core *)core;
 
     return core_ent;

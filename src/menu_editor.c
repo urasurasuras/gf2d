@@ -64,6 +64,7 @@ void menu_editor_init() {
     //get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
+    get_menu_active()->type = MENU_MAIN;
 }
 
 void ed_save() {

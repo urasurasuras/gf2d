@@ -16,6 +16,8 @@ typedef struct {
 
 	int paused;
 	int done;
+
+	SDL_GameController* c;		/**<Pointer to first game controller, aka. player1*/
 }Scene;
 
 Scene* scene_get_active();

@@ -85,19 +85,26 @@ void menu_update(Menu *self){
         return;
     }
     
-        int mx = get_menu_active()->mx;
-        int my = get_menu_active()->my;
+    int mx = get_menu_active()->mx;
+    int my = get_menu_active()->my;
 
-        if (collide_menu(self->box, vector2d(mx, my))) {
-            //released
-
-            if (self->onClick) {
-                slog("%s clicked", self->name);
-                menu_manager.last_click = SDL_GetTicks();
-                self->onClick(self);
-                menu_manager.clickedThisFrame = 1;
+    if (collide_menu(self->box, vector2d(mx, my))) {
+        self->hover = 1;
+        //slog("mouseover %s", self->name);
+        if (menu_manager.last_click + UI_CLDN < SDL_GetTicks()) {
+            if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+                if (self->onClick) {
+                    slog("%s clicked", self->name);
+                    menu_manager.last_click = SDL_GetTicks();
+                    self->onClick(self);
+                    menu_manager.clickedThisFrame = 1;
+                }
             }
         }
+    }
+    else if (self->hover) {
+        self->hover = 0;
+    }
     
     /*if (SDL_GetMouseState(&mx, &my) & SDL_BUTTON(SDL_BUTTON_LEFT) && self->last_click + 500 < SDL_GetTicks()) {
         menu_manager.m_state = M_CLICKED;
@@ -115,18 +122,15 @@ void menu_update(Menu *self){
 }
 
 void menu_update_all(){
+    int i;
+    for (i = 0; i < menu_manager.maxMenus; i++)
+    {
+        if (!menu_manager.menuList[i]._inuse)continue;
+        menu_update(&menu_manager.menuList[i]);
+    }
+
     if (!menu_manager.clickedThisFrame) {
-        if (menu_manager.last_click + 500 < SDL_GetTicks()) {
-            if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
-                
-                int i;
-                for (i = 0; i < menu_manager.maxMenus; i++)
-                {
-                    if (!menu_manager.menuList[i]._inuse)continue;
-                    menu_update(&menu_manager.menuList[i]);
-                }
-            }
-        }
+        
     }
     
     else
@@ -150,10 +154,12 @@ void menu_draw(Menu *self){
         NULL,
         1
     );
+    if (self->hover)    //draw box collider
+        gf2d_draw_rect(self->box, vector4d(255, 0, 255, 255));
+
     if(SDL_RenderCopy(gf2d_graphics_get_renderer(), self->Message, NULL, &self->box)){ //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
     slog("rendering %s", self->Message);}
-    //draw box collider
-    gf2d_draw_rect(self->box, vector4d(255,0,255,255));
+
     // slog("Pos %f.%f", self->position.x, self->position.y);
 }
 
