@@ -95,7 +95,7 @@ void enemy_think (Entity *self){
         self,
         "EnemyShoot",
         fireball,
-        28,
+        29,
         SHAPE_CIRCLE,
         25,
         0,

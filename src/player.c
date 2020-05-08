@@ -495,7 +495,7 @@ void player_think_1 (Entity *self){
                 self,
                 "Fireball",
                 fireball,
-                    28,
+                    29,
                 SHAPE_CIRCLE,
                 25,
                 0,

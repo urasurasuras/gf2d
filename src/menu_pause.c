@@ -1,7 +1,9 @@
 #include "menu_pause.h"
-Vector4D menu_shade = { 255, 255, 255, 0 };
 
 void menu_pause_init() {
+
+    Vector4D menu_shade = vector4d(255, 255, 255, 255);
+
     get_menu_active()->bg_color = &menu_shade;
     //save button
     menu_generic(
@@ -105,6 +107,7 @@ void onClick_save(Menu* self) {
 }
 
 void onClick_level(Menu* self) {
+    if (scene_get_active()->type != scn_LEVEL)return;
 
     if (level_get_active()->level_type == LEVEL_T_NORMAL) {
         gf2d_sprite_free(level_get_active()->background);
@@ -129,9 +132,12 @@ void onClick_level(Menu* self) {
 }
 
 void onClick_backToMain() {
+    if (scene_get_active()->type != scn_LEVEL)return;
+    
     menu_free_all();
     level_free(level_get_active());
 
     menu_main_init();
-
+    get_menu_active()->type = MENU_MAIN;
+    scene_get_active()->type = scn_MENU;
 }

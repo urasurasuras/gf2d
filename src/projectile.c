@@ -404,7 +404,7 @@ void turret_detect(Entity *self, Entity *other){
         self,
         "Tfire",
         fireball,
-            28,
+            29,
         SHAPE_CIRCLE,
         25,
         0,

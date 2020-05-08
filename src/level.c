@@ -56,7 +56,6 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
     level->background = backgroundFile;
     gfc_rect_set(level->bounds_level, bounds_level.x, bounds_level.y, bounds_level.w, bounds_level.h);
     gfc_rect_set(level->bounds_stage, bounds_stage_wide.x, bounds_stage_wide.y, bounds_stage_wide.w, bounds_stage_wide.h);
-    slog("Level created %d x %d", level->bounds_level.w, level->bounds_level.h);
     level->level_type = type;
     level->config = level_load_config();
     level->core_A = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_A);
@@ -65,7 +64,11 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
     level->core_B->think = level_core_think;
     level->neutral_monster = grassGuy_new();
 
+    level->frame = 0;
+
     current_level = level;
+
+    slog("Level created %d x %d", level->bounds_level.w, level->bounds_level.h);
     return level;
 }
 
@@ -96,7 +99,8 @@ void level_update(Level* level) {
     if (!level)return;
     if (!level->_inuse)return;
     entity_update_all();
-    //slog("updating level");
+    slog("updating level %d", level->frame);
+    level->frame++;
 }
 
 void level_draw(Level *level){

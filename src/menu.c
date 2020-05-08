@@ -115,19 +115,13 @@ void menu_update(Menu *self){
 }
 
 void menu_update_all(){
-    // level_get_active()->frame ++;
-    SDL_PollEvent(&e);
-
     if (!menu_manager.clickedThisFrame) {
         if (menu_manager.last_click + 500 < SDL_GetTicks()) {
-            if (e.type == SDL_MOUSEBUTTONUP) {
-
-
+            if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+                
                 int i;
                 for (i = 0; i < menu_manager.maxMenus; i++)
                 {
-                    SDL_PollEvent(&e);
-
                     if (!menu_manager.menuList[i]._inuse)continue;
                     menu_update(&menu_manager.menuList[i]);
                 }
@@ -161,7 +155,6 @@ void menu_draw(Menu *self){
     //draw box collider
     gf2d_draw_rect(self->box, vector4d(255,0,255,255));
     // slog("Pos %f.%f", self->position.x, self->position.y);
-
 }
 
 void menu_draw_all()

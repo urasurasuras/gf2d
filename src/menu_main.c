@@ -31,6 +31,7 @@ void menu_main_init() {
     get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
+    scene_get_active()->type = scn_MENU;
 }
 
 void onClick_play() {
@@ -51,11 +52,13 @@ void onClick_play() {
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
 
     scene_get_active()->type = scn_LEVEL;
+    get_menu_active()->type = MENU_PAUSE;
     scene_pause_toggle();
 
     slog("Clicked play on %d", SDL_GetTicks());
 }
 
 void onClick_exit(Menu* self) {
+    if (get_menu_active()->type != MENU_MAIN)return;
     scene_get_active()->done = 1;
 }
