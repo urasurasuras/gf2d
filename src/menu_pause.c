@@ -38,13 +38,9 @@ void menu_pause_init() {
 }
 
 void onClick_save(Menu* self) {
-    //static int last_save = 0;
-    //// slog("%d: Last saved: %d", SDL_GetTicks(), last_save);
-    //int mx, my;
-    //SDL_GetMouseState(&mx, &my);
-    //if (collide_menu(self->box, vector2d(mx, my))) {
-    //    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && last_save + 750 < SDL_GetTicks()) {
-    //        last_save = SDL_GetTicks();
+    
+    if (!scene_get_active()->type == scn_LEVEL)return;
+
     SJson* allData;
     SJson* playerData;
     SJson* player_object;
@@ -109,7 +105,11 @@ void onClick_save(Menu* self) {
 void onClick_level(Menu* self) {
     if (scene_get_active()->type != scn_LEVEL)return;
 
+    Mix_Pause(scene_get_active()->soundtrack->defaultChannel);//pause whatever song was playing
+
     if (level_get_active()->level_type == LEVEL_T_NORMAL) {
+        
+        scene_get_active()->soundtrack = lava_theme;
         gf2d_sprite_free(level_get_active()->background);
         level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_lava.png");
         level_get_active()->bounds_stage = bounds_stage_narrow;
@@ -120,6 +120,8 @@ void onClick_level(Menu* self) {
         slog("Level type: %d", level_get_active()->level_type);
     }
     else if (level_get_active()->level_type == LEVEL_T_LAVA) {
+
+        scene_get_active()->soundtrack = grass_theme;
         gf2d_sprite_free(level_get_active()->background);
         level_get_active()->background = gf2d_sprite_load_image("images/backgrounds/bg_grass.png");
         level_get_active()->bounds_stage = bounds_stage_wide;
@@ -129,12 +131,16 @@ void onClick_level(Menu* self) {
 
         slog("Level type: %d", level_get_active()->level_type);
     }
+    gfc_sound_play(scene_get_active()->soundtrack, -1, .1, -1, -1);
+
     scene_pause_toggle();
 }
 
 void onClick_backToMain() {
     if (scene_get_active()->type != scn_LEVEL)return;
-    
+
+    scene_pause_toggle();
+    Mix_Pause(scene_get_active()->soundtrack->defaultChannel);
     menu_free_all();
     level_free(level_get_active());
 

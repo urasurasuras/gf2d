@@ -32,6 +32,8 @@ Sprite* companion_musicBee;
 */
 
 Sound* main_theme;
+Sound* lava_theme;
+Sound* grass_theme;
 
 void load_sprites();
 
@@ -39,4 +41,6 @@ void load_sprites();
  * @brief Pre-loads projectile sprites into individual pointers for later use
  * */
 void load_sprites_projectiles();
+
+void load_sounds();
 #endif // !_PRELOADER_H_

@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
             1,
             1
         );
-
+        load_sounds();
 
         scene_new();
         Scene* title = scene_get_active();

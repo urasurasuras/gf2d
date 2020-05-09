@@ -11,7 +11,6 @@ void scene_new() {
 	scene.c = SDL_GameControllerOpen(0);
 	scene.paused = 1;
 	//scene = (Scene *)malloc(sizeof(Scene));
-	main_theme = gfc_sound_load("audio/njit-theme-song.mp3", .1, 0);
 }
 
 void scene_purge() {
@@ -76,13 +75,15 @@ void scene_pause_toggle() {
 	}
 
 
-	if (!scene.paused) {
+	if (!scene.paused) {//pause
 		scene.menu_manager->_inuse = 1;
 		scene.level->_inuse = 0;
+		Mix_Pause(scene.soundtrack->defaultChannel);
 	}
-	else
+	else//unpause
 	{
 		scene.menu_manager->_inuse = 0;
 		scene.level->_inuse = 1;
+		Mix_Resume(scene.soundtrack->defaultChannel);
 	}
 }

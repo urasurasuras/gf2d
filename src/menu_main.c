@@ -7,7 +7,8 @@ Vector4D menu_noShade = { 255, 255, 255, 255 };
 void menu_main_init() {
     get_menu_active()->bg_color = &menu_noShade;
     get_menu_active()->bg = bg_flat;
-    gfc_sound_play(main_theme, 0, .2, -1, -1);
+    scene_get_active()->soundtrack = main_theme;
+    gfc_sound_play(scene_get_active()->soundtrack, 0, .2, -1, -1);
 
     //play button
     menu_generic(
@@ -35,7 +36,9 @@ void menu_main_init() {
 }
 
 void onClick_play() {
-    Mix_Pause(main_theme->defaultChannel);
+    Mix_Pause(scene_get_active()->soundtrack->defaultChannel);
+    scene_get_active()->soundtrack = grass_theme;
+    gfc_sound_play(scene_get_active()->soundtrack, -1, .1, -1, -1);
     //Purge current scene
     //memset(scene_get_active(), 0, sizeof(Scene));
     //Load pause menu

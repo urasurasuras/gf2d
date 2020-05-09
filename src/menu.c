@@ -122,6 +122,8 @@ void menu_update(Menu *self){
 }
 
 void menu_update_all(){
+    if (!menu_manager._inuse)return;
+
     int i;
     for (i = 0; i < menu_manager.maxMenus; i++)
     {

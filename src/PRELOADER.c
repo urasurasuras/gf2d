@@ -22,3 +22,8 @@ void load_sprites_projectiles() {
     companion_musicBee = gf2d_sprite_load_all("images/companions/music_bee.png", 28, 28, 2);
     // companion_musicBee = gf2d_sprite_load_image("images/companions/music_bee.png");
 }
+void load_sounds() {
+    main_theme = gfc_sound_load("audio/njit-theme-song.mp3", .1, 0);
+    lava_theme = gfc_sound_load("audio/agl-bardock-ost-extended.mp3", .1, 1);
+    grass_theme = gfc_sound_load("audio/21-dan-14-tsumi-dan-14-zui.mp3", .1, 2);
+}
