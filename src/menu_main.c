@@ -35,6 +35,7 @@ void menu_main_init() {
 }
 
 void onClick_play() {
+    Mix_Pause(main_theme->defaultChannel);
     //Purge current scene
     //memset(scene_get_active(), 0, sizeof(Scene));
     //Load pause menu
