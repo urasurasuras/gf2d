@@ -1,5 +1,6 @@
 #include "level_core.h"
 #include "level.h"
+#include "scene_end.h"
 
 Entity *level_core_new(Sprite *sprite, int team){
     Entity *core_ent = entity_new();
@@ -48,6 +49,19 @@ void level_core_think(Entity *self){
     if (self->health <= 0){
         level_get_active()->paused = 1;
         self->_inuse = 0;
+
+        switch (self->team)
+        {
+        case TEAM_A:
+            end_game(TEAM_B);
+            break;
+        case TEAM_B:
+            end_game(TEAM_A);
+            break;
+        default:
+            break;
+        }
+        
         //TODO: win condition
     }
     // int i;

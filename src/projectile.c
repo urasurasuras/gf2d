@@ -106,7 +106,7 @@ Entity *hitscan_generic(
         return self;
     }
 
-//Spesific projectile functions
+//Specific projectile functions
 Entity* fireball_projectile(Entity* owner_entity){
     Player* p = (Player*)owner_entity->typeOfEnt;
 

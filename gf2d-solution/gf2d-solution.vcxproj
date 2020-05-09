@@ -168,6 +168,7 @@
     <ClInclude Include="..\include\PRELOADER.h" />
     <ClInclude Include="..\include\projectile.h" />
     <ClInclude Include="..\include\scene.h" />
+    <ClInclude Include="..\include\scene_end.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c" />
@@ -204,6 +205,7 @@
     <ClCompile Include="..\src\PRELOADER.c" />
     <ClCompile Include="..\src\projectile.c" />
     <ClCompile Include="..\src\scene.c" />
+    <ClCompile Include="..\src\scene_end.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gfc\simple_json\src\Makefile" />
