@@ -2,9 +2,9 @@
 
 void menu_pause_init() {
 
-    Vector4D menu_shade = vector4d(255, 255, 255, 255);
-
-    get_menu_active()->bg_color = &menu_shade;
+    Vector4D menu_shade = vector4d(255, 255, 255, 100);
+    get_menu_active()->bg = bg_synth;
+    //get_menu_active()->bg_color = &menu_shade;
     //save button
     menu_generic(
         box_save,

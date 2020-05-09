@@ -9,6 +9,9 @@
 
 //Blank sprite
 Sprite* blank;
+//Background sprites
+Sprite* bg_flat;
+Sprite* bg_synth;
 //Projectile sprites
 Sprite* fireball;
 Sprite* healing_aura;
@@ -30,8 +33,10 @@ Sprite* companion_musicBee;
 
 Sound* main_theme;
 
+void load_sprites();
+
 /**
  * @brief Pre-loads projectile sprites into individual pointers for later use
  * */
-void load_sprites();
+void load_sprites_projectiles();
 #endif // !_PRELOADER_H_

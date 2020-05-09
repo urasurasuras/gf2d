@@ -65,10 +65,11 @@ int main(int argc, char * argv[])
             vector4d(0, 0, 0, 255),
             0);
 
-
         gf2d_graphics_set_frame_delay(16);
         gf2d_sprite_init(1024);
-        menu_manager_init(8, gf2d_sprite_load_image("images/backgrounds/bg_flat.png"));
+        //Pre-load sprites
+        load_sprites();
+        menu_manager_init(8, bg_flat);
         get_menu_active()->mouse_sprite = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16);
         get_menu_active()->mouse_color = vector4d(255, 255, 255, 255);
         get_menu_active()->mf = 0;
@@ -92,14 +93,7 @@ int main(int argc, char * argv[])
 
 
     }
-    
-    
-    
-    /*demo setup*/
 
-
-
-    
     /*main game loop*/
     while(!scene_get_active()->done)
     {

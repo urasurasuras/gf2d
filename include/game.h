@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "gfc_audio.h"
+#include "PRELOADER.h"
 
 const Uint8* keys;
 int editorMode;

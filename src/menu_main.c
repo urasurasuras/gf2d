@@ -6,7 +6,7 @@ Vector4D menu_noShade = { 255, 255, 255, 255 };
 
 void menu_main_init() {
     get_menu_active()->bg_color = &menu_noShade;
-
+    get_menu_active()->bg = bg_flat;
     gfc_sound_play(main_theme, 0, .2, -1, -1);
 
     //play button
@@ -48,7 +48,7 @@ void onClick_play() {
         bounds_level, bounds_stage_wide, 
         1
     );
-    load_sprites();
+    load_sprites_projectiles();
     players_spawn();
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
 

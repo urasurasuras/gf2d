@@ -1,8 +1,11 @@
 #include "PRELOADER.h"
 
 void load_sprites() {
-
     blank = gf2d_sprite_load_image("images/empty.png");
+    bg_flat = gf2d_sprite_load_image("images/backgrounds/bg_flat.png");
+    bg_synth = gf2d_sprite_load_image("images/backgrounds/bg_blue.png");
+}
+void load_sprites_projectiles() {
     //fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
     fireball = gf2d_sprite_load_all("images/projectiles/Fireball/Fireball-idle.png", 64, 64, 4);
     healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
