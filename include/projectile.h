@@ -17,23 +17,7 @@
 #include "collision.h"
 #include "player.h"
 #include "entity.h"
-
-//Blank sprite
-Sprite *blank;
-//Projectile sprites
-Sprite *fireball;
-Sprite *healing_aura;
-Sprite *damage_aura;
-Sprite *turret;
-Sprite *heal_dart;
-Sprite *landmine;
-Sprite *lucio_aura;
-//Pickup sprites
-Sprite *pickup_health;
-Sprite *pickup_boost;
-Sprite *pickup_speed;
-//Companion sprites
-Sprite *companion_musicBee;
+#include "PRELOADER.h"
 
 typedef struct Projectile_S
 {
@@ -59,11 +43,6 @@ typedef struct Projectile_S
 //     Vector2D    direction;
 //     float       strenght;
 // }Hitscan;
-
-/**
- * @brief Pre-loads projectile sprites into individual pointers for later use
- * */
-void projectile_load_sprites();
 
 /**
  * @brief Returns a generic projectile with all the necessary members initialized

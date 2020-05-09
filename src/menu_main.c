@@ -47,7 +47,7 @@ void onClick_play() {
         bounds_level, bounds_stage_wide, 
         1
     );
-    projectile_load_sprites();
+    load_sprites();
     players_spawn();
     level_pickups_spawn();//FIXME: spawn pickups before main game loop
 
