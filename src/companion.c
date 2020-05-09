@@ -58,6 +58,23 @@ void think_behavior(Entity *self){
     vector2d_add(self->position, c->owner_entity->position, c->followOffset);
 }
 
+void think_musicBee(Entity* self) {
+    if (!self)return;
+    Companion* c = (Companion*)self->typeOfEnt;
+    if (!c->owner_entity)return;
+
+    vector2d_add(self->position, c->owner_entity->position, c->followOffset);
+
+    //Animate
+    if (self->f_last + 30 < level_get_active()->frame) {
+        self->f_current++;
+        self->f_last = level_get_active()->frame;
+    }
+    if (self->f_current > self->f_end) {
+        self->f_current = 0;
+    }
+}
+
 void lucioAura_touch(Entity *self, Entity *other){
     if (!self || !other)return;
     if (other->team == self->team){
@@ -145,22 +162,7 @@ void musicBee_detect(Entity *self, Entity *other){
         // vector2d_copy(self->size, other->position);
         // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 
-        projectile_generic(
-            self,
-            "BeeNote",
-            fireball,
-            29,
-            SHAPE_CIRCLE,
-            25,
-            0,
-            25 * p->strength,
-            3,
-            LEVEL_WIDTH/3,
-            self->position,
-            think_move_constVel,
-            fireball_touch,
-            NULL
-        ); 
+        fireball_projectile(self);
 
         p->last_cldn_1 = level_get_active()->frame;
     }

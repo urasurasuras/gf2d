@@ -4,7 +4,7 @@ void projectile_load_sprites(){
 
     blank = gf2d_sprite_load_image("images/empty.png");
     //fireball = gf2d_sprite_load_image("images/projectiles/fireball.png");
-    fireball = gf2d_sprite_load_all("images/projectiles/fireball-Sheet.png", 50, 50, 8);
+    fireball = gf2d_sprite_load_all("images/projectiles/Fireball/Fireball-idle.png", 64, 64, 4);
     healing_aura = gf2d_sprite_load_image("images/projectiles/healing_aura.png");
     damage_aura = gf2d_sprite_load_image("images/projectiles/damage_aura.png");
     turret = gf2d_sprite_load_image("images/projectiles/turret.png");
@@ -20,6 +20,7 @@ void projectile_load_sprites(){
     // companion_musicBee = gf2d_sprite_load_image("images/companions/music_bee.png");
 }
 
+//Generic projectile functions
 Entity *projectile_generic(
     Entity *owner_entity,
     TextWord name,
@@ -125,6 +126,39 @@ Entity *hitscan_generic(
         return self;
     }
 
+//Spesific projectile functions
+Entity* fireball_projectile(Entity* owner_entity){
+    Player* p = (Player*)owner_entity->typeOfEnt;
+
+    Entity * projectile =
+    projectile_generic(
+        owner_entity,
+        "Fireball",
+        fireball,
+        29,
+        SHAPE_CIRCLE,
+        20,
+        0,
+        25 * p->strength,
+        5,
+        LEVEL_WIDTH / 5,
+        owner_entity->position,
+        fireball_think,
+        fireball_touch,
+        NULL
+    );
+    projectile->f_end = 3;
+
+    projectile->drawOffset.x = -39;
+    projectile->drawOffset.y = -39;
+
+    projectile->rotation.x = -projectile->drawOffset.x;
+    projectile->rotation.y = -projectile->drawOffset.y;
+    projectile->rotation.z = owner_entity->rotation.z - 45;
+
+}
+
+//Think functions
 void think_move_constVel(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     p->time_alive += 1;
@@ -132,6 +166,14 @@ void think_move_constVel(Entity *self){
             self->_inuse = 0;  
             return;
     }
+    /*if (self->f_current < self->f_end) {
+        self->f_current++;
+    }
+    else
+    {
+        self->f_current = 0;
+    }*/
+    
     self->position.x += self->size.x * p->speed;
     self->position.y += self->size.y * p->speed;    
     // slog("%s %d",self->name, level_get_active()->frame);
@@ -148,9 +190,17 @@ void think_stationary(Entity *self){
     }
 }
 
-// void fireball_think(Entity *self){
-
-// }
+ void fireball_think(Entity *self){
+     think_move_constVel(self);
+     //Animate
+     if (self->f_last + 20 < level_get_active()->frame) {
+         self->f_current++;
+         self->f_last = level_get_active()->frame;
+     }
+     if (self->f_current > self->f_end) {
+         self->f_current = 0;
+     }
+ }
 
 // void healingAura_think(Entity *self){
 //     Projectile *p = (Projectile *)self->typeOfEnt;
@@ -400,22 +450,7 @@ void turret_detect(Entity *self, Entity *other){
         // vector2d_copy(self->size, other->position);
         // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 
-        projectile_generic(
-        self,
-        "Tfire",
-        fireball,
-            29,
-        SHAPE_CIRCLE,
-        25,
-        0,
-        25 * p->strength,
-        3,
-        LEVEL_WIDTH/3,
-        self->position,
-        think_move_constVel,
-        fireball_touch,
-        NULL
-        ); 
+        fireball_projectile(self);
 
         p->last_cldn_1 = level_get_active()->frame;
     }

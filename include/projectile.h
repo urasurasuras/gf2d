@@ -105,6 +105,7 @@ Entity *hitscan_generic(
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int type
 );
+Entity* fireball_projectile(Entity* owner_entity);
 
 // /**
 //  * @brief Create a projectile by an entity (not Player)

@@ -50,8 +50,9 @@ typedef struct Entity_S
     Vector2D    drawOffset;         /**<Offset of collider*/
     float       health;             /**<Health*/
 
-    int         f_current;            /**<first frame of current animation*/
+    int         f_current;          /**<first frame of current animation*/
     int         f_end;              /**<last frame of current animation*/
+    int         f_last;             /**<Last frame this entity was animated*/
 
     //Shape
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/

@@ -251,7 +251,7 @@ Entity *player_generic(
             vector2d(50,-50),
             1,
             0,
-            think_behavior,
+            think_musicBee,
             musicBee_touch,
             musicBee_detect
         );
@@ -491,22 +491,8 @@ void player_think_1 (Entity *self){
         {
             case 1: 
                 //Fireball
-                projectile_generic(
-                self,
-                "Fireball",
-                fireball,
-                    29,
-                SHAPE_CIRCLE,
-                25,
-                0,
-                25 * p->strength,
-                5,
-                LEVEL_WIDTH/5,
-                self->position,
-                think_move_constVel,
-                fireball_touch,
-                NULL
-            );
+                fireball_projectile(self);
+
                 break;
             case 2: 
                 //Damage aura

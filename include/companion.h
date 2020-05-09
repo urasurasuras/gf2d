@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "projectile.h"
+#include "level.h"
 
 typedef struct Companion_S
 {
@@ -49,7 +50,7 @@ Entity *companion_generic(
  * @param self pointer to self
  * */
 void think_behavior(Entity *self);
-
+void think_musicBee(Entity* self);
 void lucioAura_touch(Entity *self, Entity *other);
 
 void lucio_healingAura_touch(Entity *self, Entity *other);

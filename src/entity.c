@@ -16,6 +16,7 @@ Entity *entity_new(){
         entity_manager.entityList[i]._inuse = 1;
         entity_manager.entityList[i].f_current = 0;
         entity_manager.entityList[i].f_end = 0;
+        entity_manager.entityList[i].f_last = 0;
         //slog("Items in ent list %d", i);
         return &entity_manager.entityList[i];
     }
@@ -72,6 +73,7 @@ void entity_update(Entity *self){
     if (self->think){
         self->think(self);
     }
+    //if ()
     if (self->touch){
         entity_collision_check(self);
         if (self->type == ENT_RAYSCAN){
@@ -119,10 +121,7 @@ void entity_draw(Entity *self){
     }
     // Vector2D scaler = vector2d(0.7,0.5);
     // Vector2D *scalerPtr = &scaler;
-    self->f_current++;
-    if (self->f_current > self->f_end) {
-        self->f_current = 0;
-    }
+    
     if (self->sprite){
         gf2d_sprite_draw(
             self->sprite,
