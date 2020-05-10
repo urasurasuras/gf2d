@@ -159,6 +159,11 @@ void musicBee_detect(Entity *self, Entity *other){
 
         self->size.x = cos(vector2d_angle(v) * M_PI/180);
         self->size.y = sin(vector2d_angle(v) * M_PI/180);
+
+        self->rotation.x = -self->drawOffset.x;
+        self->rotation.y = -self->drawOffset.y;
+        self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
+
         // vector2d_copy(self->size, other->position);
         // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 

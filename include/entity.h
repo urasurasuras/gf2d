@@ -40,6 +40,7 @@ typedef struct Entity_S
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
 
     SDL_Rect    ui_box;             /**<Used for text display*/
+    int         drawhp;             /**<True if health needs to be drawn, defaults to 0*/
 
     Sprite      *sprite;            /**<A pointer to the sprite*/
     Vector4D    *color;             /**<A pointer to the color to be shaded while drawing the sprite*/
@@ -64,6 +65,7 @@ typedef struct Entity_S
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
     int         type;
     int         team;
+    int         lastHit;   /**<Pointer to the entity this one was last hit by*/
 
     void        (*think)(struct Entity_S *self);/**<Called when entity is drawn (updated)*/
     void        (*touch)(struct Entity_S *self, struct Entity_S *other);   /**<called when an entity touches another entity*/

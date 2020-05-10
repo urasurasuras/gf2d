@@ -224,7 +224,7 @@ void rayscan_think(Entity *self){
 void turret_think(Entity *self){
     Projectile *p = (Projectile *)self->typeOfEnt;
     // p->time_alive += 1;
-
+    
     if (self->health <= 0){
         Player *owner_player = (Player *)p->owner_entity->typeOfEnt;
         owner_player->deployables -= 1;
@@ -427,6 +427,10 @@ void turret_detect(Entity *self, Entity *other){
 
         self->size.x = cos(vector2d_angle(v) * M_PI/180);
         self->size.y = sin(vector2d_angle(v) * M_PI/180);
+
+        self->rotation.x = -self->drawOffset.x;
+        self->rotation.y = -self->drawOffset.y;
+        self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
         // vector2d_copy(self->size, other->position);
         // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 

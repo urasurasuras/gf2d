@@ -199,6 +199,7 @@ Entity *player_generic(
     self->ui_box.h = -draw_offset.y;
     self->ui_box.x = (int)self->position.x + draw_offset.x;
     self->ui_box.y = (int)self->position.y + draw_offset.y;
+    self->drawhp = 1;
     switch (team)
     {
     case TEAM_A:
@@ -333,7 +334,6 @@ void player_think_1 (Entity *self){
             p->speed = 1;
             break;
         case 4:
-            slog("set to nonrma");
             companion->strength = .01;
             break;
         default:

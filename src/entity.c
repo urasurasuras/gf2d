@@ -17,6 +17,8 @@ Entity *entity_new(){
         entity_manager.entityList[i].f_current = 0;
         entity_manager.entityList[i].f_end = 0;
         entity_manager.entityList[i].f_last = 0;
+        entity_manager.entityList[i].drawhp = 0;
+        entity_manager.entityList[i].size = vector2d(0, 0);
         //slog("Items in ent list %d", i);
         return &entity_manager.entityList[i];
     }
@@ -134,7 +136,7 @@ void entity_draw(Entity *self){
             (Uint32)self->f_current
         );
     }
-    if (self->health/* && self->type == ENT_PLAYER*/){
+    if (self->drawhp/* && self->type == ENT_PLAYER*/){
         char hp[8];
         snprintf(hp, 8, "%.0f", self->health);
         SDL_Surface* surfaceMessage = TTF_RenderText_Solid(entity_manager_get_active()->font, hp, entity_manager_get_active()->font_color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
@@ -155,7 +157,7 @@ void entity_draw(Entity *self){
     else if (self->collider_shape == SHAPE_CIRCLE){
         gf2d_draw_circle(self->position, self->radius_body, vector4d(255,0,255,255));    
     }
-
+    //draw range
     if (self->radius_range){
         gf2d_draw_circle(self->position, self->radius_range, vector4d(255,255,255,255));    
     }
@@ -174,6 +176,8 @@ void entity_draw_all()
 
 void entity_entity_collide(Entity *e1, Entity *e2)
 {
+    e2->lastHit = e1->team;
+    //slog("%s was hit by %d", e2->name, e2->lastHit);
     if (e1->radius_range && e1->detect){
         if (collide_circle(e1->position, e1->radius_range, e2->position, e2->radius_body))
         {//Range to circle

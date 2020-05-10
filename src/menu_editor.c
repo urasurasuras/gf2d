@@ -8,7 +8,7 @@ void menu_editor_init() {
     pickup_boost = gf2d_sprite_load_image("images/pickups/pickup_boost.png");
     pickup_speed = gf2d_sprite_load_image("images/pickups/pickup_speed.png");
 
-    // //Exit button
+    //Exit button
     menu_generic(
         ed_box_exit,
         vector2d(-100, -250),
@@ -16,6 +16,15 @@ void menu_editor_init() {
         onClick_exit,
         Sans,
         "Exit"
+    );
+    //Delete button (toggle)
+    menu_generic(
+        ed_box_delete,
+        vector2d(-100, -250),
+        NULL,
+        ed_delete,
+        Sans,
+        "Delete"
     );
     //Save button
     menu_generic(
@@ -159,6 +168,38 @@ void ed_load() {
     }
 }
 
+void ed_delete() {
+    //change mouse color
+    switch (editorMode)
+    {
+    case 1:
+        editorMode = 2;
+        get_menu_active()->mouse_color = vector4d(255, 0, 0, 255);
+
+        /*for (int i = 0; i < entity_manager_get_active()->maxEnts; i++) {
+            if (!entity_manager_get_active()->entityList[i]._inuse)continue;
+            if (!entity_manager_get_active()->entityList[i].type != ENT_EDITABLE)continue;
+            entity_manager_get_active()->entityList[i].think = ed_delete_pickup;
+        }*/
+
+        break;
+    case 2:
+        editorMode = 1;
+        get_menu_active()->mouse_color = vector4d(255, 255, 255, 255);
+
+        /*for (int i = 0; i < entity_manager_get_active()->maxEnts; i++) {
+            if (!entity_manager_get_active()->entityList[i]._inuse)continue;
+            if (!entity_manager_get_active()->entityList[i].type != ENT_EDITABLE)continue;
+            entity_manager_get_active()->entityList[i].think = ed_move_pickup;
+        }*/
+
+        break;
+
+    default:
+        break;
+    }
+}
+
 Entity* ed_pickup_new(
     TextWord    name,
     Sprite* sprite,
@@ -176,6 +217,7 @@ Entity* ed_pickup_new(
     self->collider_shape = SHAPE_CIRCLE;
     self->radius_body = 30;
     self->drawOffset = vector2d(-30, -30);
+    self->type = ENT_EDITABLE;
     return self;
 }
 
@@ -214,15 +256,19 @@ void ed_move_pickup(Entity* self) {
     int my = get_menu_active()->my;
 
     if (collide_circle(self->position, self->radius_body, vector2d(mx, my), 0)) {
-        SDL_PollEvent(&e);
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
-            self->pickedUp = 1;
-        }
-        else if (e.type == SDL_MOUSEBUTTONUP) {
-            self->pickedUp = 0;
-        }
 
-        
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            if (editorMode == 1) {
+                if (!self->pickedUp)
+                    self->pickedUp = 1;
+                else if (self->pickedUp)
+                    self->pickedUp = 0;
+            }
+            else if (editorMode == 2) {
+                entity_free(self);
+                return;
+            }
+        }
     }
     if (self->pickedUp) {
         vector2d_copy(self->position, vector2d(mx, my));
@@ -230,8 +276,37 @@ void ed_move_pickup(Entity* self) {
     }
 }
 
+//void ed_delete_pickup(Entity* self)
+//{
+//    if (!self)return;
+//    if (self->_inuse == 0) {
+//        return;
+//    }
+//
+//    int mx = get_menu_active()->mx;
+//    int my = get_menu_active()->my;
+//
+//    if (collide_circle(self->position, self->radius_body, vector2d(mx, my), 0)) {
+//        slog("mousing over %s", self->name);
+//        if (get_menu_active()->last_click + UI_CLDN < SDL_GetTicks()) {
+//            if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+//                slog("clicked %s", self->name);
+//
+//                get_menu_active()->last_click = SDL_GetTicks();
+//                self->_inuse = 0;
+//            }
+//        }
+//    }
+//}
+
 SDL_Rect ed_box_exit = { 
     LEVEL_WIDTH - (EDITOR_MENU_HEIGHT * 3),
+    LEVEL_HEIGHT,
+    EDITOR_MENU_HEIGHT*3,
+    EDITOR_MENU_HEIGHT
+};
+SDL_Rect ed_box_delete = { 
+    LEVEL_WIDTH - (EDITOR_MENU_HEIGHT * 6),
     LEVEL_HEIGHT,
     EDITOR_MENU_HEIGHT*3,
     EDITOR_MENU_HEIGHT
