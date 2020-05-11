@@ -12,6 +12,7 @@ Entity *lavaGuy_new(){
     enemy->think = not_enemy_think;
     enemy->touch = enemy_touch;
     enemy->bound_hit = player_bound_hit;
+    enemy->health = 500;
     // enemy->detect = enemy_detect;
     enemy->type = ENT_NEUTRAL_MONSTER;
     Bot *bot;
@@ -35,6 +36,7 @@ Entity *grassGuy_new(){
     enemy->think = not_enemy_think;
     enemy->touch = not_enemy_touch;
     enemy->bound_hit = player_bound_hit;
+    enemy->health = 500;
     // enemy->detect = enemy_detect;
     enemy->type = ENT_NEUTRAL_MONSTER;
     Bot *bot;
@@ -80,9 +82,7 @@ void enemy_think (Entity *self){
 
         b->last_randomized = level_get_active()->frame;
     }
-    self->position.x += self->size.x;
-    self->position.y += self->size.y;
-
+    
     //if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
     //{
     //    //TODO: Do something is ent hits bounds
@@ -111,6 +111,20 @@ void enemy_think (Entity *self){
 
         b->last_action = level_get_active()->frame;
     }
+    if (self->health <= 0) {
+
+        for (int i = 0; i < entity_manager_get_active()->maxEnts; i++) {
+            if (entity_manager_get_active()->entityList[i].team == self->lastHit) {
+                //give buff to that team
+                entity_manager_get_active()->entityList[i].health += 100;
+            }
+        }
+        self->_inuse = 0;//then die
+    }
+
+    //if (freeze)return;
+    self->position.x += self->size.x;
+    self->position.y += self->size.y;
 }
 
 void enemy_touch (Entity *self, Entity *other){
@@ -190,8 +204,7 @@ void not_enemy_think (Entity *self){
 
         b->last_randomized = level_get_active()->frame;
     }
-    self->position.x += self->size.x;
-    self->position.y += self->size.y;
+    
 
     //if (level_bounds_test_circle(level_get_active()->bounds_level, self->position, self->radius_body))
     //{
@@ -226,9 +239,39 @@ void not_enemy_think (Entity *self){
 
         b->last_action = level_get_active()->frame;
     }
+
+    if (self->health <= 0) {
+        
+        for (int i = 0; i < entity_manager_get_active()->maxEnts; i++) {
+            if (entity_manager_get_active()->entityList[i].team == self->lastHit) {
+                //give buff to that team
+                Player* p;
+                Companion* c;
+                switch (entity_manager_get_active()->entityList[i].type)
+                {
+                case ENT_PLAYER:
+                    p = (Player*)entity_manager_get_active()->entityList[i].typeOfEnt;
+                    p->strength = 2;
+                    break;
+                case ENT_COMPANION:
+                    c = (Companion *)entity_manager_get_active()->entityList[i].typeOfEnt;
+                    c->strength = 3;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        self->_inuse = 0;//then die
+    }
+    //if (freeze)return;
+    self->position.x += self->size.x;
+    self->position.y += self->size.y;
 }
 
 void not_enemy_touch (Entity *self, Entity *other){
+    //slog("%s touched by %s", self->name, other->name);
+    slog("%.0f", self->health);
     //push back and heal
 }
 

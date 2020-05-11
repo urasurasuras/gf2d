@@ -168,6 +168,9 @@ void think_stationary(Entity *self){
         self->_inuse = 0;
         return;
     }
+    self->rotation.x = -self->drawOffset.x;
+    self->rotation.y = -self->drawOffset.y;
+    self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
 }
 
  void fireball_think(Entity *self){
@@ -242,23 +245,24 @@ void fireball_touch(Entity *self, Entity *other){
     if (other == owner_ent)return;
 
     if (other->team != owner_ent->team){
-        if (other->type == ENT_PLAYER ){
+
+        switch (other->type)
+        {
+        case ENT_PLAYER:
             // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
-            self->_inuse = 0;
-            return;
-        }
-        else if (other->type == ENT_CORE ){
+            break;
+        case ENT_CORE:
             // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             slog("%s health: %f", other->name, other->health);
-            self->_inuse = 0;
-            return;
+
+        default:
+            other->health -= p->strength;
+            break;
         }
-        else if (other->type == ENT_PROJECTILE){
-            self->_inuse = 0;
-            return;
-        }
+        self->_inuse = 0;
+        return;
     }
 }
 
@@ -285,19 +289,25 @@ void damageAura_touch(Entity *self, Entity *other){
     if (!self)return;
     Projectile *p = (Projectile *)self->typeOfEnt;
     // Entity *owner_ent = (Entity *)p->owner_entity;
+    if (other->team != self->team) {
 
-    if (self->team != other->team){
-        // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
-        if (other->type == ENT_PLAYER){
+        switch (other->type)
+        {
+        case ENT_PLAYER:
             // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
-            // slog("Damaged %s %f", other->name, other_player->health);
-        }
-        else if (other->type == ENT_CORE){
+            break;
+        case ENT_CORE:
             // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
-            // slog("Damaged %s %f", other->name, other_player->health);
+            slog("%s health: %f", other->name, other->health);
+
+        default:
+            other->health -= p->strength;
+            break;
         }
+        self->_inuse = 0;
+        return;
     }
 }
 
@@ -310,17 +320,7 @@ void hitscan_touch(Entity *self, Entity *other){
     // slog("Self team %d other ");
 
     if (self->team != other->team && other != owner_ent){
-
-        if (other->type == ENT_PLAYER){
-            // Player *other_player = (Player *)other->typeOfEnt;
-            other->health -= p->strength;
-            // slog("Damaged %s %f", other->name, other->health);
-        }
-        else if (other->type == ENT_CORE){
-            // Level_core *other_core = (Level_core *)other->typeOfEnt;
-            other->health -= p->strength;
-            // slog("Damaged %s %f", other->name, other_player->health);
-        }
+        other->health -= p->strength;
     }
 }
 
@@ -344,42 +344,42 @@ void heal_dart_touch(Entity *self, Entity *other){
     if (other == owner_ent)return;
 
     if (other->team != self->team){
-        if (other->type == ENT_PLAYER ){
+        switch (other->type)
+        {
+        case ENT_PLAYER:
             // Player *other_player = (Player *)other->typeOfEnt;
             other->health -= p->strength;
-            self->_inuse = 0;
-            return;
-        }
-        else if (other->type == ENT_CORE ){
+            break;
+        case ENT_CORE:
             // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
-            self->_inuse = 0;
-            return;
-        }
-        else if (other->type == ENT_PROJECTILE){
-            self->_inuse = 0;
-            return;
+            slog("%s health: %f", other->name, other->health);
+
+        default:
+            other->health -= p->strength;
+            break;
         }
     }
     else if (other->team == self->team){
-        if (other->type == ENT_PLAYER ){
+
+        switch (other->type)
+        {
+        case ENT_PLAYER:
             // Player *other_player = (Player *)other->typeOfEnt;
             other->health += p->strength;
-            self->_inuse = 0;
-            return;
-        }
-        else if (other->type == ENT_CORE ){
+            break;
+        case ENT_CORE:
             // Level_core *other_core = (Level_core *)other->typeOfEnt;
-            // other->health -= p->strength;
-            self->_inuse = 0;
-            return;
-        }
-        else if (other->type == ENT_PROJECTILE){
-            self->_inuse = 0;
-            return;
+            other->health -= p->strength;
+            slog("%s health: %f", other->name, other->health);
+
+        default:
+            other->health -= p->strength;
+            break;
         }
     }
-    
+    self->_inuse = 0;
+    return;
 }
 
 void landmine_touch(Entity *self, Entity *other){
