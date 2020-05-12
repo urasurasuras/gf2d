@@ -9,6 +9,11 @@
 
 //Blank sprite
 Sprite* blank;
+//Character sprites
+Sprite* sprite_player1;
+Sprite* sprite_player2;
+Sprite* sprite_player3;
+Sprite* sprite_player4;
 //Background sprites
 Sprite* bg_flat;
 Sprite* bg_synth;
@@ -42,6 +47,6 @@ void load_sprites();
  * @brief Pre-loads projectile sprites into individual pointers for later use
  * */
 void load_sprites_projectiles();
-
+void load_sprites_chars();
 void load_sounds();
 #endif // !_PRELOADER_H_

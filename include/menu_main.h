@@ -9,4 +9,7 @@ void onClick_play();
 
 void onClick_exit(Button* self);
 
+void onClick_charSwap_blue(Button* self);
+void onClick_charSwap_red(Button* self);
+
 #endif // !_MENU_PAUSE_H_

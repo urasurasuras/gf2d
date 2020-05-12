@@ -23,6 +23,7 @@ Button *button_new(){
     for (i=0; i < menu_manager.maxMenus; i++){
         if(menu_manager.buttonList[i]._inuse)continue;
         menu_manager.buttonList[i]._inuse = 1;
+        menu_manager.buttonList[i].colorShift = vector4d(255, 255, 255, 255);
         // slog("Items in menu list %d", i);
         return &menu_manager.buttonList[i];
     }
@@ -153,7 +154,7 @@ void button_draw(Button *self){
         NULL,
         NULL,
         NULL,
-        NULL,
+        &self->colorShift,
         NULL
     );
     if (self->hover)    //draw box collider
@@ -262,4 +263,16 @@ SDL_Rect box_backToMain = {
     (LEVEL_HEIGHT / 2) + MENU_BUTTON_HALF_HEIGHT,
     MENU_BUTTON_HALF_WIDTH * 2,
     MENU_BUTTON_HALF_HEIGHT
+};
+SDL_Rect box_blue_team = {
+    (LEVEL_WIDTH / 4) - 50,
+    (LEVEL_HEIGHT / 2) + 50,
+    100,
+    100
+};
+SDL_Rect box_red_team = {
+    (LEVEL_WIDTH / 4)*3 - 50,
+    (LEVEL_HEIGHT / 2) + 50,
+    100,
+    100
 };

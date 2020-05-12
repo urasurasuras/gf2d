@@ -27,6 +27,8 @@ SDL_Rect box_exit;
 SDL_Rect box_backToMain;
 SDL_Rect box_play;
 
+SDL_Rect box_blue_team;
+SDL_Rect box_red_team;
 
 typedef struct Button_S
 {
@@ -34,6 +36,7 @@ typedef struct Button_S
 
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
+    Vector4D    colorShift;         
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
     // float       frame;              /**<Current frame of sripte*/
     // float       maxFrames;          /**<Maximum number of frames in a sprite*/
@@ -41,7 +44,7 @@ typedef struct Button_S
     Vector2D    drawOffset;         /**<Offset of collider*/
     SDL_Rect    box;                /**<Bounds of menu*/
     SDL_Texture *Message;
-
+    int         toggle;             /**<Used for toggle buttons*/
     int hover;                    /**<whether mouse is hovering over this button*/
 
     void        (*onClick)(struct Button_S *self);

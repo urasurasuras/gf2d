@@ -86,7 +86,7 @@ void ed_save() {
     for (int i = 0; i < entity_manager_get_active()->maxEnts; i++)
     {
         slog("%s type %d", entity_manager_get_active()->entityList[i].name,entity_manager_get_active()->entityList[i].type);
-        if (entity_manager_get_active()->entityList[i]._inuse/* == ENT_PICKUP*/) {
+        if (entity_manager_get_active()->entityList[i].type == ENT_EDITABLE/* == ENT_PICKUP*/) {
             Entity current_ent = entity_manager_get_active()->entityList[i];
             obj_name = sj_new_str(current_ent.name);
 
@@ -214,7 +214,7 @@ Entity* ed_pickup_new(
     self->sprite = sprite;
     self->position = position;
     self->think = think;
-    self->type = ENT_PICKUP;
+    //self->type = ENT_PICKUP;
     self->collider_shape = SHAPE_CIRCLE;
     self->radius_body = 30;
     self->drawOffset = vector2d(-30, -30);

@@ -9,6 +9,7 @@ void menu_main_init() {
     get_menu_active()->bg = bg_flat;
     scene_get_active()->soundtrack = main_theme;
     gfc_sound_play(scene_get_active()->soundtrack, 0, .2, -1, -1);
+    load_sprites_chars();
 
     //play button
     button_generic(
@@ -29,6 +30,28 @@ void menu_main_init() {
         Sans,
         "Exit"
     );
+
+    //Character select buttons (toggle)
+    Button * blue = 
+    button_generic(//Blue team player 1
+        box_blue_team,
+        vector2d(-100, -250),
+        sprite_player1,
+        onClick_charSwap_blue,
+        Sans,
+        ""
+    );
+    blue->colorShift = v4d_blue;
+    Button *red = 
+    button_generic(//Red team player 1
+        box_red_team,
+        vector2d(-100, -250),
+        sprite_player2,
+        onClick_charSwap_red,
+        Sans,
+        ""
+    );
+    red->colorShift = v4d_red;
     get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
@@ -66,4 +89,41 @@ void onClick_play() {
 void onClick_exit(Button* self) {
     if (get_menu_active()->type != MENU_MAIN)return;
     scene_get_active()->done = 1;
+}
+
+void onClick_charSwap_blue(Button* self) {
+
+    switch (self->toggle)
+    {
+    case 0:
+        self->sprite = sprite_player3;
+        self->toggle = 1;
+        break;
+    case 1:
+        self->sprite = sprite_player1;
+        self->toggle = 0;
+        break;
+    default:
+        break;
+    }
+
+    
+}
+void onClick_charSwap_red(Button* self) {
+
+    switch (self->toggle)
+    {
+    case 0:
+        self->sprite = sprite_player2;
+        self->toggle = 1;
+        break;
+    case 1:
+        self->sprite = sprite_player4;
+        self->toggle = 0;
+        break;
+    default:
+        break;
+    }
+
+    
 }
