@@ -190,6 +190,29 @@ void entity_entity_collide(Entity *e1, Entity *e2)
             if (e1->touch)
             {
                 e1->touch(e1,e2);
+                //change x any y to diff + 1
+                float diffX = e1->position.x - e2->position.x;
+                float diffY = e1->position.y - e2->position.y;
+
+                if (e1->position.x < e2->position.x)
+                    e1->position.x = e2->position.x + diffX-5;
+                else if (e1->position.x > e2->position.x)
+                    e1->position.x = e2->position.x + diffX + 5;
+                if (e1->position.y < e2->position.y)
+                    e1->position.y = e2->position.y + diffY-5;
+                else if (e1->position.y > e2->position.y)
+                    e1->position.y = e2->position.y + diffY + 5;
+
+                /*float diffX = e1->position.x - e2->position.x;
+                float diffY = e1->position.y - e2->position.y;
+
+                float radiiSum = e1->radius_body + e2->radius_body;
+                float length = sqrt(diffX * diffX + diffY + diffY);
+                float unitX = diffX / length;
+                float unitY = diffY / length;
+
+                e1->position.x = e2->position.x + (radiiSum + 1) * unitX;
+                e1->position.y = e2->position.y + (radiiSum + 1) * unitY;*/
             }
         }
     }
