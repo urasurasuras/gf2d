@@ -6,30 +6,30 @@ void menu_pause_init() {
     get_menu_active()->bg = bg_synth;
     //get_menu_active()->bg_color = &menu_shade;
     //save button
-    menu_generic(
+    button_generic(
         box_save,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         onClick_save,
         Sans,
         "Save"
     );
 
     // //Level button
-    menu_generic(
+    button_generic(
         box_lvl_b,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         onClick_level,
         Sans,
         "Next level"
     );
 
     // //Exit button
-    menu_generic(
+    button_generic(
         box_backToMain,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         onClick_backToMain,
         Sans,
         "Main Menu"
@@ -37,7 +37,7 @@ void menu_pause_init() {
     get_menu_active()->type = MENU_PAUSE;
 }
 
-void onClick_save(Menu* self) {
+void onClick_save(Button* self) {
     
     if (!scene_get_active()->type == scn_LEVEL)return;
 
@@ -102,7 +102,7 @@ void onClick_save(Menu* self) {
     //}
 }
 
-void onClick_level(Menu* self) {
+void onClick_level(Button* self) {
     if (scene_get_active()->type != scn_LEVEL)return;
 
     Mix_Pause(scene_get_active()->soundtrack->defaultChannel);//pause whatever song was playing
@@ -141,7 +141,7 @@ void onClick_backToMain() {
 
     scene_pause_toggle();
     Mix_Pause(scene_get_active()->soundtrack->defaultChannel);
-    menu_free_all();
+    button_free_all();
     level_free(level_get_active());
 
     menu_main_init();

@@ -35,7 +35,7 @@ void scene_update() {
 		level_update(scene.level);
 	}
 	if (scene.menu_manager) {
-		menu_update_all();
+		button_update_all();
 	}
 }
 
@@ -48,7 +48,7 @@ void scene_draw() {
 		level_draw(scene.level);
 	}
 	if (scene.menu_manager) {
-		menu_draw_all();
+		button_draw_all();
 
 		// slog("Paused");
 		

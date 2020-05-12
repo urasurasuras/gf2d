@@ -6,9 +6,9 @@
 void menu_pause_init();
 
 
-void onClick_save(Menu* self);
+void onClick_save(Button* self);
 
-void onClick_level(Menu* self);
+void onClick_level(Button* self);
 
 void onClick_backToMain();
 

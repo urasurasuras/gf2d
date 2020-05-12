@@ -7,6 +7,6 @@ void menu_main_init();
 
 void onClick_play();
 
-void onClick_exit(Menu* self);
+void onClick_exit(Button* self);
 
 #endif // !_MENU_PAUSE_H_

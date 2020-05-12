@@ -11,20 +11,20 @@ void menu_main_init() {
     gfc_sound_play(scene_get_active()->soundtrack, 0, .2, -1, -1);
 
     //play button
-    menu_generic(
+    button_generic(
         box_play,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         onClick_play,
         Sans,
         "Play"
     );
 
     // //Exit button
-    menu_generic(
+    button_generic(
         box_exit,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         onClick_exit,
         Sans,
         "Exit"
@@ -42,7 +42,7 @@ void onClick_play() {
     //Purge current scene
     //memset(scene_get_active(), 0, sizeof(Scene));
     //Load pause menu
-    menu_free_all();
+    button_free_all();
     menu_pause_init();
     //scene_get_active()->menu_manager-
     //Load grass level
@@ -63,7 +63,7 @@ void onClick_play() {
     slog("Clicked play on %d", SDL_GetTicks());
 }
 
-void onClick_exit(Menu* self) {
+void onClick_exit(Button* self) {
     if (get_menu_active()->type != MENU_MAIN)return;
     scene_get_active()->done = 1;
 }

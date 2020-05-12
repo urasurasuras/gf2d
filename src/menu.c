@@ -18,68 +18,68 @@ MenuManager *get_menu_active() {
     return &menu_manager;
 }
 
-Menu *menu_new(){
+Button *button_new(){
     int i;
     for (i=0; i < menu_manager.maxMenus; i++){
-        if(menu_manager.menuList[i]._inuse)continue;
-        menu_manager.menuList[i]._inuse = 1;
+        if(menu_manager.buttonList[i]._inuse)continue;
+        menu_manager.buttonList[i]._inuse = 1;
         // slog("Items in menu list %d", i);
-        return &menu_manager.menuList[i];
+        return &menu_manager.buttonList[i];
     }
     slog("out of open menu slots in memory");
     return NULL;
 }
 
 MenuManager *menu_manager_init(Uint32 maxMenus, Sprite *bg){
-    if (menu_manager.menuList != NULL){
+    if (menu_manager.buttonList != NULL){
         //TODO: cleanup
     }
     if (!maxMenus){
         slog("cannot init 0 zise menu list");
         return;
     }
-    menu_manager.menuList = (Menu * )malloc(sizeof(Menu) * maxMenus);
-    if (menu_manager.menuList == NULL){
+    menu_manager.buttonList = (Button * )malloc(sizeof(Button) * maxMenus);
+    if (menu_manager.buttonList == NULL){
         slog("failed to allocate %i menus for the menu manager",maxMenus);
     }
     menu_manager.maxMenus = maxMenus;
     menu_manager.bg = bg;
     menu_manager.last_click = 0;
-    memset(menu_manager.menuList,0,sizeof(Menu)*maxMenus);
+    memset(menu_manager.buttonList,0,sizeof(Button)*maxMenus);
     slog("Menu manager initalized");
     atexit(menu_manager_close);
     return &menu_manager;
 }
 
 void menu_manager_close(){
-    menu_free_all();
+    button_free_all();
     menu_manager.maxMenus = 0;
-    free(menu_manager.menuList);
-    menu_manager.menuList =NULL;
+    free(menu_manager.buttonList);
+    menu_manager.buttonList =NULL;
     slog("menu manager closed");
 }
 
-void menu_free_all()
+void button_free_all()
 {
     int i;
     for (i = 0; i < menu_manager.maxMenus; i++) {
-        if (menu_manager.menuList[i]._inuse) {
-            menu_free(&menu_manager.menuList[i]);
+        if (menu_manager.buttonList[i]._inuse) {
+            button_free(&menu_manager.buttonList[i]);
         }
     }
 }
 
-void menu_free(Menu *self){
+void button_free(Button *self){
     if (!self)return;
     self->_inuse = 0;
 
     if (!self->sprite)
 
     gf2d_sprite_free(self->sprite);
-    memset(self,0,sizeof(Menu));
+    memset(self,0,sizeof(Button));
 }
 
-void menu_update(Menu *self){
+void button_update(Button *self){
     if (!self)return;
     if (self->_inuse == 0) {
         return;
@@ -121,14 +121,14 @@ void menu_update(Menu *self){
     // entity_collision_check(self);
 }
 
-void menu_update_all(){
+void button_update_all(){
     if (!menu_manager._inuse)return;
 
     int i;
     for (i = 0; i < menu_manager.maxMenus; i++)
     {
-        if (!menu_manager.menuList[i]._inuse)continue;
-        menu_update(&menu_manager.menuList[i]);
+        if (!menu_manager.buttonList[i]._inuse)continue;
+        button_update(&menu_manager.buttonList[i]);
     }
 
     if (!menu_manager.clickedThisFrame) {
@@ -141,31 +141,31 @@ void menu_update_all(){
     }
 }
 
-void menu_draw(Menu *self){
+void button_draw(Button *self){
     if (self == NULL){
         slog("cannot draw, null menu provided");
         return;
     }
     gf2d_sprite_draw(
         self->sprite,
-        vector2d(self->position.x + self->drawOffset.x,self->position.y + self->drawOffset.y),
+        vector2d(self->position.x /*+ self->drawOffset.x*/,self->position.y /*+ self->drawOffset.y*/),
         NULL,
         NULL,
         NULL,
         NULL,
         NULL,
-        1
+        NULL
     );
     if (self->hover)    //draw box collider
         gf2d_draw_rect(self->box, vector4d(255, 0, 255, 255));
 
     if(SDL_RenderCopy(gf2d_graphics_get_renderer(), self->Message, NULL, &self->box)){ //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
-    slog("rendering %s", self->Message);}
+    /*slog("rendering %s", self->Message);*/}
 
     // slog("Pos %f.%f", self->position.x, self->position.y);
 }
 
-void menu_draw_all()
+void button_draw_all()
 {
     if (!menu_manager._inuse)return;
     gf2d_sprite_draw(
@@ -180,8 +180,8 @@ void menu_draw_all()
     int i;
     for (i = 0;i < menu_manager.maxMenus;i++)
     {
-        if (!menu_manager.menuList[i]._inuse)continue;
-        menu_draw(&menu_manager.menuList[i]);
+        if (!menu_manager.buttonList[i]._inuse)continue;
+        button_draw(&menu_manager.buttonList[i]);
     }
     gf2d_sprite_draw(
         menu_manager.mouse_sprite,
@@ -199,30 +199,36 @@ void menu_draw_all()
 
 }
 
-Menu *menu_generic(
+Button *button_generic(
     SDL_Rect    box,
     Vector2D    drawOffset,
     Sprite      *sprite,
-    void        (*think)(struct Menu_S *self),
+    void        (*think)(struct Button_S *self),
     TTF_Font* Sans,
     TextLine     text
 ){
-    Menu *menu;
-    menu = menu_new();
+    Button *menu;
+    menu = button_new();
     strcpy(menu->name, text);
     menu->box = box;
     menu->drawOffset = drawOffset;
     menu->sprite = sprite;
     menu->onClick = think;
     menu->_inuse = 1;
+    menu->position.x = box.x;
+    menu->position.y = box.y;
 
-    SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+    if (text) {
+        SDL_Color White = { 255, 255, 255 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+        SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); //now you can convert it into a texture
+        SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); //now you can convert it into a texture
 
-    menu->Message = Message;
+        menu->Message = Message;
+    }
+
+    
     return menu;
 }
 

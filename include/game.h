@@ -7,6 +7,6 @@
 
 const Uint8* keys;
 int editorMode;
-#define EDITOR_MENU_HEIGHT	50
+#define EDITOR_MENU_HEIGHT	64
 
 #endif // !_GAME_H_

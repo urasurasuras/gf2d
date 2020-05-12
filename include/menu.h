@@ -28,37 +28,37 @@ SDL_Rect box_backToMain;
 SDL_Rect box_play;
 
 
-typedef struct Menu_S
+typedef struct Button_S
 {
-    TextLine    name;           /**<Name of this entity (for debugging)*/
+    TextLine    name;               /**<Name of this entity (for debugging)*/
 
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Sprite      *sprite;            /**<A pointer to the sprite*/
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
     // float       frame;              /**<Current frame of sripte*/
     // float       maxFrames;          /**<Maximum number of frames in a sprite*/
-    Vector2D    position;           /**<2D position of entity*/
+    Vector2D    position;           /**<2D position of button*/
     Vector2D    drawOffset;         /**<Offset of collider*/
     SDL_Rect    box;                /**<Bounds of menu*/
     SDL_Texture *Message;
 
     int hover;                    /**<whether mouse is hovering over this button*/
 
-    void        (*onClick)(struct Menu_S *self);
+    void        (*onClick)(struct Button_S *self);
 
-}Menu;
+}Button;
 
 typedef struct
 {
     Uint8       _inuse;
 
-    int         type;       /**<Type of menu (pause, main)*/
+    int         type;               /**<Type of menu (pause, main)*/
 
     Sprite*     bg;
-    Vector4D*   bg_color;   /**<Color value of menu bg color*/
+    Vector4D*   bg_color;           /**<Color value of menu bg color*/
 
-    Uint32      maxMenus;         /**<Maximum number of entities*/
-    Menu* menuList;     /**<List of entities*/
+    Uint32      maxMenus;           /**<Maximum number of buttons*/
+    Button*     buttonList;         /**<List of menu items*/
     TTF_Font* text;
 
     //mouse
@@ -69,69 +69,69 @@ typedef struct
     Uint32      last_click;         /**<Stores the last SDL Tick this button was clicked*/
 
 
-    int         clickedThisFrame; /**<True of any UI button was clicked this frame, 
-                                  (turned on onClick, turned off at the end of frame)
-                                  */
+    int         clickedThisFrame;   /**<True of any UI button was clicked this frame, 
+                                    (turned on onClick, turned off at the end of frame)
+                                    */
 
 }MenuManager;
 
 MenuManager *get_menu_active();
 /**
- * @brief get a pointer to a new entity
- * @return NULL on out of memory or error, a pointer to a blank entity otherwise
+ * @brief get a pointer to a new button
+ * @return NULL on out of memory or error, a pointer to a blank button otherwise
  */
-Menu *menu_new();
+Button *button_new();
 
 /**
- * @brief initialize entity resource manager
- * @param maxEnts maximum entities
+ * @brief initialize button resource manager
+ * @param maxEnts maximum buttons
  * */
 MenuManager *menu_manager_init(Uint32 maxMenus, Sprite* bg);
 
 /**
- * @brief Close entity system
+ * @brief Close button system
  */
 void menu_manager_close();
 
 /**
  * @brief Free every button that is used
  */
-void menu_free_all();
+void button_free_all();
 
 /**
- * @brief free previously allocated entity
- * @param self a pointer to the entity to free
+ * @brief free previously allocated button
+ * @param self a pointer to the button to free
  */
-void menu_free(Menu *menu);
+void button_free(Button *menu);
 
 /**
- * @brief Update frame info of entity
- * @param self a pointer to the entity to update
+ * @brief Update frame info of button
+ * @param self a pointer to the button to update
  */
-void menu_update(Menu *self);
+void button_update(Button *self);
 
 /**
- * @brief update every active entity
+ * @brief update every active button
  */
-void menu_update_all();
+void button_update_all();
 
-void menu_draw(Menu* self);
+void button_draw(Button* self);
 
 /**
- * @brief draw every active entity
+ * @brief draw every active button
  */
-void menu_draw_all();
+void button_draw_all();
 
 /**
- * @brief For each entity, check all other entities for collision
+ * @brief For each button, check all other buttons for collision
  * */
-void menu_touch_check(Menu *menu);
+void menu_touch_check(Button *menu);
 
-Menu *menu_generic(
+Button *button_generic(
     SDL_Rect    box,
     Vector2D    drawOffset,
     Sprite      *sprite,
-    void        (*think)(struct Menu_S *self),
+    void        (*think)(struct Button_S *self),
     TTF_Font* Sans,
     TextLine     text
 );

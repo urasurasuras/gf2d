@@ -9,16 +9,16 @@ void menu_editor_init() {
     pickup_speed = gf2d_sprite_load_image("images/pickups/pickup_speed.png");
 
     //Exit button
-    menu_generic(
+    button_generic(
         ed_box_exit,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         onClick_exit,
         Sans,
         "Exit"
     );
     //Delete button (toggle)
-    menu_generic(
+    button_generic(
         ed_box_delete,
         vector2d(-100, -250),
         NULL,
@@ -27,48 +27,48 @@ void menu_editor_init() {
         "Delete"
     );
     //Save button
-    menu_generic(
+    button_generic(
         ed_box_save,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         ed_save,
         Sans,
         "Save"
     );
     //Load button
-    menu_generic(
+    button_generic(
         ed_box_load,
         vector2d(-100, -250),
-        gf2d_sprite_load_image("images/ui/button.png"),
+        NULL,
         ed_load,
         Sans,
         "Load"
     );
 
     //Pickup buttons
-    menu_generic(
+    button_generic(
         ed_box_heal,
         vector2d(-100, -250),
         pickup_health,
         ed_spawn_pickup_health,
         Sans,
-        "Health"
+        ""
     );
-     menu_generic(
+     button_generic(
         ed_box_speed,
         vector2d(-100, -250),
         pickup_speed,
         ed_spawn_pickup_speed,
         Sans,
-        "Speed"
+        ""
     );
-     menu_generic(
+     button_generic(
         ed_box_boost,
         vector2d(-100, -250),
         pickup_boost,
         ed_spawn_pickup_boost,
         Sans,
-        "Boost"
+        ""
     );
     //get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
@@ -85,7 +85,8 @@ void ed_save() {
     
     for (int i = 0; i < entity_manager_get_active()->maxEnts; i++)
     {
-        if (entity_manager_get_active()->entityList[i].type == ENT_PICKUP) {
+        slog("%s type %d", entity_manager_get_active()->entityList[i].name,entity_manager_get_active()->entityList[i].type);
+        if (entity_manager_get_active()->entityList[i]._inuse/* == ENT_PICKUP*/) {
             Entity current_ent = entity_manager_get_active()->entityList[i];
             obj_name = sj_new_str(current_ent.name);
 
@@ -115,9 +116,9 @@ void ed_load() {
     SJson* obj;         //ent obj
     SJson* obj_name;    //ent name
     SJson* obj_posArray;    //vector2d floats
-
+    entity_free_all();
     pickupArray = sj_object_get_value(pickupData, "Pickups");
-    slog("%d asdasdasd", sj_array_get_count(pickupArray));
+    //slog("%d asdasdasd", sj_array_get_count(pickupArray));
     for (int i = 0; i < sj_array_get_count(pickupArray); i++) {
         obj = sj_array_get_nth(pickupArray, i);
 
