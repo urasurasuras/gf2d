@@ -16,7 +16,7 @@ Sprite* bg_synth;
 Sprite* fireball;
 Sprite* healing_aura;
 Sprite* damage_aura;
-Sprite* turret;
+Sprite* sprite_turret;
 Sprite* heal_dart;
 Sprite* landmine;
 Sprite* lucio_aura;
@@ -25,7 +25,7 @@ Sprite* pickup_health;
 Sprite* pickup_boost;
 Sprite* pickup_speed;
 //Companion sprites
-Sprite* companion_musicBee;
+Sprite* sprite_musicBee;
 
 /**
 *   Sounds
@@ -34,6 +34,7 @@ Sprite* companion_musicBee;
 Sound* main_theme;
 Sound* lava_theme;
 Sound* grass_theme;
+Sound* sound_fireball;
 
 void load_sprites();
 

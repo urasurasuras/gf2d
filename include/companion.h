@@ -45,6 +45,8 @@ Entity *companion_generic(
     void (*detect)(struct Entity_S *self, struct Entity_S *other)
 );
 
+Entity* companion_musicBee(Entity * owner_ent);
+
 /**
  * @brief Generic think function for entities that follow others
  * @param self pointer to self

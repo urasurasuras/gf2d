@@ -39,22 +39,25 @@ typedef struct Entity_S
     TextWord    name;               /**<Name of this entity (for debugging)*/
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
 
-    SDL_Rect    ui_box;             /**<Used for text display*/
-    int         drawhp;             /**<True if health needs to be drawn, defaults to 0*/
-
-    Sprite      *sprite;            /**<A pointer to the sprite*/
-    Vector4D    *color;             /**<A pointer to the color to be shaded while drawing the sprite*/
-    float       frame;              /**<Current frame of sripte*/
-    float       maxFrames;          /**<Maximum number of frames in a sprite*/
-    Vector2D    position;           /**<2D position of entity*/
-    Vector2D    velocity;           /**<2D velocity of entity*/
-    Vector2D    drawOffset;         /**<Offset of collider*/
-    float       health;             /**<Health*/
+    //Drawing
+    Sprite* sprite;                 /**<A pointer to the sprite*/
+    Vector4D* color;                /**<A pointer to the color to be shaded while drawing the sprite*/
+    Vector2D flip;
 
     int         f_current;          /**<first frame of current animation*/
     int         f_end;              /**<last frame of current animation*/
     int         f_last;             /**<Last frame this entity was animated*/
 
+    Vector2D    drawOffset;         /**<Offset of collider*/
+
+    SDL_Rect    ui_box;             /**<Used for text display*/
+    int         drawhp;             /**<True if health needs to be drawn, defaults to 0*/
+
+    Vector2D    position;           /**<2D position of entity*/
+    Vector2D    velocity;           /**<2D velocity of entity*/
+    float       health;             /**<Health*/
+
+   
     //Shape
     int         collider_shape;     /**<Indicates whether collider is cirlular or rectangular*/
     int         radius_body;        /**<Radius of curcular body of entity (used for physical collisions)*/

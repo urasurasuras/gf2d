@@ -84,7 +84,9 @@ Entity *hitscan_generic(
     void (*touch)(struct Entity_S *self, struct Entity_S *other),
     int type
 );
+
 Entity* fireball_projectile(Entity* owner_entity);
+Entity* heal_dart_projectile(Entity* owner_entity);
 
 // /**
 //  * @brief Create a projectile by an entity (not Player)
@@ -120,32 +122,22 @@ void think_move_constVel(Entity *self);
 void think_stationary(Entity *self);
 
 void fireball_think(Entity *self);
-
+void heal_dart_think(Entity* self);
 void healingAura_think(Entity *self);
-
 void damageAura_think(Entity *self);
-
 void hitscan_think(Entity *self);
-
 void rayscan_think(Entity *self);
-
 void turret_think(Entity *self);
 
 void fireball_touch(Entity *self, Entity *other);
-
 void healingAura_touch(Entity *self, Entity *other);
-
 void damageAura_touch(Entity *self, Entity *other);
-
 void hitscan_touch(Entity *self, Entity *other);
-
 void rayscan_touch(Entity *self, Entity *other);
-
 void turret_touch(Entity *self, Entity *other);
-
 void heal_dart_touch(Entity *self, Entity *other);
-
 void landmine_touch(Entity *self, Entity *other);
+
 void detect_test(Entity *self, Entity *other);
 
 void turret_detect(Entity *self, Entity *other);

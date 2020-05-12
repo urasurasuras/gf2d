@@ -131,7 +131,7 @@ void entity_draw(Entity *self){
             NULL,
             NULL,
             &self->rotation,
-            NULL,
+            &self->flip,
             self->color,
             (Uint32)self->f_current
         );

@@ -50,6 +50,33 @@ Entity *companion_generic(
         return self;
 }
 
+Entity* companion_musicBee(Entity* owner_ent)
+{
+    Entity* bee=
+    companion_generic(
+        owner_ent,
+        "MusicBee",
+        sprite_musicBee,
+        SHAPE_CIRCLE,
+        14,
+        100,
+        vector2d(-14, -14),
+        vector2d(50, -50),
+        1,
+        0,
+        think_musicBee,
+        musicBee_touch,
+        musicBee_detect
+    );
+
+    bee->f_end = 1;
+
+    //bee->drawOffset.x = 0;
+
+
+    return bee;
+}
+
 void think_behavior(Entity *self){
     if (!self)return;
     Companion *c = (Companion *)self->typeOfEnt;
@@ -62,6 +89,9 @@ void think_musicBee(Entity* self) {
     if (!self)return;
     Companion* c = (Companion*)self->typeOfEnt;
     if (!c->owner_entity)return;
+
+    if (c->owner_entity->size.x < 0)self->flip.x = 1;
+    else self->flip.x = 0;
 
     vector2d_add(self->position, c->owner_entity->position, c->followOffset);
 
@@ -149,26 +179,42 @@ void musicBee_touch(Entity *self, Entity *other){
 void musicBee_detect(Entity *self, Entity *other){
     if (!self)return;
     Companion *p = (Companion *)self->typeOfEnt;
+
+    Player* other_player;
     // Entity *owner_ent = (Entity *)p->owner_entity;
 
-    if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
-        && other->type == ENT_PLAYER){
-
-        Vector2D v;
-        vector2d_sub(v, other->position, self->position); 
-
-        self->size.x = cos(vector2d_angle(v) * M_PI/180);
-        self->size.y = sin(vector2d_angle(v) * M_PI/180);
-
-        self->rotation.x = -self->drawOffset.x;
-        self->rotation.y = -self->drawOffset.y;
-        self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
-
-        // vector2d_copy(self->size, other->position);
-        // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
-
-        fireball_projectile(self);
-
-        p->last_cldn_1 = level_get_active()->frame;
+    if (other->team != self->team) {
+        //Slow down and damaga a bit
+        switch (other->type)
+        {
+        case ENT_PLAYER:
+            other_player = (Player*)other->typeOfEnt;
+            other_player->speed = 0.5;  //slow down
+            other->health -= 0.01;       //sting
+        default:
+            other->health -= 0.01;       //sting
+            break;
+        }
     }
+    
+    //if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
+    //    && other->type == ENT_PLAYER){
+
+    //    Vector2D v;
+    //    vector2d_sub(v, other->position, self->position); 
+
+    //    self->size.x = cos(vector2d_angle(v) * M_PI/180);
+    //    self->size.y = sin(vector2d_angle(v) * M_PI/180);
+
+    //    self->rotation.x = -self->drawOffset.x;
+    //    self->rotation.y = -self->drawOffset.y;
+    //    self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
+
+    //    // vector2d_copy(self->size, other->position);
+    //    // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
+
+    //    fireball_projectile(self);
+
+    //    p->last_cldn_1 = level_get_active()->frame;
+    //}
 }

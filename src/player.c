@@ -194,7 +194,7 @@ Entity *player_generic(
     self->think = think;
     self->touch = touch;
     self->bound_hit = player_bound_hit;
-    self->maxFrames = 1;
+    self->f_end = 1;
     self->ui_box.w = -draw_offset.x;
     self->ui_box.h = -draw_offset.y;
     self->ui_box.x = (int)self->position.x + draw_offset.x;
@@ -240,22 +240,7 @@ Entity *player_generic(
     self->team = team;
 
     if (char_index == 1){
-        player->companion = 
-        companion_generic(
-            self,
-            "MusicBee",
-            companion_musicBee,
-            SHAPE_CIRCLE,
-            14,
-            100,
-            vector2d(-14,-14),
-            vector2d(50,-50),
-            1,
-            0,
-            think_musicBee,
-            musicBee_touch,
-            musicBee_detect
-        );
+        player->companion = companion_musicBee(self);
     }
     if (char_index == 4){
         player->companion = 
@@ -437,26 +422,28 @@ void player_think_1 (Entity *self){
             );
                 break;
             case 2: 
-                //Healing aura
-            if (!p->deployables){
-                projectile_generic(
-                self,
-                "Healing",
-                healing_aura,
-                    NULL,
-                SHAPE_CIRCLE,
-                100,
-                0,
-                0.1 * p->strength,
-                5,
-                p->cldn_skill1,
-                self->position,
-                think_stationary,
-                healingAura_touch,
-                NULL
-                );
-                p->deployables += 1;
-            }
+            //Healing dart
+            heal_dart_projectile(self);
+            //    //Healing aura
+            //if (!p->deployables){
+            //    projectile_generic(
+            //    self,
+            //    "Healing",
+            //    healing_aura,
+            //        NULL,
+            //    SHAPE_CIRCLE,
+            //    100,
+            //    0,
+            //    0.1 * p->strength,
+            //    5,
+            //    p->cldn_skill1,
+            //    self->position,
+            //    think_stationary,
+            //    healingAura_touch,
+            //    NULL
+            //    );
+            //    p->deployables += 1;
+            //}
                 break;
             case 3:
                 //Dash~
@@ -495,42 +482,64 @@ void player_think_1 (Entity *self){
 
                 break;
             case 2: 
-                //Damage aura
-            if (!p->deployables){
+                //Healing aura
+                if (!p->deployables) {
+                    projectile_generic(
+                        self,
+                        "Healing",
+                        healing_aura,
+                        NULL,
+                        SHAPE_CIRCLE,
+                        100,
+                        0,
+                        0.1 * p->strength,
+                        5,
+                        p->cldn_skill2,
+                        self->position,
+                        think_stationary,
+                        healingAura_touch,
+                        NULL
+                    );
+                    p->deployables += 1;
+                }
+            //    //Damage aura
+            //if (!p->deployables){
 
-                vector2d_scale(vScale, self->size, 200);
+            //    vector2d_scale(vScale, self->size, 200);
 
-                vector2d_add(vScaled, self->position, vScale);
+            //    vector2d_add(vScaled, self->position, vScale);
 
 
-                // slog("Player pos: %.2f.%.2f", self->position.x, self->position.y);
-                // slog("Proj pos: %.2f.%.2f", vScaled.x, vScaled.y);
-                projectile_generic(
-                self,
-                "Damage Aura",
-                damage_aura,
-                    NULL,
-                SHAPE_CIRCLE,
-                100,
-                0,
-                0.1 * p->strength,
-                0,
-                p->cldn_skill2,
-                vScaled,
-                think_stationary,
-                damageAura_touch,
-                NULL
-                );
-                p->deployables += 1;
-            }
+            //    // slog("Player pos: %.2f.%.2f", self->position.x, self->position.y);
+            //    // slog("Proj pos: %.2f.%.2f", vScaled.x, vScaled.y);
+            //    projectile_generic(
+            //    self,
+            //    "Damage Aura",
+            //    damage_aura,
+            //        NULL,
+            //    SHAPE_CIRCLE,
+            //    100,
+            //    0,
+            //    0.1 * p->strength,
+            //    0,
+            //    p->cldn_skill2,
+            //    vScaled,
+            //    think_stationary,
+            //    damageAura_touch,
+            //    NULL
+            //    );
+            //    p->deployables += 1;
+            //}
                 break;
                 case 3:
-                    //Turret
+            //Turret
             if (!p->deployables){
+                Entity* turret;
+                turret =
                 projectile_generic(
                     self,
                     "Turret",
-                    turret,
+                    sprite_turret,
                     NULL,
                     SHAPE_CIRCLE,
                     16,
@@ -543,6 +552,8 @@ void player_think_1 (Entity *self){
                     turret_touch,
                     turret_detect
                 );
+                turret->rotation.x = -turret->drawOffset.x;
+                turret->rotation.y = -turret->drawOffset.y;
                 slog("%s spawned %s", self->name, "turet");
                 p->deployables += 1;
             }
@@ -581,22 +592,47 @@ void player_think_1 (Entity *self){
         switch (p->index)
         {
         case 1:
+
             //Companion Bee
             slog("Companion %s", p->companion->name);
             break;
         case 2:
-            //Railgun ??
-            hitscan_generic(
-                self,
-                "Hitscan",
-                SHAPE_LINE,
-                .1,
-                1,
-                0,
-                rayscan_think,
-                hitscan_touch,
-                ENT_HITSCAN
-            );
+            //Turret
+            if (!p->deployables) {
+                Entity* turret =
+                projectile_generic(
+                    self,
+                    "Turret",
+                    sprite_turret,
+                    NULL,
+                    SHAPE_CIRCLE,
+                    16,
+                    200,
+                    0.1 * p->strength,
+                    0,
+                    0,
+                    self->position,
+                    turret_think,
+                    turret_touch,
+                    turret_detect
+                );
+                turret->rotation.x = -turret->drawOffset.x;
+                turret->rotation.y = -turret->drawOffset.y;
+                slog("%s spawned %s", self->name, "turet");
+                p->deployables += 1;
+            }
+            ////Railgun ??
+            //hitscan_generic(
+            //    self,
+            //    "Hitscan",
+            //    SHAPE_LINE,
+            //    .1,
+            //    1,
+            //    0,
+            //    rayscan_think,
+            //    hitscan_touch,
+            //    ENT_HITSCAN
+            //);
             break;
         case 3:
             //3 pellet shotgun

@@ -136,6 +136,41 @@ Entity* fireball_projectile(Entity* owner_entity){
     projectile->rotation.y = -projectile->drawOffset.y;
     projectile->rotation.z = owner_entity->rotation.z - 45;
 
+    gfc_sound_play(sound_fireball, 0, .1, -1, -1);
+    return projectile;
+}
+
+Entity* heal_dart_projectile(Entity* owner_entity)
+{
+    Player* p = (Player*)owner_entity->typeOfEnt;
+
+    Entity* projectile =
+        projectile_generic(
+            owner_entity,
+            "Healdart",
+            heal_dart,
+            NULL,
+            SHAPE_CIRCLE,
+            8,
+            0,
+            15 * p->strength,
+            5,
+            LEVEL_WIDTH / 5,
+            owner_entity->position,
+            heal_dart_think,
+            heal_dart_touch,
+            NULL
+        );
+    projectile->f_end = 3;
+
+    projectile->drawOffset.x = -4;
+    projectile->drawOffset.y = -4;
+
+    projectile->rotation.x = -projectile->drawOffset.x;
+    projectile->rotation.y = -projectile->drawOffset.y;
+    projectile->rotation.z = owner_entity->rotation.z - 45;
+
+    return projectile;
 }
 
 //Think functions
@@ -174,6 +209,18 @@ void think_stationary(Entity *self){
 }
 
  void fireball_think(Entity *self){
+     think_move_constVel(self);
+     //Animate
+     if (self->f_last + 20 < level_get_active()->frame) {
+         self->f_current++;
+         self->f_last = level_get_active()->frame;
+     }
+     if (self->f_current > self->f_end) {
+         self->f_current = 0;
+     }
+ }
+ 
+ void heal_dart_think(Entity *self){
      think_move_constVel(self);
      //Animate
      if (self->f_last + 20 < level_get_active()->frame) {
@@ -249,14 +296,11 @@ void fireball_touch(Entity *self, Entity *other){
         switch (other->type)
         {
         case ENT_PLAYER:
-            // Player *other_player = (Player *)other->typeOfEnt;
-            other->health -= p->strength;
-            break;
         case ENT_CORE:
             // Level_core *other_core = (Level_core *)other->typeOfEnt;
             other->health -= p->strength;
             slog("%s health: %f", other->name, other->health);
-
+            break;
         default:
             other->health -= p->strength;
             break;
@@ -419,24 +463,33 @@ void turret_detect(Entity *self, Entity *other){
     Projectile *p = (Projectile *)self->typeOfEnt;
     // Entity *owner_ent = (Entity *)p->owner_entity;
 
-    if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame
-        && other->type == ENT_PLAYER){
-
+    if (self->team != other->team && p->last_cldn_1 + 60 < level_get_active()->frame){
         Vector2D v;
-        vector2d_sub(v, other->position, self->position); 
+        switch (other->type )
+        {
+        case ENT_PLAYER:
+        case ENT_NEUTRAL_MONSTER:
+            vector2d_sub(v, other->position, self->position);
 
-        self->size.x = cos(vector2d_angle(v) * M_PI/180);
-        self->size.y = sin(vector2d_angle(v) * M_PI/180);
+            self->size.x = cos(vector2d_angle(v) * M_PI / 180);
+            self->size.y = sin(vector2d_angle(v) * M_PI / 180);
 
-        self->rotation.x = -self->drawOffset.x;
-        self->rotation.y = -self->drawOffset.y;
-        self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
-        // vector2d_copy(self->size, other->position);
-        // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
+            self->rotation.x = -self->drawOffset.x;
+            self->rotation.y = -self->drawOffset.y;
+            self->rotation.z = vector2d_angle(vector2d(self->size.x, self->size.y));
+            // vector2d_copy(self->size, other->position);
+            // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 
-        fireball_projectile(self);
+            fireball_projectile(self);
 
-        p->last_cldn_1 = level_get_active()->frame;
+            p->last_cldn_1 = level_get_active()->frame;
+            break;
+        default:
+            break;
+        }
+
+        
+        
     }
 }
 
