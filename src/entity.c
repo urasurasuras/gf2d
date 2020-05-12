@@ -51,12 +51,7 @@ void entity_manager_init(Uint32 maxEnts){
 }
 
 void entity_manager_close(){
-    int i;
-    for (i=0; i < entity_manager.maxEnts; i++){
-        if(entity_manager.entityList[i]._inuse){
-            entity_free(&entity_manager.entityList[i]);
-        }
-    }
+    entity_free_all();
     entity_manager.maxEnts = 0;
     free(entity_manager.entityList);
     entity_manager.entityList =NULL;
@@ -68,6 +63,16 @@ void entity_free(Entity *self){
     slog("freed ent: %s", self->name);
     gf2d_sprite_free(self->sprite);
     memset(self,0,sizeof(Entity));
+}
+
+void entity_free_all()
+{
+    int i;
+    for (i = 0; i < entity_manager.maxEnts; i++) {
+        if (entity_manager.entityList[i]._inuse) {
+            entity_free(&entity_manager.entityList[i]);
+        }
+    }
 }
 
 void entity_update(Entity *self){

@@ -116,6 +116,10 @@ void entity_manager_close();
 void entity_free(Entity *self);
 
 /**
+ * @brief free all previously allocated entities
+ */
+void entity_free_all();
+/**
  * @brief Update frame info of entity
  * @param self a pointer to the entity to update
  */
