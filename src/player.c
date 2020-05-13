@@ -1,5 +1,7 @@
 #include "player.h"
 #include <game.h>
+#include "scene.h"
+
 
 Vector2D spawn_top_left     = {LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET};
 Vector2D spawn_top_right    = {LEVEL_WIDTH - LEVEL_SPAWN_OFFSET, LEVEL_SPAWN_OFFSET};
@@ -25,7 +27,8 @@ void players_spawn(){
     if (!cfgFile){
         slog("no config file, exiting...");
         return;
-    }else
+    }
+    else
     {
         pArray_config = sj_object_get_value(cfgFile, "Players");
         if (saveFile){
@@ -59,6 +62,7 @@ void players_spawn(){
         int team;
         
         for (i = 0;i < sj_array_get_count(pArray_config);i++){
+
             config_player_data = sj_array_get_nth(pArray_config, i);
 
             player_spritePath = sj_object_get_value(config_player_data, "Sprite");
@@ -67,8 +71,6 @@ void players_spawn(){
             player_team       = sj_object_get_value(config_player_data, "Team");
 
             //Get cooldowns
-       
-
             player_cldn1 = sj_array_get_nth(player_cooldowns, 0);
             player_cldn2 = sj_array_get_nth(player_cooldowns, 1);
             player_cldn3 = sj_array_get_nth(player_cooldowns, 2);
@@ -90,8 +92,6 @@ void players_spawn(){
                     player_pos = sj_object_get_value(config_player_data, "Position");
                     // player_health = sj_object_get_value(config_player_data, "Health");
                 }
-                
-         
             }
             else
             {
@@ -126,30 +126,31 @@ void players_spawn(){
             //Set team
             sj_get_integer_value(player_team, &team);
 
-            //Create player
-            player_generic(
-                (char *)name,
-                i+1, 
-                SHAPE_CIRCLE, 
-                50, 
-                vector2d(-50,-50), 
-                1, 
-                gf2d_sprite_load_image(spritePath_string), 
-                pos, 
-                SDL_GameControllerOpen(contIndex), 
-                player_think_1, 
-                player_touch, 
-                cldn1,
-                cldn2,
-                cldn3,
-                team
-            );
-
+            //Compare name
+            if (!strcmp(name, scene_get_active()->bluePlayer) || !strcmp(name, scene_get_active()->redPlayer)) {
+                //Create player
+                player_generic(
+                    (char*)name,
+                    i + 1,
+                    SHAPE_CIRCLE,
+                    50,
+                    vector2d(-50, -50),
+                    1,
+                    gf2d_sprite_load_image(spritePath_string),
+                    pos,
+                    SDL_GameControllerOpen(contIndex),
+                    player_think_1,
+                    player_touch,
+                    cldn1,
+                    cldn2,
+                    cldn3,
+                    team
+                );
+            }
             // slog("%s",name);
             // sj_echo(player_pos);
             // sj_echo(player_health);       
         }
-
         // sj_free(saveFile);
         // sj_free(cfgFile);
         // sj_free(pArray_save);

@@ -42,6 +42,8 @@ void menu_main_init() {
         ""
     );
     blue->colorShift = v4d_blue;
+    strcpy(scene_get_active()->bluePlayer, "Player1");
+
     Button *red = 
     button_generic(//Red team player 1
         box_red_team,
@@ -52,6 +54,8 @@ void menu_main_init() {
         ""
     );
     red->colorShift = v4d_red;
+    strcpy(scene_get_active()->redPlayer, "Player2");
+
     get_menu_active()->type = MENU_MAIN;
     get_menu_active()->_inuse = 1;
     scene_get_active()->menu_manager = get_menu_active();
@@ -83,7 +87,7 @@ void onClick_play() {
     scene_pause_toggle();
     scene_pause_toggle();
 
-    slog("Clicked play on %d", SDL_GetTicks());
+    slog("Spawning char %s and %s", scene_get_active()->bluePlayer, scene_get_active()->redPlayer);
 }
 
 void onClick_exit(Button* self) {
@@ -95,35 +99,39 @@ void onClick_charSwap_blue(Button* self) {
 
     switch (self->toggle)
     {
-    case 0:
-        self->sprite = sprite_player3;
-        self->toggle = 1;
-        break;
     case 1:
         self->sprite = sprite_player1;
+        strcpy(scene_get_active()->bluePlayer, "Player1");
         self->toggle = 0;
+        break;
+    case 0:
+        self->sprite = sprite_player3;
+        strcpy(scene_get_active()->bluePlayer, "Player3");
+        self->toggle = 1;
         break;
     default:
         break;
     }
-
+    slog("Blue player set to %s", scene_get_active()->bluePlayer);
     
 }
 void onClick_charSwap_red(Button* self) {
 
     switch (self->toggle)
     {
-    case 0:
-        self->sprite = sprite_player2;
-        self->toggle = 1;
-        break;
     case 1:
-        self->sprite = sprite_player4;
+        self->sprite = sprite_player2;
+        strcpy(scene_get_active()->redPlayer, "Player2");
         self->toggle = 0;
+        break;
+    case 0:
+        self->sprite = sprite_player4;
+        strcpy(scene_get_active()->redPlayer, "Player4");
+        self->toggle = 1;
         break;
     default:
         break;
     }
-
+    slog("Red player set to %s", scene_get_active()->redPlayer);
     
 }

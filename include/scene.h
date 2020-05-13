@@ -16,6 +16,9 @@ typedef struct {
 	int paused;
 	int done;
 
+	TextWord bluePlayer;
+	TextWord redPlayer;
+
 	Sound* soundtrack;			/**<Pointer to the whatever theme song is playing in that the scene*/
 	SDL_GameController* c;		/**<Pointer to first game controller, aka. player1*/
 }Scene;

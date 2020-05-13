@@ -218,6 +218,7 @@ Button *button_generic(
     menu->_inuse = 1;
     menu->position.x = box.x;
     menu->position.y = box.y;
+    menu->toggle = 0;
 
     if (text) {
         SDL_Color White = { 255, 255, 255 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
