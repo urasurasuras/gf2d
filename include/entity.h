@@ -65,6 +65,8 @@ typedef struct Entity_S
     Vector2D    size;               /**<Size vector*/
     Vector3D    rotation;           /**<Rotation for sprite*/
 
+    int         collidable;         /**<If this ent it supposed to have physics collisions, off by default*/
+
     void        *typeOfEnt;         /**<Void pointer to whetever this entity is (needs typecast to that type)*/
     int         type;
     int         team;

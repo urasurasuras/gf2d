@@ -163,15 +163,14 @@ void musicBee_touch(Entity *self, Entity *other){
 
     if (self->team != other->team){
         // slog("%s from team %d x %s from team %d", self->name, self->team, other->name, other->team);
-        if (other->type == ENT_PLAYER){
-            // Player *other_player = (Player *)other->typeOfEnt;
-            other->health -= p->strength;
-            // slog("Damaged %s %f", other->name, other_player->health);
-        }
-        else if (other->type == ENT_CORE){
-            // Level_core *other_core = (Level_core *)other->typeOfEnt;
-            other->health -= p->strength;
-            // slog("Damaged %s %f", other->name, other_player->health);
+        switch (other->type)
+        {
+        case ENT_PLAYER:
+        case ENT_CORE:
+            other->health -= (.2 * p->strength);
+            break;
+        default:
+            break;
         }
     }
 }

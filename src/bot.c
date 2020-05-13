@@ -9,9 +9,11 @@ Entity *lavaGuy_new(){
     // enemy->radius_range = 256;
     enemy->collider_shape = SHAPE_CIRCLE;
     enemy->drawOffset = vector2d(-64,-64);
-    enemy->think = not_enemy_think;
+    enemy->think = enemy_think;
     enemy->touch = enemy_touch;
     enemy->bound_hit = player_bound_hit;
+    enemy->detect = enemy_detect;
+    enemy->radius_range = 500;
     enemy->health = 500;
     // enemy->detect = enemy_detect;
     enemy->type = ENT_NEUTRAL_MONSTER;
@@ -21,6 +23,8 @@ Entity *lavaGuy_new(){
     bot->cldn_movement = 30;
     bot->cldn_randomized = 30;
     enemy->typeOfEnt = bot;
+    enemy->collidable = 1;
+
     return enemy;
 }
 
@@ -48,6 +52,8 @@ Entity *grassGuy_new(){
     bot->last_movement =0;
     bot->last_randomized=0;
     enemy->typeOfEnt = bot;
+    enemy->collidable = 1;
+
     return enemy;
 }
 
@@ -90,27 +96,7 @@ void enemy_think (Entity *self){
     //    self->position.y -= self->size.y;
     //}
 
-    if (b->last_action + b->cldn_action < level_get_active()->frame){
-        projectile_generic(
-        self,
-        "EnemyShoot",
-        fireball,
-        29,
-        SHAPE_CIRCLE,
-        25,
-        0,
-        25,
-        1,
-        LEVEL_WIDTH/3,
-        self->position,
-        think_move_constVel,
-        pickup_health_touch,
-        NULL
-        ); 
-        slog("dud");
-
-        b->last_action = level_get_active()->frame;
-    }
+   
     if (self->health <= 0) {
 
         for (int i = 0; i < entity_manager_get_active()->maxEnts; i++) {
@@ -151,22 +137,13 @@ void enemy_detect(Entity *self, Entity *other){
         // vector2d_copy(self->size, other->position);
         // slog("Turret pos %f.%f %s pos %f.%f", self->size.x, self->size.y, other->name, other->position.x, other->position.y);
 
-        projectile_generic(
-        self,
-        "nEnemyHeal",
-        pickup_health,
-            NULL,
-        SHAPE_CIRCLE,
-        30,
-        0,
-        25,
-        1,
-        LEVEL_WIDTH/3,
-        self->position,
-        think_move_constVel,
-        pickup_health_touch,
-        NULL
-        ); 
+        if (b->last_action + b->cldn_action < level_get_active()->frame) {
+            Entity * fireball = fireball_projectile(self);
+            /*fireball->rotation.x = self->size.x;
+            fireball->rotation.y = self->size.y;*/
+            fireball->rotation.z = vector2d_angle(self->size) - 45;
+            b->last_action = level_get_active()->frame;
+        }
 
         b->last_action = level_get_active()->frame;
     }

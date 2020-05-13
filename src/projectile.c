@@ -210,7 +210,7 @@ void think_stationary(Entity *self){
 
  void fireball_think(Entity *self){
      think_move_constVel(self);
-     //Animate
+     //oAnimate
      if (self->f_last + 20 < level_get_active()->frame) {
          self->f_current++;
          self->f_last = level_get_active()->frame;

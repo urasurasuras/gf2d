@@ -13,151 +13,113 @@ Sprite *p1;
 Sprite *p2;
 Sprite *p3;
 
-SJson *saveFile;
-SJson *pArray_save;
-SJson *pArray_config;
 
 void players_spawn(){
 
-    // Sprite player_sprite_array[4];
-    SJson *cfgFile = level_get_active()->config;
 
-    saveFile = sj_load("data/player.save");
+    SJson *cfgFile = level_get_active()->config;    //load cfg file
+    SJson *saveFile = sj_load("data/player.save");         //load save file
 
-    if (!cfgFile){
-        slog("no config file, exiting...");
-        return;
-    }
-    else
-    {
-        pArray_config = sj_object_get_value(cfgFile, "Players");
-        if (saveFile){
-            pArray_save = sj_object_get_value(saveFile, "Players");
-            slog("Loading save file...");
-        }
 
-        int i;
-        SJson *saved_player_data;//Data holder per player
-        SJson *config_player_data;//Config holder per player
+    SJson* pArray_config = sj_object_get_value(cfgFile, "Players");
+    for (int i = 0; i < sj_array_get_count(pArray_config); i++) {
 
-        SJson *player_name;
-        SJson *player_spritePath;
-        SJson *player_controller;
-        SJson *player_pos;
-        // SJson *player_health;
-        SJson *player_cooldowns;
-        SJson *player_cldn1;
-        SJson *player_cldn2;
-        SJson *player_cldn3;
-        SJson *player_team;
+        SJson * config_player_data = sj_array_get_nth(pArray_config, i);
+        SJson* player_name = sj_object_get_value(config_player_data, "Name");
+        //Set name
+        TextWord name;
+        gfc_word_cpy(name, sj_get_string_value(player_name));
 
-        TextWord *name;
-        char* spritePath_string;
-        int contIndex;
-        Vector2D pos;
-        // float *hp;
-        int cldn1;
-        int cldn2;
-        int cldn3;
-        int team;
-        
-        for (i = 0;i < sj_array_get_count(pArray_config);i++){
+        if (!strcmp(name, scene_get_active()->bluePlayer) || !strcmp(name, scene_get_active()->redPlayer)) {
 
-            config_player_data = sj_array_get_nth(pArray_config, i);
+            SJson *player_spritePath = sj_object_get_value(config_player_data, "Sprite");
+            SJson *player_controller = sj_object_get_value(config_player_data, "ControllerIndex");
+            SJson *player_position = sj_object_get_value(config_player_data, "Position");
+            SJson *player_health = sj_object_get_value(config_player_data, "Health");
+            SJson *player_cooldowns = sj_object_get_value(config_player_data, "Cooldowns");
+            SJson *player_team = sj_object_get_value(config_player_data, "Team");
 
-            player_spritePath = sj_object_get_value(config_player_data, "Sprite");
-            player_controller = sj_object_get_value(config_player_data, "ControllerIndex");
-            player_cooldowns  = sj_object_get_value(config_player_data, "Cooldowns");
-            player_team       = sj_object_get_value(config_player_data, "Team");
-
-            //Get cooldowns
-            player_cldn1 = sj_array_get_nth(player_cooldowns, 0);
-            player_cldn2 = sj_array_get_nth(player_cooldowns, 1);
-            player_cldn3 = sj_array_get_nth(player_cooldowns, 2);
-
-            if (pArray_save){
-                saved_player_data = sj_array_get_nth(pArray_save, i);
-
-                if (saved_player_data){
-                    // slog("Existing player");
-                    player_name = sj_object_get_value(saved_player_data, "Name");
-                    player_pos = sj_object_get_value(saved_player_data, "Position");
-                    // player_health = sj_object_get_value(saved_player_data, "Health");
-                }
-                else
-                {
-                    // slog("New player");
-
-                    player_name = sj_object_get_value(config_player_data, "Name");
-                    player_pos = sj_object_get_value(config_player_data, "Position");
-                    // player_health = sj_object_get_value(config_player_data, "Health");
-                }
-            }
-            else
-            {
-                slog("New player");
-
-                player_name = sj_object_get_value(config_player_data, "Name");
-                player_pos = sj_object_get_value(config_player_data, "Position");
-                // player_health = sj_object_get_value(config_player_data, "Health");
-            }
-
-            //Set name
-            name = (TextWord *)sj_get_string_value(player_name);
-
-            //Set pos
-            SJson *posX;
-            SJson *posY;
-            posX = sj_array_get_nth(player_pos, 0);
-            posY = sj_array_get_nth(player_pos, 1);
+            TextLine spritePath_string;
+            gfc_line_cpy(spritePath_string, sj_get_string_value(player_spritePath));//spritepath
+            int contIndex;                                                          //index
+            sj_get_integer_value(player_controller, &contIndex);
+            Vector2D pos;
+                                                                                    //Set pos
+            SJson* posX = sj_array_get_nth(player_position, 0);                     //Get pos
+            SJson* posY = sj_array_get_nth(player_position, 1);
             sj_get_float_value(posX, &pos.x);
             sj_get_float_value(posY, &pos.y);
-
-            //Set controller index
-            sj_get_integer_value(player_controller, &contIndex);
-            //Set sprite path
-            spritePath_string = (char *)sj_get_string_value(player_spritePath);
-
-            //Set cooldowns
+                                                                                    //Set cooldowns
+            SJson* player_cldn1 = sj_array_get_nth(player_cooldowns, 0);            //Get cooldowns
+            int cldn1;
             sj_get_integer_value(player_cldn1, &cldn1);
+            SJson* player_cldn2 = sj_array_get_nth(player_cooldowns, 1);
+            int cldn2;
             sj_get_integer_value(player_cldn2, &cldn2);
+            SJson* player_cldn3 = sj_array_get_nth(player_cooldowns, 2);
+            int cldn3;
             sj_get_integer_value(player_cldn3, &cldn3);
 
-            //Set team
+            int team;
             sj_get_integer_value(player_team, &team);
 
-            //Compare name
-            if (!strcmp(name, scene_get_active()->bluePlayer) || !strcmp(name, scene_get_active()->redPlayer)) {
-                //Create player
-                player_generic(
-                    (char*)name,
-                    i + 1,
-                    SHAPE_CIRCLE,
-                    50,
-                    vector2d(-50, -50),
-                    1,
-                    gf2d_sprite_load_image(spritePath_string),
-                    pos,
-                    SDL_GameControllerOpen(contIndex),
-                    player_think_1,
-                    player_touch,
-                    cldn1,
-                    cldn2,
-                    cldn3,
-                    team
-                );
+            if (saveFile) {
+                SJson* pArray_save = sj_object_get_value(saveFile, "Players");
+                slog("Loading save file...");
+
+                for (int i = 0; i < sj_array_get_count(pArray_save); i++) {
+                    SJson * save_player_data = sj_array_get_nth(pArray_save, i);
+                    SJson * player_name = sj_object_get_value(save_player_data, "Name");
+                    //Set name
+                    TextWord name;
+                    gfc_word_cpy(name, sj_get_string_value(player_name));
+
+                    //if you find that player in save file, change it's position
+                    if (!strcmp(name, scene_get_active()->bluePlayer) || !strcmp(name, scene_get_active()->redPlayer)) {
+                        //change
+                        player_position = sj_object_get_value(save_player_data, "Position");
+                        //Set pos
+                        posX = sj_array_get_nth(player_position, 0);                     //Get pos
+                        posY = sj_array_get_nth(player_position, 1);
+                        sj_get_float_value(posX, &pos.x);
+                        sj_get_float_value(posY, &pos.y);
+                    }
+                }
             }
+
+
+            //Create player
+            player_generic(
+                (char*)name,
+                i + 1,
+                SHAPE_CIRCLE,
+                50,
+                vector2d(-50, -50),
+                1,
+                gf2d_sprite_load_image(spritePath_string),
+                pos,
+                SDL_GameControllerOpen(contIndex),
+                player_think_1,
+                player_touch,
+                cldn1,
+                cldn2,
+                cldn3,
+                team
+            );
+        }
+    }
+    
             // slog("%s",name);
             // sj_echo(player_pos);
             // sj_echo(player_health);       
-        }
+        
         // sj_free(saveFile);
         // sj_free(cfgFile);
         // sj_free(pArray_save);
         // sj_free(pArray_config);
         // sj_free(saved_player_data);
         // sj_free(config_player_data);
-    }   
+      
 }
 
 Entity *player_generic(
@@ -239,6 +201,7 @@ Entity *player_generic(
     self->typeOfEnt = (Player *)player;
     self->type = ENT_PLAYER;
     self->team = team;
+    self->collidable = 1;
 
     if (char_index == 1){
         player->companion = companion_musicBee(self);

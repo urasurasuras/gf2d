@@ -62,7 +62,7 @@ Level *level_new(Sprite *backgroundFile, SDL_Rect bounds_level, SDL_Rect bounds_
     level->core_A->think = level_core_think;
     level->core_B = level_core_new(gf2d_sprite_load_image("images/cores/core_generic.png"), TEAM_B);
     level->core_B->think = level_core_think;
-    //level->neutral_monster = grassGuy_new();
+    level->neutral_monster = grassGuy_new();
 
     level->frame = 0;
 

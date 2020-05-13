@@ -39,6 +39,7 @@ Entity *level_core_new(Sprite *sprite, int team){
     core_ent->ui_box.y = (int)core_ent->position.y + core_ent->drawOffset.y/2;
     core_ent->type = ENT_CORE;
     core_ent->collider_shape = SHAPE_CIRCLE;
+    core_ent->collidable = 1;
     // core_ent->typeOfEnt = (Level_core *)core;
 
     return core_ent;
